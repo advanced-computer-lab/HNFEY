@@ -1,5 +1,6 @@
 // const adminRoutes = require("../components/admin/routes");
 const userRoutes = require("../components/user/routes");
+const flightRoutes = require("../components/flight/routes");
 
 module.exports = (app, base) => {
   app.get(`${base}/`, (req, res) => {
@@ -8,5 +9,5 @@ module.exports = (app, base) => {
   });
   app.use(`${base}/user`, userRoutes);
   // app.use(`${base}/admin`, adminRoutes);
-  // app.use(`${base}/flight`, flightRoutes);
+  app.use(`${base}/flight`, flightRoutes);
 };
