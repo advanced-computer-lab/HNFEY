@@ -17,4 +17,11 @@ router.post("/create-flight", controller.createPipeline, async (req, res) => {
   });
 });
 
+router.delete("/:id", controller.deletePipeline, async (req, res) => {
+  if (req.transaction) await req.transaction.commit();
+  res.status(200).json({
+    message: "Flight deleted successfully",
+  });
+});
+
 module.exports = router;

@@ -18,6 +18,7 @@ const fetchAll = async (req, res, next) => {
 const createFlight = async (req, res, next) => {
   try {
     const flight = req.body.flight;
+    console.log(req.body.flight.flightNumber);
     const flightCreated = await model.createFlight(flight);
     if (flightCreated) {
       req.flight = flightCreated;
@@ -26,6 +27,15 @@ const createFlight = async (req, res, next) => {
       const err = new Error("Cannot create flight");
       next(err);
     }
+  } catch (err) {
+    next(err);
+  }
+};
+
+const removeFlight = async (req, res, next) => {
+  try {
+    await model.removeFlight(req.params.id);
+    next();
   } catch (err) {
     next(err);
   }
@@ -41,7 +51,13 @@ const createPipeline = [
   createFlight,
 ];
 
+const deletePipeline = [
+  //verify Admin,
+  removeFlight,
+];
+
 module.exports = {
   fetchAllPipeline,
   createPipeline,
+  deletePipeline,
 };

@@ -6,7 +6,10 @@ const createFlight = async (flight) => {
   return await Flight.create(flight);
 };
 
+const removeFlight = (_id) => Flight.deleteOne({ _id });
+
 module.exports = {
   fetchAll,
   createFlight,
+  removeFlight,
 };
