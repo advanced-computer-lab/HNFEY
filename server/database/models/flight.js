@@ -9,43 +9,43 @@ const flightSchema = new Schema(
     },
     departureTime: {
       type: Date,
-      required: false,
+      required: true,
     },
     arrivalTime: {
-        type: Date,
-        required: false,
+      type: Date,
+      required: true,
     },
     departureTerminal: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     arrivalTerminal: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     numberOfEconomySeats: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     numberOfBusinessSeats: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     numberOfAvailableEconomySeats: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     numberOfAvailableBusinessSeats: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     baggageAllowance: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     price: {
-        type: mongoose.Types.Decimal128,
-        required: true,
+      type: mongoose.Types.Decimal128,
+      required: true,
     },
   },
   { timestamps: true }
