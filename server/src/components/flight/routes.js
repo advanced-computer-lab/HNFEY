@@ -18,7 +18,7 @@ router.post("/create-flight", controller.createPipeline, async (req, res) => {
 });
 
 router.post("/find-flight", controller.findPipeline, async (req, res) => {
-  res.status(201).json({
+  res.status(200).json({
     message: "Flights available:",
     flights: req.flights,
   });
