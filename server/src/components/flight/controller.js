@@ -18,13 +18,30 @@ const fetchAll = async (req, res, next) => {
 const createFlight = async (req, res, next) => {
   try {
     const flight = req.body.flight;
-    console.log(req.body.flight.flightNumber);
     const flightCreated = await model.createFlight(flight);
     if (flightCreated) {
       req.flight = flightCreated;
       next();
     } else {
       const err = new Error("Cannot create flight");
+      next(err);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+const findFlight = async (req, res, next) => {
+  try {
+    const flight = req.body.flight;
+    const flightResults = await model.findFlight(flight);
+    if (flightResults) {
+      req.flights = flightResults;
+      next();
+    } else {
+      const err = new Error("Cannot find flight");
+    
       next(err);
     }
   } catch (err) {
@@ -51,6 +68,11 @@ const createPipeline = [
   createFlight,
 ];
 
+const findPipeline = [
+  //verify Admin,
+  findFlight,
+];
+
 const deletePipeline = [
   //verify Admin,
   removeFlight,
@@ -59,5 +81,8 @@ const deletePipeline = [
 module.exports = {
   fetchAllPipeline,
   createPipeline,
-  deletePipeline,
+  findPipeline,
+  deletePipeline
+
+  
 };

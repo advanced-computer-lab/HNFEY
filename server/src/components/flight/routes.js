@@ -17,6 +17,15 @@ router.post("/create-flight", controller.createPipeline, async (req, res) => {
   });
 });
 
+router.post("/find-flight", controller.findPipeline, async (req, res) => {
+  res.status(201).json({
+    message: "Flights available:",
+    flights: req.flights,
+  });
+});
+
+
+
 router.delete("/:id", controller.deletePipeline, async (req, res) => {
   if (req.transaction) await req.transaction.commit();
   res.status(200).json({
