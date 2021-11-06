@@ -49,7 +49,8 @@ const updateFlight = async (req, res, next) => {
 
 const findFlight = async (req, res, next) => {
   try {
-    const flight = req.body.flight; //from frontend find flight form
+    const flight = req.query;
+    console.log(query);
     const flightResults = await model.findFlight(flight);
     if (flightResults) {
       req.flights = flightResults;

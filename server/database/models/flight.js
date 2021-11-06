@@ -33,11 +33,11 @@ const flightSchema = new Schema(
     },
     numberOfAvailableEconomySeats: { //set in frontend number of aviable = number of total
       type: Number,
-      required: true,
+      required: false,
     },
     numberOfAvailableBusinessSeats: { //set in frontend number of aviable = number of total
       type: Number,
-      required: true,
+      required: false,
     },
     baggageAllowance: {
       type: Number,
