@@ -6,6 +6,7 @@ import FlightList from "./components/FlightList/FlightList";
 import CreateFlightForm from "./components/CreateFlightForm/CreateFlightForm";
 import ListAllFlights from "./components/ListAllFlights/ListAllFlights";
 import EditFlight from "./components/EditFlight/EditFlight";
+import Navbar from "./components/Navbar/Navbar";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -14,8 +15,9 @@ const App = () => {
   return (
     <MuiThemeProvider theme={brandTheme}>
       <Router>
+        <Navbar />
         <Switch>
-          <Route path="/" exact component={SearchForm} />
+          <Route path="/search" exact component={SearchForm} />
           <Route path="/list-flights" exact component={FlightList} />
           <Route path="/create-flight" exact component={CreateFlightForm} />
           <Route path="/list-all-flights" exact component={ListAllFlights} />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { useHistory } from "react-router";
 import Axios from "axios";
 
@@ -28,10 +28,13 @@ export const CreateFlightForm = () => {
   const [flightDetails, setFlightDetails] = useState({});
 
   return (
-    <>
+    <Container component="main" align="center">
       <br />
       <br />
-
+      <Typography variant="h4" color="textSecondary">
+        Add a Flight
+      </Typography>
+      <br />
       <TextField
         style={{ width: 500 }}
         name="flightNumber"
@@ -147,7 +150,7 @@ export const CreateFlightForm = () => {
       >
         Create
       </Button>
-    </>
+    </Container>
   );
 };
 export default CreateFlightForm;

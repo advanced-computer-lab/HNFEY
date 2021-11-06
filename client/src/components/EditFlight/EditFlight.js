@@ -1,4 +1,4 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Container, Typography } from "@material-ui/core";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
@@ -31,10 +31,14 @@ const EditFlight = () => {
   };
 
   return flightDetails?._id ? (
-    <>
-      <br />
+    <Container component="main" align="center">
       <br />
 
+      <br />
+      <Typography variant="h4" color="textSecondary">
+        Edit Flight
+      </Typography>
+      <br />
       <TextField
         style={{ width: 500 }}
         name="flightNumber"
@@ -158,7 +162,7 @@ const EditFlight = () => {
       >
         Edit
       </Button>
-    </>
+    </Container>
   ) : null;
 };
 

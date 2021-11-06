@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { useHistory } from "react-router";
 
 const FlightForm = () => {
@@ -25,10 +25,14 @@ const FlightForm = () => {
   const [flightDetails, setFlightDetails] = useState({});
 
   return (
-    <>
-      <br />
+    <Container component="main" align="center">
       <br />
 
+      <br />
+      <Typography variant="h4" color="textSecondary">
+        Search for a Flight
+      </Typography>
+      <br />
       <TextField
         style={{ width: 500 }}
         name="flightNumber"
@@ -95,7 +99,7 @@ const FlightForm = () => {
       >
         Search
       </Button>
-    </>
+    </Container>
   );
 };
 

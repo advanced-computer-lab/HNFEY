@@ -34,7 +34,7 @@ export const ListAllFlights = () => {
         },
         {
           label: "No",
-          onClick: () => alert("Click No"),
+          onClick: () => {},
         },
       ],
     });
@@ -58,12 +58,12 @@ export const ListAllFlights = () => {
           <TableHead>
             <TableRow>
               <TableCell>Flight Number</TableCell>
-              <TableCell align="right">Departure Time</TableCell>
-              <TableCell align="right">Arrival Time</TableCell>
-              <TableCell align="right">Departure Terminal</TableCell>
-              <TableCell align="right">Arrival Terminal</TableCell>
-              <TableCell align="right">Edit</TableCell>
-              <TableCell align="right">Delete</TableCell>
+              <TableCell align="center">Departure Time</TableCell>
+              <TableCell align="center">Arrival Time</TableCell>
+              <TableCell align="center">Departure Terminal</TableCell>
+              <TableCell align="center">Arrival Terminal</TableCell>
+              <TableCell align="center">Edit</TableCell>
+              <TableCell align="center">Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -75,15 +75,15 @@ export const ListAllFlights = () => {
                 <TableCell component="th" scope="row">
                   {flight.flightNumber}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   {moment(flight.departureTimeDate).format("YYYY-MM-DD")}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   {moment(flight.arrivalTimeDate).format("YYYY-MM-DD")}
                 </TableCell>
-                <TableCell align="right">{flight.departureTerminal}</TableCell>
-                <TableCell align="right">{flight.arrivalTerminal}</TableCell>
-                <TableCell align="right">
+                <TableCell align="center">{flight.departureTerminal}</TableCell>
+                <TableCell align="center">{flight.arrivalTerminal}</TableCell>
+                <TableCell align="center">
                   <Button
                     style={{ width: 100 }}
                     variant="contained"
@@ -93,7 +93,7 @@ export const ListAllFlights = () => {
                     Edit
                   </Button>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <Button
                     style={{ width: 100 }}
                     variant="contained"
