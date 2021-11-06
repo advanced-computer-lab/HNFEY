@@ -52,7 +52,7 @@ export const ListAllFlights = () => {
       {flights.map((flight) => (
          
         <TableRow
-        //   key={flight.flightNumber}
+        key={flight._id}
         //   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
           <TableCell component="th" scope="row">{flight.flightNumber}</TableCell>

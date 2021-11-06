@@ -11,6 +11,7 @@ import Axios from "axios";
 import { useLocation } from "react-router-dom";
 import moment from 'moment';
 
+
 export const FlightList = () => {
 
     const [flightList, setList] = useState([]);
@@ -43,7 +44,7 @@ useEffect(() => {
                 <TableBody>
           {flightList.map((flight) => (
             <TableRow
-            //   key={flight.flightNumber}
+             key={flight._id}
             //   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">{flight.flightNumber}</TableCell>
