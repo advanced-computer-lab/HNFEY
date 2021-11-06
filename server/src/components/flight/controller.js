@@ -34,30 +34,29 @@ const createFlight = async (req, res, next) => {
 const updateFlight = async (req, res, next) => {
   try {
     const flightId = req.body.flight._id;
-    const flightUpdated = req.body.flight
-    await model.updateFlight(flightId,req.body.flight);
+    const flightUpdated = req.body.flight;
+    await model.updateFlight(flightId, req.body.flight);
     if (flightUpdated) {
       next();
     } else {
       const err = new Error("Cannot update flight");
       next(err);
     }
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
-}
+};
 
 const findFlight = async (req, res, next) => {
   try {
     const flight = req.query;
-    console.log(query);
     const flightResults = await model.findFlight(flight);
     if (flightResults) {
       req.flights = flightResults;
       next();
     } else {
       const err = new Error("Cannot find flight");
-    
+
       next(err);
     }
   } catch (err) {
@@ -87,7 +86,7 @@ const createPipeline = [
 const updatePipeline = [
   //verify admin
   updateFlight,
-]
+];
 const findPipeline = [
   //verify Admin,
   findFlight,
@@ -103,5 +102,5 @@ module.exports = {
   createPipeline,
   updatePipeline,
   findPipeline,
-  deletePipeline
-}
+  deletePipeline,
+};

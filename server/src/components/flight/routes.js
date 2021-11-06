@@ -3,7 +3,7 @@ const controller = require("./controller");
 
 const router = express.Router();
 
-router.get("/list-flights", controller.fetchAllPipeline, async (req, res) => {
+router.get("/list-flights", controller.findPipeline, async (req, res) => {
   res.status(200).json({
     message: "Flight fetched successfully",
     flights: req.flights,
@@ -16,13 +16,12 @@ router.post("/create-flight", controller.createPipeline, async (req, res) => {
     flight: req.flight,
   });
 });
-router.put("/edit-flight",controller.updatePipeline,async (req,res)=>{
+router.put("/edit-flight", controller.updatePipeline, async (req, res) => {
   res.status(200).json({
     message: "Flight updated successfully",
     flight: req.updatedFlight,
-  })
-})
-
+  });
+});
 
 router.post("/find-flight", controller.findPipeline, async (req, res) => {
   res.status(200).json({
@@ -30,8 +29,6 @@ router.post("/find-flight", controller.findPipeline, async (req, res) => {
     flights: req.flights,
   });
 });
-
-
 
 router.delete("/:id", controller.deletePipeline, async (req, res) => {
   if (req.transaction) await req.transaction.commit();
