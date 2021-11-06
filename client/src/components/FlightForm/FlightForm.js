@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import { useHistory } from "react-router";
-import Axios from "axios";
 
-const FlightForm = props  => {
+const FlightForm = (props) => {
   const history = useHistory();
   const handleChange = (e) => {
     setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
@@ -13,20 +12,18 @@ const FlightForm = props  => {
     const flight = {
       flight: flightDetails,
     };
-    console.log(flightDetails);
+    console.log(flight);
 
     const noOfKeys = Object.keys(flightDetails).length;
     console.log(noOfKeys);
-    let search= "?";
-    Object.entries(flightDetails).map((entry, i)=> {
+    let search = "?";
+    Object.entries(flightDetails).map((entry, i) => {
       let [key, value] = entry;
-      let last = i+1===noOfKeys?"":"&";
-      search += key + "=" + value + last;
-    }
-    );
+      let last = i + 1 === noOfKeys ? "" : "&";
+      return (search += key + "=" + value + last);
+    });
     try {
-      history.push( '/list-flights'+search);
-      
+      history.push("/list-flights" + search);
     } catch (e) {
       console.log(e);
     }
@@ -93,7 +90,6 @@ const FlightForm = props  => {
         type="text"
       />
 
-     
       <br />
       <br />
 
@@ -110,4 +106,3 @@ const FlightForm = props  => {
 };
 
 export default FlightForm;
-
