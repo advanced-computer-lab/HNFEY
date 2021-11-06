@@ -10,7 +10,6 @@ const FlightForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const noOfKeys = Object.keys(flightDetails).length;
-    console.log(noOfKeys);
     let search = "?";
     Object.entries(flightDetails).map((entry, i) => {
       let [key, value] = entry;

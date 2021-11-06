@@ -4,35 +4,31 @@ import { useHistory } from "react-router";
 import Axios from "axios";
 
 export const CreateFlightForm = () => {
+  const history = useHistory();
 
-    const history = useHistory();
-
-    const handleChange = (e) => {
-        setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
   };
   const handleCreate = async (e) => {
-
     e.preventDefault();
 
     const flight = {
       flight: flightDetails,
     };
 
-    console.log(flightDetails);
-
     let url = "http://localhost:8000/hnfey/flight/create-flight";
 
     try {
       await Axios.post(url, flight);
       history.push("/list-all-flights");
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.log(err);
     }
   };
   const [flightDetails, setFlightDetails] = useState({});
 
-    return (
-        <>
+  return (
+    <>
       <br />
       <br />
 
@@ -53,17 +49,18 @@ export const CreateFlightForm = () => {
         onChange={handleChange}
         variant="outlined"
         label="Departure Time"
+        InputLabelProps={{ shrink: true }}
         type="date"
       />
       <br />
       <br />
-
       <TextField
         style={{ width: 500 }}
         name="arrivalTime"
         onChange={handleChange}
         variant="outlined"
         label="Arrival Time"
+        InputLabelProps={{ shrink: true }}
         type="date"
       />
 
@@ -91,48 +88,46 @@ export const CreateFlightForm = () => {
         type="text"
       />
 
-     
-
       <br />
       <br />
 
-    <TextField
+      <TextField
         style={{ width: 500 }}
         onChange={handleChange}
         name="numberOfEconomySeats"
         variant="outlined"
         label="Number of Economy Seats"
-        type="text"
+        type="number"
       />
 
       <br />
       <br />
 
-    <TextField
+      <TextField
         style={{ width: 500 }}
         onChange={handleChange}
         name="numberOfBusinessSeats"
         variant="outlined"
         label="Number of Business Seats"
-        type="text"
+        type="number"
       />
 
       <br />
       <br />
 
-    <TextField
+      <TextField
         style={{ width: 500 }}
         onChange={handleChange}
         name="baggageAllowance"
         variant="outlined"
         label="Baggage Allowance"
-        type="text"
+        type="number"
       />
 
       <br />
       <br />
 
-    <TextField
+      <TextField
         style={{ width: 500 }}
         onChange={handleChange}
         name="price"
@@ -153,6 +148,6 @@ export const CreateFlightForm = () => {
         Create
       </Button>
     </>
-    )
-}
+  );
+};
 export default CreateFlightForm;

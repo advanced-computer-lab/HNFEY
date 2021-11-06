@@ -20,7 +20,6 @@ export const ListAllFlights = () => {
   useEffect(() => {
     Axios.get("http://localhost:8000/hnfey/flight/list-flights").then((res) => {
       setFlights(res.data.flights);
-      // console.log(res.data.flights);
     });
   }, [flights]);
 
@@ -47,7 +46,7 @@ export const ListAllFlights = () => {
     history.push("/list-all-flights");
   };
 
-  const handleEdit = async (e,flightid) => {
+  const handleEdit = async (e, flightid) => {
     e.preventDefault();
     history.push("/edit/" + flightid);
   };
@@ -89,7 +88,7 @@ export const ListAllFlights = () => {
                     style={{ width: 100 }}
                     variant="contained"
                     color="primary"
-                    onClick={(e) => handleEdit(e,flight._id)}
+                    onClick={(e) => handleEdit(e, flight._id)}
                   >
                     Edit
                   </Button>
@@ -99,7 +98,7 @@ export const ListAllFlights = () => {
                     style={{ width: 100 }}
                     variant="contained"
                     onClick={() => submit(flight._id)}
-                    color="primary"
+                    color="secondary"
                   >
                     Delete
                   </Button>

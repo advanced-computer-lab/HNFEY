@@ -8,7 +8,7 @@ import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
 import { Button } from "@mui/material";
@@ -16,7 +16,7 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 export const FlightList = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const [flightList, setList] = useState([]);
   const location = useLocation();
   let url = "http://localhost:8000/hnfey/flight/list-flights?";
@@ -29,11 +29,8 @@ export const FlightList = () => {
   });
 
   useEffect(() => {
-    (async () => {
-      const { data } = await Axios.get(url);
-      setList(data.flights);
-    })();
-  }, [url, flightList]);
+    Axios.get(url).then((res) => setList(res.data.flights));
+  }, [url]);
 
   const submit = (flightId) => {
     confirmAlert({
@@ -55,7 +52,11 @@ export const FlightList = () => {
   const handleDelete = async (flightId) => {
     await Axios.delete("http://localhost:8000/hnfey/flight/" + flightId);
     setList(flightList.filter((flight) => flight._id !== flightId));
-    //history.push("/list-flights");
+  };
+
+  const handleEdit = async (e, flightid) => {
+    e.preventDefault();
+    history.push("/edit/" + flightid);
   };
   return flightList ? (
     <div>
@@ -95,6 +96,7 @@ export const FlightList = () => {
                     style={{ width: 100 }}
                     variant="contained"
                     color="primary"
+                    onClick={(e) => handleEdit(e, flight._id)}
                   >
                     Edit
                   </Button>

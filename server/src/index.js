@@ -29,8 +29,6 @@ app.use(express.urlencoded({ limit: "30mb", extended: "true" }));
 app.use(cors());
 app.use(express.json());
 
-console.log(process.env.APP_VERSION);
-
 routesV1(app, process.env.APP_VERSION);
 
 app.listen(PORT, () => {
