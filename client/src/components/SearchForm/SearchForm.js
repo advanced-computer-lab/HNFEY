@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import { useHistory } from "react-router";
 
-const FlightForm = (props) => {
+const FlightForm = () => {
   const history = useHistory();
   const handleChange = (e) => {
     setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
