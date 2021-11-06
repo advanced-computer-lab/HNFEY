@@ -3,7 +3,7 @@ import { Button, TextField } from "@material-ui/core";
 import { useHistory } from "react-router";
 import Axios from "axios";
 
-const FlightForm = () => {
+const FlightForm = props  => {
   const history = useHistory();
   const handleChange = (e) => {
     setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
@@ -18,8 +18,14 @@ const FlightForm = () => {
     let url = "http://localhost:8000/hnfey/flight/find-flight";
 
     try {
-      await Axios.post(url, flight);
-      history.push("/");
+      const flights = await Axios.post(url, flight);
+      // console.log(flights.data.flights);
+      // this.props.history.push("/list-flights" );
+      history.push({
+        pathname: '/list-flights',
+        state: { detail: flights.data.flights }
+    });
+      
     } catch (e) {
       console.log(e);
     }
@@ -101,3 +107,4 @@ const FlightForm = () => {
 };
 
 export default FlightForm;
+
