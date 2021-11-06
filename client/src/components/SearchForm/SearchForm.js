@@ -9,11 +9,6 @@ const FlightForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const flight = {
-      flight: flightDetails,
-    };
-    console.log(flight);
-
     const noOfKeys = Object.keys(flightDetails).length;
     console.log(noOfKeys);
     let search = "?";
@@ -24,8 +19,8 @@ const FlightForm = () => {
     });
     try {
       history.push("/list-flights" + search);
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.log(err);
     }
   };
   const [flightDetails, setFlightDetails] = useState({});

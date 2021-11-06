@@ -47,6 +47,11 @@ export const ListAllFlights = () => {
     history.push("/list-all-flights");
   };
 
+  const handleEdit = async (e,flightid) => {
+    e.preventDefault();
+    history.push("/edit/" + flightid);
+  };
+
   return (
     <div>
       <TableContainer component={Paper}>
@@ -84,6 +89,7 @@ export const ListAllFlights = () => {
                     style={{ width: 100 }}
                     variant="contained"
                     color="primary"
+                    onClick={(e) => handleEdit(e,flight._id)}
                   >
                     Edit
                   </Button>

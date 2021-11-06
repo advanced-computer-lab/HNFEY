@@ -47,6 +47,23 @@ const updateFlight = async (req, res, next) => {
   }
 };
 
+const fetch = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const flight = await model.findFlightById(id);
+    if (flight) {
+      req.flight = flight;
+      next();
+    } else {
+      const err = new Error("Cannot find flight");
+      next(err);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 const findFlight = async (req, res, next) => {
   try {
     const flight = req.query;
@@ -92,6 +109,10 @@ const findPipeline = [
   findFlight,
 ];
 
+const fetchPipeline = [
+  fetch,
+]
+
 const deletePipeline = [
   //verify Admin,
   removeFlight,
@@ -99,6 +120,7 @@ const deletePipeline = [
 
 module.exports = {
   fetchAllPipeline,
+  fetchPipeline,
   createPipeline,
   updatePipeline,
   findPipeline,

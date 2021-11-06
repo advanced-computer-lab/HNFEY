@@ -4,6 +4,7 @@ import SearchForm from "./components/SearchForm/SearchForm";
 import FlightList from "./components/FlightList/FlightList";
 import CreateFlightForm from "./components/CreateFlightForm/CreateFlightForm";
 import ListAllFlights from "./components/ListAllFlights/ListAllFlights";
+import EditFlight from "./components/EditFlight/EditFlight";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/list-flights" exact component={FlightList} />
         <Route path="/create-flight" exact component={CreateFlightForm} />
         <Route path="/list-all-flights" exact component={ListAllFlights} />
+        <Route path="/edit/:id" exact component={EditFlight} />
       </Switch>
     </Router>
   );

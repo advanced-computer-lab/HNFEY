@@ -12,12 +12,17 @@ const updateFlight = async (_id,updatedFlight) => {
 const findFlight = async (flight) => {
   return await Flight.find(flight);
 };
+
+const findFlightById = (_id) => {
+  return Flight.findById(_id);
+};
 const removeFlight = (_id) => Flight.deleteOne({ _id });
 
 module.exports = {
   fetchAll,
   createFlight,
   updateFlight,
+  findFlightById,
   findFlight,
   removeFlight,
 };
