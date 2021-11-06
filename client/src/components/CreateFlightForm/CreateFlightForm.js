@@ -53,7 +53,7 @@ export const CreateFlightForm = () => {
         onChange={handleChange}
         variant="outlined"
         label="Departure Time"
-        type="text"
+        type="date"
       />
       <br />
       <br />
@@ -64,7 +64,7 @@ export const CreateFlightForm = () => {
         onChange={handleChange}
         variant="outlined"
         label="Arrival Time"
-        type="text"
+        type="date"
       />
 
       <br />
