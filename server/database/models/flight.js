@@ -31,11 +31,11 @@ const flightSchema = new Schema(
       type: Number,
       required: true,
     },
-    numberOfAvailableEconomySeats: {
+    numberOfAvailableEconomySeats: { //set in frontend number of aviable = number of total
       type: Number,
       required: true,
     },
-    numberOfAvailableBusinessSeats: {
+    numberOfAvailableBusinessSeats: { //set in frontend number of aviable = number of total
       type: Number,
       required: true,
     },
