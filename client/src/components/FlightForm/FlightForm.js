@@ -15,16 +15,17 @@ const FlightForm = props  => {
     };
     console.log(flightDetails);
 
-    let url = "http://localhost:8000/hnfey/flight/find-flight";
-
+    const noOfKeys = Object.keys(flightDetails).length;
+    console.log(noOfKeys);
+    let search= "?";
+    Object.entries(flightDetails).map((entry, i)=> {
+      let [key, value] = entry;
+      let last = i+1===noOfKeys?"":"&";
+      search += key + "=" + value + last;
+    }
+    );
     try {
-      const flights = await Axios.post(url, flight);
-      // console.log(flights.data.flights);
-      // this.props.history.push("/list-flights" );
-      history.push({
-        pathname: '/list-flights',
-        state: { detail: flights.data.flights }
-    });
+      history.push( '/list-flights'+search);
       
     } catch (e) {
       console.log(e);
@@ -50,7 +51,7 @@ const FlightForm = props  => {
 
       <TextField
         style={{ width: 500 }}
-        name="departureTimeDate"
+        name="departureTime"
         onChange={handleChange}
         variant="outlined"
         label="Departure Time"
@@ -61,10 +62,22 @@ const FlightForm = props  => {
 
       <TextField
         style={{ width: 500 }}
-        name="arrivalTimeDate"
+        name="arrivalTime"
         onChange={handleChange}
         variant="outlined"
         label="Arrival Time"
+        type="text"
+      />
+
+      <br />
+      <br />
+
+      <TextField
+        style={{ width: 500 }}
+        onChange={handleChange}
+        name="departureTerminal"
+        variant="outlined"
+        label="Departure Terminal"
         type="text"
       />
 
@@ -80,17 +93,7 @@ const FlightForm = props  => {
         type="text"
       />
 
-      <br />
-      <br />
-
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        name="departureTerminal"
-        variant="outlined"
-        label="Departure Terminal"
-        type="text"
-      />
+     
       <br />
       <br />
 

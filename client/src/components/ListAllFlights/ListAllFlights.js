@@ -10,6 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import { useEffect} from 'react';
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
 export const ListAllFlights = () => {
@@ -21,6 +23,23 @@ export const ListAllFlights = () => {
          // console.log(res.data.flights);
     });
     },[flights])
+
+    const submit = (flightid) => {
+      confirmAlert({
+        title: 'Are you sure you want to delete this flight?',
+        message: 'Are you sure you want to delete this flight?',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => handleDelete(flightid)
+          },
+          {
+            label: 'No',
+            onClick: () => alert('Click No')
+          }
+        ]
+      });
+    };
 
     const handleDelete = async (flightid) => {
     //e.preventDefault();
@@ -66,7 +85,7 @@ export const ListAllFlights = () => {
          <TableCell align="right"><Button
                             style={{ width: 100 }}
                             variant="contained"
-                            onClick={() => handleDelete(flight._id)}
+                            onClick={() => submit(flight._id)}
                             color="primary" >
                                 Delete 
                             </Button>

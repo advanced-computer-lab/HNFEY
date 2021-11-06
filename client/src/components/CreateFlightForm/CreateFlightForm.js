@@ -10,7 +10,7 @@ export const CreateFlightForm = () => {
     const handleChange = (e) => {
         setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
   };
-  const handleSubmit = async (e) => {
+  const handleCreate = async (e) => {
 
     e.preventDefault();
 
@@ -24,7 +24,7 @@ export const CreateFlightForm = () => {
 
     try {
       await Axios.post(url, flight);
-      // history.push("/");
+      history.push("/list-all-flights");
     } catch (e) {
       console.log(e);
     }
@@ -73,9 +73,9 @@ export const CreateFlightForm = () => {
       <TextField
         style={{ width: 500 }}
         onChange={handleChange}
-        name="arrivalTerminal"
+        name="departureTerminal"
         variant="outlined"
-        label="Arrival Terminal"
+        label="Departure Terminal"
         type="text"
       />
 
@@ -85,11 +85,13 @@ export const CreateFlightForm = () => {
       <TextField
         style={{ width: 500 }}
         onChange={handleChange}
-        name="departureTerminal"
+        name="arrivalTerminal"
         variant="outlined"
-        label="Departure Terminal"
+        label="Arrival Terminal"
         type="text"
       />
+
+     
 
       <br />
       <br />
@@ -144,11 +146,11 @@ export const CreateFlightForm = () => {
 
       <Button
         style={{ width: 500 }}
-        onClick={handleSubmit}
+        onClick={handleCreate}
         variant="contained"
         color="primary"
       >
-        Search
+        Create
       </Button>
     </>
     )
