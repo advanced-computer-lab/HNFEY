@@ -6,6 +6,7 @@ const createUser = async (user) => {
   return await User.create(user);
 };
 
+
 module.exports = {
   fetchAll,
   createUser,

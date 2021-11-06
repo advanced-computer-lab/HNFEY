@@ -31,6 +31,22 @@ const createFlight = async (req, res, next) => {
   }
 };
 
+const updateFlight = async (req, res, next) => {
+  try {
+    const flightId = req.body.flight._id;
+    const flightUpdated = req.body.flight
+    await model.updateFlight(flightId,req.body.flight);
+    if (flightUpdated) {
+      next();
+    } else {
+      const err = new Error("Cannot update flight");
+      next(err);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 const fetchAllPipeline = [
   //verify Admin,
   fetchAll,
@@ -41,7 +57,13 @@ const createPipeline = [
   createFlight,
 ];
 
+const updatePipeline = [
+  //verify admin
+  updateFlight,
+]
+
 module.exports = {
   fetchAllPipeline,
   createPipeline,
+  updatePipeline
 };
