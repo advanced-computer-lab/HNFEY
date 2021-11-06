@@ -9,6 +9,7 @@ import Table from '@mui/material/Table';
 import { useEffect, useState } from 'react';
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
+import moment from 'moment';
 
 export const FlightList = () => {
 
@@ -46,8 +47,8 @@ useEffect(() => {
             //   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">{flight.flightNumber}</TableCell>
-              <TableCell align="right">{flight.departureTimeDate}</TableCell>
-              <TableCell align="right">{flight.arrivalTimeDate}</TableCell>
+              <TableCell align="right">{moment(flight.departureTimeDate).format('YYYY-MM-DD')}</TableCell>
+              <TableCell align="right">{moment(flight.arrivalTimeDate).format('YYYY-MM-DD')}</TableCell>
               <TableCell align="right">{flight.departureTerminal}</TableCell>
               <TableCell align="right">{flight.arrivalTerminal}</TableCell>
               
