@@ -32,7 +32,7 @@ export const FlightList = () => {
 
   useEffect(() => {
     Axios.get(url).then((res) => setList(res.data.flights));
-  }, [url]);
+  }, [url]); //might be flights
 
   const submit = (flightId) => {
     confirmAlert({
@@ -62,7 +62,7 @@ export const FlightList = () => {
   };
   return flightList ? (
     <div>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ marginTop: "65px" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>

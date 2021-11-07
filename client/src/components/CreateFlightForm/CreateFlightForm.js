@@ -5,6 +5,7 @@ import Axios from "axios";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
+import moment from 'moment';
 
 export const CreateFlightForm = () => {
   const history = useHistory();
@@ -31,13 +32,13 @@ export const CreateFlightForm = () => {
 
   const handleDepartureDateChange = (newValue) => {
     setDepartureValue(newValue);
-    setFlightDetails({ ...flightDetails, departureDateTime: newValue });
+    setFlightDetails({ ...flightDetails, departureDateTime: moment(newValue).format('YYYY-MM-DD hh:mm') });
   };
 
   const handleArrivalDateChange = (newValue) => {
-    console.log(newValue);
+    console.log(moment(newValue).format('YYYY-MM-DD hh:mm'));
     setArrivalValue(newValue);
-    setFlightDetails({ ...flightDetails, arrivalDateTime: newValue });
+    setFlightDetails({ ...flightDetails, arrivalDateTime: moment(newValue).format('YYYY-MM-DD hh:mm') });
   };
 
   const handleCreate = async (e) => {
@@ -104,10 +105,13 @@ export const CreateFlightForm = () => {
               variant="outlined"
               label="Departure Date"
               name="departureDateTime"
+              
             />
           )}
           value={departureValue}
           onChange={handleDepartureDateChange}
+          // inputFormat="YYYY-MM-DD T:hh:mm:ss"
+          inputFormat='yyyy/MM/dd HH:mm:ss'
         />
         <br />
         <br />
@@ -123,6 +127,12 @@ export const CreateFlightForm = () => {
           value={arrivalValue}
           name="arrivalDateTime"
           onChange={handleArrivalDateChange}
+          // formatDate={(date) => moment(date).format('DD-MM-YYYY')}
+          // inputFormat="YYYY-MM-DD T:hh:mm:ss"
+          inputFormat='yyyy/MM/dd HH:mm:ss'
+
+
+
         />
         <br />
         <br />
@@ -193,7 +203,7 @@ export const CreateFlightForm = () => {
           name="price"
           variant="outlined"
           label="Price"
-          type="text"
+          type="number"
         />
 
         <br />

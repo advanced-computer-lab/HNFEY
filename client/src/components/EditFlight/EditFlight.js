@@ -2,6 +2,7 @@ import { Button, TextField, Container, Typography } from "@material-ui/core";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
+import { CircularProgress} from "@material-ui/core";
 
 const EditFlight = () => {
   const { id } = useParams();
@@ -144,7 +145,7 @@ const EditFlight = () => {
       <TextField
         style={{ width: 500 }}
         onChange={handleChange}
-        value={flightDetails.price.$numberDecimal}
+        value={flightDetails.price}
         name="price"
         variant="outlined"
         label="Price"
@@ -163,7 +164,7 @@ const EditFlight = () => {
         Edit
       </Button>
     </Container>
-  ) : null;
+  ) : <CircularProgress />;
 };
 
 export default EditFlight;

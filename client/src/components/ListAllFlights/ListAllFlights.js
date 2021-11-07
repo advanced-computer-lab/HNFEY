@@ -17,13 +17,23 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import moment from "moment";
 
 export const ListAllFlights = () => {
+
   const [flights, setFlights] = useState([]);
+  const [deleted, setDeleted] = useState(false);
+
   const history = useHistory();
   useEffect(() => {
     Axios.get("http://localhost:8000/hnfey/flight/list-flights").then((res) => {
-      setFlights(res.data.flights);
+      if(res.data.flight !== flights){
+    
+        setFlights(res.data.flights);
+      }
+      console.log(flights);
+      if(deleted){
+        setDeleted(false);
+      }
     });
-  }, []);
+  }, [deleted]);
 
   const submit = (flightid) => {
     confirmAlert({
@@ -45,6 +55,7 @@ export const ListAllFlights = () => {
   const handleDelete = async (flightid) => {
     // e.preventDefault();
     Axios.delete("http://localhost:8000/hnfey/flight/" + flightid);
+    setDeleted(true);
     history.push("/list-all-flights");
   };
 
@@ -78,10 +89,10 @@ export const ListAllFlights = () => {
                   {flight.flightNumber}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(flight.departureDateTime).format("YYYY-MM-DD")}
+                  {moment(flight.departureDateTime).format("DD-MM-YYYY hh:mmA")}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(flight.arrivalDateTime).format("YYYY-MM-DD")}
+                  {moment(flight.arrivalDateTime).format("DD-MM-YYYY hh:mmA")}
                 </TableCell>
                 <TableCell align="center">{flight.departureTerminal}</TableCell>
                 <TableCell align="center">{flight.arrivalTerminal}</TableCell>

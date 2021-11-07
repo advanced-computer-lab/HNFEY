@@ -45,7 +45,7 @@ const FlightForm = () => {
         name="departureDateTime"
         onChange={handleChange}
         variant="outlined"
-        label="Departure Time"
+        label="Departure Date"
         InputLabelProps={{ shrink: true }}
         type="date"
       />
@@ -55,7 +55,7 @@ const FlightForm = () => {
         name="arrivalDateTime"
         onChange={handleChange}
         variant="outlined"
-        label="Arrival Time"
+        label="Arrival Date"
         InputLabelProps={{ shrink: true }}
         type="date"
       />
