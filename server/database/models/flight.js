@@ -7,11 +7,19 @@ const flightSchema = new Schema(
       type: String,
       required: true,
     },
-    departureTime: {
+    from: {
       type: String,
       required: true,
     },
-    arrivalTime: {
+    to: {
+      type: String,
+      required: true,
+    },
+    departureDateTime: {
+      type: Date,
+      required: true,
+    },
+    arrivalDateTime: {
       type: Date,
       required: true,
     },
@@ -31,13 +39,15 @@ const flightSchema = new Schema(
       type: Number,
       required: true,
     },
-    numberOfAvailableEconomySeats: { //set in frontend number of aviable = number of total
+    numberOfAvailableEconomySeats: {
+      //set in frontend number of aviable = number of total
       type: Number,
-      required: false,
+      required: true,
     },
-    numberOfAvailableBusinessSeats: { //set in frontend number of aviable = number of total
+    numberOfAvailableBusinessSeats: {
+      //set in frontend number of aviable = number of total
       type: Number,
-      required: false,
+      required: true,
     },
     baggageAllowance: {
       type: Number,

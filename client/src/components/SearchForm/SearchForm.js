@@ -32,31 +32,27 @@ const FlightForm = () => {
       </Typography>
       <br />
       <TextField
-        style={{ width: 500 }}
+        style={{ width: 200 }}
         name="flightNumber"
         onChange={handleChange}
         variant="outlined"
         label="Flight Number"
         type="text"
       />
-      <br />
-      <br />
 
       <TextField
-        style={{ width: 500 }}
-        name="departureTime"
+        style={{ width: 200 }}
+        name="departureDateTime"
         onChange={handleChange}
         variant="outlined"
         label="Departure Time"
         InputLabelProps={{ shrink: true }}
         type="date"
       />
-      <br />
-      <br />
 
       <TextField
-        style={{ width: 500 }}
-        name="arrivalTime"
+        style={{ width: 200 }}
+        name="arrivalDateTime"
         onChange={handleChange}
         variant="outlined"
         label="Arrival Time"
@@ -64,23 +60,16 @@ const FlightForm = () => {
         type="date"
       />
 
-      <br />
-      <br />
-
       <TextField
-        style={{ width: 500 }}
+        style={{ width: 200 }}
         onChange={handleChange}
         name="departureTerminal"
         variant="outlined"
         label="Departure Terminal"
         type="text"
       />
-
-      <br />
-      <br />
-
       <TextField
-        style={{ width: 500 }}
+        style={{ width: 200 }}
         onChange={handleChange}
         name="arrivalTerminal"
         variant="outlined"
@@ -89,10 +78,9 @@ const FlightForm = () => {
       />
 
       <br />
-      <br />
 
       <Button
-        style={{ width: 500 }}
+        style={{ width: 200, marginTop: "20px" }}
         onClick={handleSubmit}
         variant="contained"
         color="primary"

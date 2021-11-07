@@ -53,9 +53,9 @@ const EditFlight = () => {
 
       <TextField
         style={{ width: 500 }}
-        name="departureTime"
+        name="departureDateTime"
         onChange={handleChange}
-        value={flightDetails.departureTime}
+        value={flightDetails.departureDateTime}
         variant="outlined"
         label="Departure Time"
         type="text"
@@ -65,8 +65,8 @@ const EditFlight = () => {
 
       <TextField
         style={{ width: 500 }}
-        name="arrivalTime"
-        value={flightDetails.arrivalTime}
+        name="arrivalDateTime"
+        value={flightDetails.arrivalDateTime}
         onChange={handleChange}
         variant="outlined"
         label="Arrival Time"

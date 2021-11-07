@@ -2,13 +2,44 @@ import React, { useState } from "react";
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { useHistory } from "react-router";
 import Axios from "axios";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DateTimePicker from "@mui/lab/DateTimePicker";
 
 export const CreateFlightForm = () => {
   const history = useHistory();
+  const [departureValue, setDepartureValue] = React.useState(null);
+  const [arrivalValue, setArrivalValue] = React.useState(null);
 
   const handleChange = (e) => {
-    setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
+    console.log(flightDetails);
+    if (e.target.name === "numberOfEconomySeats") {
+      setFlightDetails({
+        ...flightDetails,
+        [e.target.name]: e.target.value,
+        numberOfAvailableEconomySeats: e.target.value,
+      });
+    } else if (e.target.name === "numberOfBusinessSeats") {
+      setFlightDetails({
+        ...flightDetails,
+        [e.target.name]: e.target.value,
+        numberOfAvailableBusinessSeats: e.target.value,
+      });
+    } else
+      setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
   };
+
+  const handleDepartureDateChange = (newValue) => {
+    setDepartureValue(newValue);
+    setFlightDetails({ ...flightDetails, departureDateTime: newValue });
+  };
+
+  const handleArrivalDateChange = (newValue) => {
+    console.log(newValue);
+    setArrivalValue(newValue);
+    setFlightDetails({ ...flightDetails, arrivalDateTime: newValue });
+  };
+
   const handleCreate = async (e) => {
     e.preventDefault();
 
@@ -29,126 +60,154 @@ export const CreateFlightForm = () => {
 
   return (
     <Container component="main" align="center" style={{ marginTop: "65px" }}>
-      <br />
-      <Typography variant="h4" color="textSecondary">
-        Add a Flight
-      </Typography>
-      <br />
-      <TextField
-        style={{ width: 500 }}
-        name="flightNumber"
-        onChange={handleChange}
-        variant="outlined"
-        label="Flight Number"
-        type="text"
-      />
-      <br />
-      <br />
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <br />
+        <Typography variant="h4" color="textSecondary">
+          Add a Flight
+        </Typography>
+        <br />
+        <TextField
+          style={{ width: 500 }}
+          name="flightNumber"
+          onChange={handleChange}
+          variant="outlined"
+          label="Flight Number"
+          type="text"
+        />
+        <br />
+        <br />
+        <TextField
+          style={{ width: 500 }}
+          name="from"
+          onChange={handleChange}
+          variant="outlined"
+          label="From"
+          type="text"
+        />
+        <br />
+        <br />
+        <TextField
+          style={{ width: 500 }}
+          name="to"
+          onChange={handleChange}
+          variant="outlined"
+          label="To"
+          type="text"
+        />
+        <br />
+        <br />
+        <DateTimePicker
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              style={{ width: 500 }}
+              variant="outlined"
+              label="Departure Date"
+              name="departureDateTime"
+            />
+          )}
+          value={departureValue}
+          onChange={handleDepartureDateChange}
+        />
+        <br />
+        <br />
+        <DateTimePicker
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              style={{ width: 500 }}
+              variant="outlined"
+              label="Arrival Date"
+            />
+          )}
+          value={arrivalValue}
+          name="arrivalDateTime"
+          onChange={handleArrivalDateChange}
+        />
+        <br />
+        <br />
 
-      <TextField
-        style={{ width: 500 }}
-        name="departureTime"
-        onChange={handleChange}
-        variant="outlined"
-        label="Departure Time"
-        InputLabelProps={{ shrink: true }}
-        type="date"
-      />
-      <br />
-      <br />
-      <TextField
-        style={{ width: 500 }}
-        name="arrivalTime"
-        onChange={handleChange}
-        variant="outlined"
-        label="Arrival Time"
-        InputLabelProps={{ shrink: true }}
-        type="date"
-      />
+        <TextField
+          style={{ width: 500 }}
+          onChange={handleChange}
+          name="departureTerminal"
+          variant="outlined"
+          label="Departure Terminal"
+          type="text"
+        />
 
-      <br />
-      <br />
+        <br />
+        <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        name="departureTerminal"
-        variant="outlined"
-        label="Departure Terminal"
-        type="text"
-      />
+        <TextField
+          style={{ width: 500 }}
+          onChange={handleChange}
+          name="arrivalTerminal"
+          variant="outlined"
+          label="Arrival Terminal"
+          type="text"
+        />
 
-      <br />
-      <br />
+        <br />
+        <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        name="arrivalTerminal"
-        variant="outlined"
-        label="Arrival Terminal"
-        type="text"
-      />
+        <TextField
+          style={{ width: 500 }}
+          onChange={handleChange}
+          name="numberOfEconomySeats"
+          variant="outlined"
+          label="Number of Economy Seats"
+          type="number"
+        />
 
-      <br />
-      <br />
+        <br />
+        <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        name="numberOfEconomySeats"
-        variant="outlined"
-        label="Number of Economy Seats"
-        type="number"
-      />
+        <TextField
+          style={{ width: 500 }}
+          onChange={handleChange}
+          name="numberOfBusinessSeats"
+          variant="outlined"
+          label="Number of Business Seats"
+          type="number"
+        />
 
-      <br />
-      <br />
+        <br />
+        <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        name="numberOfBusinessSeats"
-        variant="outlined"
-        label="Number of Business Seats"
-        type="number"
-      />
+        <TextField
+          style={{ width: 500 }}
+          onChange={handleChange}
+          name="baggageAllowance"
+          variant="outlined"
+          label="Baggage Allowance"
+          type="number"
+        />
 
-      <br />
-      <br />
+        <br />
+        <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        name="baggageAllowance"
-        variant="outlined"
-        label="Baggage Allowance"
-        type="number"
-      />
+        <TextField
+          style={{ width: 500 }}
+          onChange={handleChange}
+          name="price"
+          variant="outlined"
+          label="Price"
+          type="text"
+        />
 
-      <br />
-      <br />
+        <br />
+        <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        name="price"
-        variant="outlined"
-        label="Price"
-        type="text"
-      />
-
-      <br />
-      <br />
-
-      <Button
-        style={{ width: 500 }}
-        onClick={handleCreate}
-        variant="contained"
-        color="primary"
-      >
-        Create
-      </Button>
+        <Button
+          style={{ width: 500 }}
+          onClick={handleCreate}
+          variant="contained"
+          color="primary"
+        >
+          Create
+        </Button>
+      </LocalizationProvider>
     </Container>
   );
 };

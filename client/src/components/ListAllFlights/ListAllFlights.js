@@ -78,10 +78,10 @@ export const ListAllFlights = () => {
                   {flight.flightNumber}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(flight.departureTime).format("YYYY-MM-DD")}
+                  {moment(flight.departureDateTime).format("YYYY-MM-DD")}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(flight.arrivalTime).format("YYYY-MM-DD")}
+                  {moment(flight.arrivalDateTime).format("YYYY-MM-DD")}
                 </TableCell>
                 <TableCell align="center">{flight.departureTerminal}</TableCell>
                 <TableCell align="center">{flight.arrivalTerminal}</TableCell>
