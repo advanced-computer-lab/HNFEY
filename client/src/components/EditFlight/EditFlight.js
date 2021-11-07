@@ -36,7 +36,7 @@ const EditFlight = () => {
       <br />
 
       <br />
-      <Typography variant="h4" color="textSecondary">
+      <Typography style={{ marginTop: "65px" }} variant="h4" color="textSecondary">
         Edit Flight
       </Typography>
       <br />

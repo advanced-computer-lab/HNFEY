@@ -67,6 +67,8 @@ export const FlightList = () => {
           <TableHead>
             <TableRow>
               <TableCell>Flight Number</TableCell>
+              <TableCell align="center">From</TableCell>
+              <TableCell align="center">To</TableCell>
               <TableCell align="center">Departure Time</TableCell>
               <TableCell align="center">Arrival Time</TableCell>
               <TableCell align="center">Departure Terminal</TableCell>
@@ -84,6 +86,8 @@ export const FlightList = () => {
                 <TableCell component="th" scope="row">
                   {flight.flightNumber}
                 </TableCell>
+                <TableCell align="center">{flight.from}</TableCell>
+                <TableCell align="center">{flight.to}</TableCell>
                 <TableCell align="center">
                   {moment(flight.departureDateTime).format("DD/MM/YYYY")}
                 </TableCell>

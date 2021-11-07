@@ -13,7 +13,7 @@ export const CreateFlightForm = () => {
   const [arrivalValue, setArrivalValue] = React.useState(null);
 
   const handleChange = (e) => {
-    console.log(flightDetails);
+
     if (e.target.name === "numberOfEconomySeats") {
       setFlightDetails({
         ...flightDetails,
@@ -36,7 +36,6 @@ export const CreateFlightForm = () => {
   };
 
   const handleArrivalDateChange = (newValue) => {
-    console.log(moment(newValue).format('YYYY-MM-DD hh:mm'));
     setArrivalValue(newValue);
     setFlightDetails({ ...flightDetails, arrivalDateTime: moment(newValue).format('YYYY-MM-DD hh:mm') });
   };
@@ -54,13 +53,14 @@ export const CreateFlightForm = () => {
       await Axios.post(url, flight);
       history.push("/list-all-flights");
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
   const [flightDetails, setFlightDetails] = useState({});
 
   return (
     <Container component="main" align="center" style={{ marginTop: "65px" }}>
+      <form onSubmit = {handleCreate}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <br />
         <Typography variant="h4" color="textSecondary">
@@ -74,6 +74,7 @@ export const CreateFlightForm = () => {
           variant="outlined"
           label="Flight Number"
           type="text"
+          required
         />
         <br />
         <br />
@@ -84,6 +85,7 @@ export const CreateFlightForm = () => {
           variant="outlined"
           label="From"
           type="text"
+          required
         />
         <br />
         <br />
@@ -94,6 +96,8 @@ export const CreateFlightForm = () => {
           variant="outlined"
           label="To"
           type="text"
+          required
+
         />
         <br />
         <br />
@@ -105,6 +109,8 @@ export const CreateFlightForm = () => {
               variant="outlined"
               label="Departure Date"
               name="departureDateTime"
+              required
+
               
             />
           )}
@@ -122,6 +128,8 @@ export const CreateFlightForm = () => {
               style={{ width: 500 }}
               variant="outlined"
               label="Arrival Date"
+              required
+
             />
           )}
           value={arrivalValue}
@@ -144,6 +152,8 @@ export const CreateFlightForm = () => {
           variant="outlined"
           label="Departure Terminal"
           type="text"
+          required
+
         />
 
         <br />
@@ -156,6 +166,8 @@ export const CreateFlightForm = () => {
           variant="outlined"
           label="Arrival Terminal"
           type="text"
+          required
+
         />
 
         <br />
@@ -168,6 +180,8 @@ export const CreateFlightForm = () => {
           variant="outlined"
           label="Number of Economy Seats"
           type="number"
+          required
+
         />
 
         <br />
@@ -180,6 +194,8 @@ export const CreateFlightForm = () => {
           variant="outlined"
           label="Number of Business Seats"
           type="number"
+          required
+
         />
 
         <br />
@@ -192,6 +208,8 @@ export const CreateFlightForm = () => {
           variant="outlined"
           label="Baggage Allowance"
           type="number"
+          required
+
         />
 
         <br />
@@ -204,20 +222,22 @@ export const CreateFlightForm = () => {
           variant="outlined"
           label="Price"
           type="number"
+          required
+
         />
 
         <br />
         <br />
 
-        <Button
+        <Button type = "submit"
           style={{ width: 500 }}
-          onClick={handleCreate}
           variant="contained"
           color="primary"
         >
           Create
         </Button>
       </LocalizationProvider>
+      </form>
     </Container>
   );
 };

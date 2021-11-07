@@ -28,7 +28,7 @@ export const ListAllFlights = () => {
     
         setFlights(res.data.flights);
       }
-      console.log(flights);
+
       if(deleted){
         setDeleted(false);
       }
@@ -71,6 +71,8 @@ export const ListAllFlights = () => {
           <TableHead>
             <TableRow>
               <TableCell>Flight Number</TableCell>
+              <TableCell align="center">From</TableCell>
+              <TableCell align="center">To</TableCell>
               <TableCell align="center">Departure Time</TableCell>
               <TableCell align="center">Arrival Time</TableCell>
               <TableCell align="center">Departure Terminal</TableCell>
@@ -88,6 +90,8 @@ export const ListAllFlights = () => {
                 <TableCell component="th" scope="row">
                   {flight.flightNumber}
                 </TableCell>
+                <TableCell align="center">{flight.from}</TableCell>
+                <TableCell align="center">{flight.to}</TableCell>
                 <TableCell align="center">
                   {moment(flight.departureDateTime).format("DD-MM-YYYY hh:mmA")}
                 </TableCell>
