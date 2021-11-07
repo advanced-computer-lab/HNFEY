@@ -63,7 +63,6 @@ const fetch = async (req, res, next) => {
   }
 };
 
-
 const findFlight = async (req, res, next) => {
   try {
     const flight = req.query;
@@ -109,9 +108,7 @@ const findPipeline = [
   findFlight,
 ];
 
-const fetchPipeline = [
-  fetch,
-]
+const fetchPipeline = [fetch];
 
 const deletePipeline = [
   //verify Admin,

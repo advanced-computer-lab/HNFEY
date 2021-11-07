@@ -40,23 +40,23 @@ const FlightForm = () => {
         type="text"
       />
 
-        <TextField
-          style={{ width: 100 }}
-          name="from"
-          onChange={handleChange}
-          variant="outlined"
-          label="From"
-          type="text"
-        />
-      
-        <TextField
-          style={{ width: 100 }}
-          name="to"
-          onChange={handleChange}
-          variant="outlined"
-          label="To"
-          type="text"
-        />
+      <TextField
+        style={{ width: 100 }}
+        name="from"
+        onChange={handleChange}
+        variant="outlined"
+        label="From"
+        type="text"
+      />
+
+      <TextField
+        style={{ width: 100 }}
+        name="to"
+        onChange={handleChange}
+        variant="outlined"
+        label="To"
+        type="text"
+      />
 
       <TextField
         style={{ width: 200 }}

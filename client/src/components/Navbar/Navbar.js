@@ -17,28 +17,13 @@ const Navbar = () => {
             HNFEY
           </Typography>
         </div>
-        <Button
-          component={Link}
-          to={`/list-all-flights`}
-          // variant="contained"
-          color="secondary"
-        >
+        <Button component={Link} to={`/list-all-flights`} color="secondary">
           All Flights
         </Button>
-        <Button
-          component={Link}
-          to={`/search`}
-          // variant="contained"
-          color="secondary"
-        >
+        <Button component={Link} to={`/search`} color="secondary">
           Search
         </Button>
-        <Button
-          component={Link}
-          to={`/create-flight`}
-          // variant="contained"
-          color="secondary"
-        >
+        <Button component={Link} to={`/create-flight`} color="secondary">
           Add Flight
         </Button>
       </Toolbar>

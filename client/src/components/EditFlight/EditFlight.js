@@ -2,19 +2,17 @@ import { Button, TextField, Container, Typography } from "@material-ui/core";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
-import { CircularProgress} from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import moment from 'moment';
+import moment from "moment";
 
 const EditFlight = () => {
   const { id } = useParams();
   const history = useHistory();
 
   const [flightDetails, setFlightDetails] = useState({});
-  
-
 
   useEffect(() => {
     Axios.get("http://localhost:8000/hnfey/flight/" + id).then((res) => {
@@ -27,11 +25,17 @@ const EditFlight = () => {
   };
 
   const handleDepartureDateChange = (newValue) => {
-    setFlightDetails({ ...flightDetails, departureDateTime: moment(newValue).format('YYYY-MM-DD hh:mm') });
+    setFlightDetails({
+      ...flightDetails,
+      departureDateTime: moment(newValue).format("YYYY-MM-DD hh:mm"),
+    });
   };
 
   const handleArrivalDateChange = (newValue) => {
-    setFlightDetails({ ...flightDetails, arrivalDateTime: moment(newValue).format('YYYY-MM-DD hh:mm') });
+    setFlightDetails({
+      ...flightDetails,
+      arrivalDateTime: moment(newValue).format("YYYY-MM-DD hh:mm"),
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -50,190 +54,192 @@ const EditFlight = () => {
     <Container component="main" align="center">
       <br />
       <br />
-      <form onSubmit = {handleSubmit}>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Typography style={{ marginTop: "65px" }} variant="h4" color="textSecondary">
-        Edit Flight
-      </Typography>
-      <br />
-      <TextField
-        style={{ width: 500 }}
-        name="flightNumber"
-        onChange={handleChange}
-        value={flightDetails.flightNumber}
-        variant="outlined"
-        label="Flight Number"
-        type="text"
-        required
-      />
-      <br />
-      <br />
+      <form onSubmit={handleSubmit}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Typography
+            style={{ marginTop: "65px" }}
+            variant="h4"
+            color="textSecondary"
+          >
+            Edit Flight
+          </Typography>
+          <br />
+          <TextField
+            style={{ width: 500 }}
+            name="flightNumber"
+            onChange={handleChange}
+            value={flightDetails.flightNumber}
+            variant="outlined"
+            label="Flight Number"
+            type="text"
+            required
+          />
+          <br />
+          <br />
 
-      <TextField
-          style={{ width: 500 }}
-          name="from"
-          onChange={handleChange}
-          variant="outlined"
-          label="From"
-          value= {flightDetails.from}
-          type="text"
-          required
-        />
-        <br />
-        <br />
-        <TextField
-          style={{ width: 500 }}
-          name="to"
-          onChange={handleChange}
-          variant="outlined"
-          label="To"
-          value= {flightDetails.to}
-          type="text"
-          required
+          <TextField
+            style={{ width: 500 }}
+            name="from"
+            onChange={handleChange}
+            variant="outlined"
+            label="From"
+            value={flightDetails.from}
+            type="text"
+            required
+          />
+          <br />
+          <br />
+          <TextField
+            style={{ width: 500 }}
+            name="to"
+            onChange={handleChange}
+            variant="outlined"
+            label="To"
+            value={flightDetails.to}
+            type="text"
+            required
+          />
 
-        />
+          <br />
+          <br />
 
-        <br />
-        <br />
+          <DateTimePicker
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                style={{ width: 500 }}
+                variant="outlined"
+                label="Departure Date"
+                name="departureDateTime"
+                required
+              />
+            )}
+            value={flightDetails.departureDateTime}
+            onChange={handleDepartureDateChange}
 
-      <DateTimePicker
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              style={{ width: 500 }}
-              variant="outlined"
-              label="Departure Date"
-              name="departureDateTime"
-              required
+            // inputFormat='yyyy/MM/dd HH:mm:ss'
+          />
+          <br />
+          <br />
+          <DateTimePicker
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                style={{ width: 500 }}
+                variant="outlined"
+                label="Arrival Date"
+                required
+              />
+            )}
+            value={flightDetails.arrivalDateTime}
+            name="arrivalDateTime"
+            onChange={handleArrivalDateChange}
+            // formatDate={(date) => moment(date).format('DD-MM-YYYY')}
+            // inputFormat="YYYY-MM-DD T:hh:mm:ss"
+            // inputFormat='yyyy/MM/dd HH:mm:ss'
+          />
 
-              
-            />
-          )}
-          value={flightDetails.departureDateTime}
-          onChange={handleDepartureDateChange}
-          
-          // inputFormat='yyyy/MM/dd HH:mm:ss'
-        />
-        <br />
-        <br />
-        <DateTimePicker
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              style={{ width: 500 }}
-              variant="outlined"
-              label="Arrival Date"
-              required
+          <br />
+          <br />
 
-            />
-          )}
-          value={flightDetails.arrivalDateTime}
-          name="arrivalDateTime"
-          onChange={handleArrivalDateChange}
-          // formatDate={(date) => moment(date).format('DD-MM-YYYY')}
-          // inputFormat="YYYY-MM-DD T:hh:mm:ss"
-          // inputFormat='yyyy/MM/dd HH:mm:ss'
-          
-        />
+          <TextField
+            style={{ width: 500 }}
+            onChange={handleChange}
+            value={flightDetails.departureTerminal}
+            name="departureTerminal"
+            variant="outlined"
+            label="Departure Terminal"
+            type="text"
+            required
+          />
 
-      <br />
-      <br />
+          <br />
+          <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        value={flightDetails.departureTerminal}
-        name="departureTerminal"
-        variant="outlined"
-        label="Departure Terminal"
-        type="text"
-        required
-      />
+          <TextField
+            style={{ width: 500 }}
+            onChange={handleChange}
+            value={flightDetails.arrivalTerminal}
+            name="arrivalTerminal"
+            variant="outlined"
+            label="Arrival Terminal"
+            type="text"
+            required
+          />
 
-      <br />
-      <br />
+          <br />
+          <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        value={flightDetails.arrivalTerminal}
-        name="arrivalTerminal"
-        variant="outlined"
-        label="Arrival Terminal"
-        type="text"
-        required
-      />
+          <TextField
+            style={{ width: 500 }}
+            onChange={handleChange}
+            value={flightDetails.baggageAllowance}
+            name="baggageAllowance"
+            variant="outlined"
+            label="Baggage Allowance"
+            type="text"
+            required
+          />
 
-      <br />
-      <br />
+          <br />
+          <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        value={flightDetails.baggageAllowance}
-        name="baggageAllowance"
-        variant="outlined"
-        label="Baggage Allowance"
-        type="text"
-        required
-      />
+          <TextField
+            style={{ width: 500 }}
+            onChange={handleChange}
+            value={flightDetails.numberOfBusinessSeats}
+            name="numberOfBusinessSeats"
+            variant="outlined"
+            label="Number of Business Seats"
+            type="text"
+            required
+          />
 
-      <br />
-      <br />
+          <br />
+          <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        value={flightDetails.numberOfBusinessSeats}
-        name="numberOfBusinessSeats"
-        variant="outlined"
-        label="Number of Business Seats"
-        type="text"
-        required
-      />
+          <TextField
+            style={{ width: 500 }}
+            onChange={handleChange}
+            value={flightDetails.numberOfEconomySeats}
+            name="numberOfEconomySeats"
+            variant="outlined"
+            label="Number of Economy Seats"
+            type="text"
+            required
+          />
 
-      <br />
-      <br />
+          <br />
+          <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        value={flightDetails.numberOfEconomySeats}
-        name="numberOfEconomySeats"
-        variant="outlined"
-        label="Number of Economy Seats"
-        type="text"
-        required
-      />
+          <TextField
+            style={{ width: 500 }}
+            onChange={handleChange}
+            value={flightDetails.price}
+            name="price"
+            variant="outlined"
+            label="Price"
+            type="text"
+            required
+          />
 
-      <br />
-      <br />
+          <br />
+          <br />
 
-      <TextField
-        style={{ width: 500 }}
-        onChange={handleChange}
-        value={flightDetails.price}
-        name="price"
-        variant="outlined"
-        label="Price"
-        type="text"
-        required
-      />
-
-      <br />
-      <br />
-
-      <Button type="submit"
-        style={{ width: 500 }}
-        variant="contained"
-        color="primary"
-      >
-        Edit
-      </Button>
-      </LocalizationProvider>
+          <Button
+            type="submit"
+            style={{ width: 500 }}
+            variant="contained"
+            color="primary"
+          >
+            Edit
+          </Button>
+        </LocalizationProvider>
       </form>
     </Container>
-  ) : <CircularProgress />;
+  ) : (
+    <CircularProgress />
+  );
 };
 
 export default EditFlight;

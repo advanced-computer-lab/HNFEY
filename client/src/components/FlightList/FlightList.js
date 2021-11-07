@@ -89,10 +89,12 @@ export const FlightList = () => {
                 <TableCell align="center">{flight.from}</TableCell>
                 <TableCell align="center">{flight.to}</TableCell>
                 <TableCell align="center">
-                {moment(flight.departureDateTime).format("DD-MM-YYYY hh:mm A")}
+                  {moment(flight.departureDateTime).format(
+                    "DD-MM-YYYY hh:mm A"
+                  )}
                 </TableCell>
                 <TableCell align="center">
-                {moment(flight.arrivalDateTime).format("DD-MM-YYYY hh:mm A")}
+                  {moment(flight.arrivalDateTime).format("DD-MM-YYYY hh:mm A")}
                 </TableCell>
                 <TableCell align="center">{flight.departureTerminal}</TableCell>
                 <TableCell align="center">{flight.arrivalTerminal}</TableCell>
