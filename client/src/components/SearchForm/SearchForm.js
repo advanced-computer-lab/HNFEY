@@ -65,7 +65,7 @@ const FlightForm = () => {
         variant="outlined"
         label="Departure Date"
         InputLabelProps={{ shrink: true }}
-        type="date"
+        type="datetime-local"
       />
 
       <TextField
@@ -75,7 +75,7 @@ const FlightForm = () => {
         variant="outlined"
         label="Arrival Date"
         InputLabelProps={{ shrink: true }}
-        type="date"
+        type="datetime-local"
       />
 
       <TextField
