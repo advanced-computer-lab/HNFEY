@@ -9,8 +9,8 @@ import moment from 'moment';
 
 export const CreateFlightForm = () => {
   const history = useHistory();
-  const [departureValue, setDepartureValue] = React.useState(null);
-  const [arrivalValue, setArrivalValue] = React.useState(null);
+  const [departureValue, setDepartureValue] = useState(null);
+  const [arrivalValue, setArrivalValue] = useState(null);
 
   const handleChange = (e) => {
 
@@ -138,8 +138,6 @@ export const CreateFlightForm = () => {
           // formatDate={(date) => moment(date).format('DD-MM-YYYY')}
           // inputFormat="YYYY-MM-DD T:hh:mm:ss"
           inputFormat='yyyy/MM/dd HH:mm:ss'
-
-
 
         />
         <br />
