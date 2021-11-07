@@ -1,17 +1,19 @@
 import React from "react";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
 import { useEffect, useState } from "react";
 import Axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
-import { Button } from "@mui/material";
+import {
+  Button,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableContainer,
+  TableHead,
+  Paper,
+  Table,
+} from "@material-ui/core";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -83,10 +85,10 @@ export const FlightList = () => {
                   {flight.flightNumber}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(flight.departureTimeDate).format("YYYY-MM-DD")}
+                  {moment(flight.departureTime).format("DD/MM/YYYY")}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(flight.arrivalTimeDate).format("YYYY-MM-DD")}
+                  {moment(flight.arrivalTime).format("DD/MM/YYYY")}
                 </TableCell>
                 <TableCell align="center">{flight.departureTerminal}</TableCell>
                 <TableCell align="center">{flight.arrivalTerminal}</TableCell>
@@ -106,7 +108,7 @@ export const FlightList = () => {
                     style={{ width: 100 }}
                     variant="contained"
                     onClick={() => submit(flight._id)}
-                    color="primary"
+                    color="secondary"
                   >
                     Delete
                   </Button>

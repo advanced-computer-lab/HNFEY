@@ -25,9 +25,7 @@ const FlightForm = () => {
   const [flightDetails, setFlightDetails] = useState({});
 
   return (
-    <Container component="main" align="center">
-      <br />
-
+    <Container component="main" align="center" style={{ marginTop: "65px" }}>
       <br />
       <Typography variant="h4" color="textSecondary">
         Search for a Flight
@@ -50,7 +48,8 @@ const FlightForm = () => {
         onChange={handleChange}
         variant="outlined"
         label="Departure Time"
-        type="text"
+        InputLabelProps={{ shrink: true }}
+        type="date"
       />
       <br />
       <br />
@@ -61,7 +60,8 @@ const FlightForm = () => {
         onChange={handleChange}
         variant="outlined"
         label="Arrival Time"
-        type="text"
+        InputLabelProps={{ shrink: true }}
+        type="date"
       />
 
       <br />

@@ -28,8 +28,7 @@ export const CreateFlightForm = () => {
   const [flightDetails, setFlightDetails] = useState({});
 
   return (
-    <Container component="main" align="center">
-      <br />
+    <Container component="main" align="center" style={{ marginTop: "65px" }}>
       <br />
       <Typography variant="h4" color="textSecondary">
         Add a Flight

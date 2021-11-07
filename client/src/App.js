@@ -7,6 +7,7 @@ import CreateFlightForm from "./components/CreateFlightForm/CreateFlightForm";
 import ListAllFlights from "./components/ListAllFlights/ListAllFlights";
 import EditFlight from "./components/EditFlight/EditFlight";
 import Navbar from "./components/Navbar/Navbar";
+import Home from "./components/Home/Home";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -17,6 +18,7 @@ const App = () => {
       <Router>
         <Navbar />
         <Switch>
+          <Route path="/" exact component={Home} />
           <Route path="/search" exact component={SearchForm} />
           <Route path="/list-flights" exact component={FlightList} />
           <Route path="/create-flight" exact component={CreateFlightForm} />

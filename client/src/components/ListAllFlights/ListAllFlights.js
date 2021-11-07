@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Button } from "@material-ui/core";
 import { useHistory } from "react-router";
 import Axios from "axios";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
+import {
+  Button,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableContainer,
+  TableHead,
+  Paper,
+  Table,
+} from "@material-ui/core";
 import { useEffect } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -21,7 +23,7 @@ export const ListAllFlights = () => {
     Axios.get("http://localhost:8000/hnfey/flight/list-flights").then((res) => {
       setFlights(res.data.flights);
     });
-  }, [flights]);
+  }, []);
 
   const submit = (flightid) => {
     confirmAlert({
@@ -53,7 +55,7 @@ export const ListAllFlights = () => {
 
   return (
     <div>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ marginTop: "65px" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -76,10 +78,10 @@ export const ListAllFlights = () => {
                   {flight.flightNumber}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(flight.departureTimeDate).format("YYYY-MM-DD")}
+                  {moment(flight.departureTime).format("YYYY-MM-DD")}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(flight.arrivalTimeDate).format("YYYY-MM-DD")}
+                  {moment(flight.arrivalTime).format("YYYY-MM-DD")}
                 </TableCell>
                 <TableCell align="center">{flight.departureTerminal}</TableCell>
                 <TableCell align="center">{flight.arrivalTerminal}</TableCell>

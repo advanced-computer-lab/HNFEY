@@ -4,7 +4,7 @@ import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
 
 const Navbar = () => {
   return (
-    <AppBar position="static" color="inherit">
+    <AppBar position="fixed" color="inherit">
       <Toolbar>
         <div style={{ flexGrow: 1 }}>
           <Typography
