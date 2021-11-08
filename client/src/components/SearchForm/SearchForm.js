@@ -60,22 +60,22 @@ const FlightForm = () => {
 
       <TextField
         style={{ width: 200 }}
-        name="departureDateTime"
+        name="departureDay"
         onChange={handleChange}
         variant="outlined"
         label="Departure Date"
         InputLabelProps={{ shrink: true }}
-        type="datetime-local"
+        type="date"
       />
 
       <TextField
         style={{ width: 200 }}
-        name="arrivalDateTime"
+        name="arrivalDay"
         onChange={handleChange}
         variant="outlined"
         label="Arrival Date"
         InputLabelProps={{ shrink: true }}
-        type="datetime-local"
+        type="date"
       />
 
       <TextField

@@ -34,6 +34,7 @@ export const CreateFlightForm = () => {
     setFlightDetails({
       ...flightDetails,
       departureDateTime: moment(newValue).format("YYYY-MM-DD hh:mm"),
+      departureDay: moment(newValue).format("YYYY-MM-DD"),
     });
   };
 
@@ -42,6 +43,7 @@ export const CreateFlightForm = () => {
     setFlightDetails({
       ...flightDetails,
       arrivalDateTime: moment(newValue).format("YYYY-MM-DD hh:mm"),
+      arrivalDay: moment(newValue).format("YYYY-MM-DD"),
     });
   };
 
