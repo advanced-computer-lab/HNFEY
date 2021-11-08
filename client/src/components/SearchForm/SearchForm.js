@@ -31,8 +31,9 @@ const FlightForm = () => {
         Search for a Flight
       </Typography>
       <br />
+      <br />
       <TextField
-        style={{ width: 200 }}
+        style={{ width: 200, margin: "0px 5px 10px 0px" }}
         name="flightNumber"
         onChange={handleChange}
         variant="outlined"
@@ -41,7 +42,7 @@ const FlightForm = () => {
       />
 
       <TextField
-        style={{ width: 100 }}
+        style={{ width: 95, margin: "0px 5px 10px 0px" }}
         name="from"
         onChange={handleChange}
         variant="outlined"
@@ -50,7 +51,7 @@ const FlightForm = () => {
       />
 
       <TextField
-        style={{ width: 100 }}
+        style={{ width: 95, margin: "0px 5px 10px 0px" }}
         name="to"
         onChange={handleChange}
         variant="outlined"
@@ -59,7 +60,7 @@ const FlightForm = () => {
       />
 
       <TextField
-        style={{ width: 200 }}
+        style={{ width: 200, margin: "0px 5px 10px 0px" }}
         name="departureDay"
         onChange={handleChange}
         variant="outlined"
@@ -69,7 +70,7 @@ const FlightForm = () => {
       />
 
       <TextField
-        style={{ width: 200 }}
+        style={{ width: 200, margin: "0px 5px 10px 0px" }}
         name="arrivalDay"
         onChange={handleChange}
         variant="outlined"
@@ -79,7 +80,7 @@ const FlightForm = () => {
       />
 
       <TextField
-        style={{ width: 200 }}
+        style={{ width: 200, margin: "0px 5px 10px 0px" }}
         onChange={handleChange}
         name="departureTerminal"
         variant="outlined"
@@ -87,7 +88,7 @@ const FlightForm = () => {
         type="text"
       />
       <TextField
-        style={{ width: 200 }}
+        style={{ width: 200, margin: "0px 5px 10px 0px" }}
         onChange={handleChange}
         name="arrivalTerminal"
         variant="outlined"
