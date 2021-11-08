@@ -8,7 +8,7 @@ const Home = () => {
       <Grid container alignItems="stretch" spacing={3}>
         <br />
         <br />
-        <Grid item md={6} alignItems="center">
+        <Grid item md={6}>
           <Typography
             variant="h2"
             color="primary"
