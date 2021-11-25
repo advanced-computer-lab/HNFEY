@@ -7,6 +7,8 @@ import CreateFlightForm from "./components/CreateFlightForm/CreateFlightForm";
 import ListAllFlights from "./components/ListAllFlights/ListAllFlights";
 import EditFlight from "./components/EditFlight/EditFlight";
 import Navbar from "./components/Navbar/Navbar";
+import AdminHome from "./components/AdminHome/AdminHome";
+import SearchResultsGuest from "./components/SearchResultsGuest/SearchResultsGuest";
 import Home from "./components/Home/Home";
 
 const App = () => {
@@ -19,7 +21,13 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/admin" exact component={AdminHome} />
           <Route path="/search" exact component={SearchForm} />
+          <Route
+            path="/flights-results-guest"
+            exact
+            component={SearchResultsGuest}
+          />
           <Route path="/list-flights" exact component={FlightList} />
           <Route path="/create-flight" exact component={CreateFlightForm} />
           <Route path="/list-all-flights" exact component={ListAllFlights} />
