@@ -78,10 +78,10 @@ const FlightForm = () => {
 
         <TextField
           style={{ width: 200, margin: "0px 5px 10px 0px" }}
-          name="arrivalDay"
+          name="returnDate"
           onChange={handleChange}
           variant="outlined"
-          label="Arrival Date"
+          label="Return Date"
           InputLabelProps={{ shrink: true }}
           type="date"
           required
