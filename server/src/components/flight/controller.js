@@ -20,7 +20,6 @@ const fetchUserFlights = async (req, res, next) => {
     const flight = req.query;
     const flightResults = await model.findUserFlights(flight);
     if (flightResults) {
-      console.log(flightResults);
       req.flights = flightResults;
       next();
     } else {
