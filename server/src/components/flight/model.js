@@ -13,6 +13,24 @@ const findFlight = async (flight) => {
   return await Flight.find(flight);
 };
 
+const findUserFlights = async (flight) => {
+  const flightClass = flight.class;
+  const passengers = flight.passengers;
+  delete flight.class;
+  delete flight.passengers;
+  if (flightClass === "Economy") {
+    return await Flight.find({
+      ...flight,
+      numberOfAvailableEconomySeats: { $gte: passengers },
+    });
+  } else {
+    return await Flight.find({
+      ...flight,
+      numberOfAvailableBusinessSeats: { $gte: passengers },
+    });
+  }
+};
+
 const findFlightById = (_id) => {
   return Flight.findById(_id);
 };
@@ -24,5 +42,6 @@ module.exports = {
   updateFlight,
   findFlightById,
   findFlight,
+  findUserFlights,
   removeFlight,
 };

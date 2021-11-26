@@ -1,11 +1,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
 import {
-  Button,
   TableBody,
   TableCell,
   TableRow,
@@ -14,14 +13,11 @@ import {
   Paper,
   Table,
 } from "@material-ui/core";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
 
 export const FlightList = () => {
-  const history = useHistory();
   const [flightList, setList] = useState([]);
   const location = useLocation();
-  let url = "http://localhost:8000/hnfey/?";
+  let url = "http://localhost:8000/hnfey/flight/?";
   let query = queryString.parse(location.search);
   const noOfKeys = Object.keys(query).length;
   Object.entries(query).map((entry, i) => {
