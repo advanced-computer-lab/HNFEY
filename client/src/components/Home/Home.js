@@ -37,7 +37,7 @@ const FlightForm = () => {
 
   return (
     <Container component="main" align="center" style={{ marginTop: "65px" }}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <br />
         <Typography variant="h4" color="textSecondary">
           Search for a Flight
@@ -129,7 +129,7 @@ const FlightForm = () => {
 
         <Button
           style={{ width: 200, marginTop: "20px" }}
-          onClick={handleSubmit}
+          type="submit"
           variant="contained"
           color="primary"
         >
