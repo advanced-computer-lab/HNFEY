@@ -14,55 +14,48 @@ import {
   Table,
 } from "@material-ui/core";
 
-import Card from '@mui/material/Card';
-import Container from '@mui/material/Container';
-import { useHistory } from "react-router";
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
+import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-
+import Button from "@mui/material/Button";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 
 export const FlightList = (props) => {
-
   const styles = {
     cardAction: {
-      display: 'block',
-      textAlign: 'initial'
-    }}
+      display: "block",
+      textAlign: "initial",
+    },
+  };
 
   const history = useHistory();
   const [departureFlightList, setDepartureList] = useState([]);
   const [returnFlightList, setReturnList] = useState([]);
-  const [selectedDepartureFlightID, setSelectedDepartureFlightID] = useState('');
-  const [selectedReturnFlightID, setSelectedReturnFlightID] = useState('');
-
+  const [selectedDepartureFlightID, setSelectedDepartureFlightID] =
+    useState("");
+  const [selectedReturnFlightID, setSelectedReturnFlightID] = useState("");
 
   const handleSelectDepartureFlight = async (departureFlightID) => {
     console.log(departureFlightID);
-    setSelectedDepartureFlightID(departureFlightID); 
+    setSelectedDepartureFlightID(departureFlightID);
   };
 
   const handleSelectReturnFlight = async (returnFlightID) => {
     console.log(returnFlightID);
     setSelectedReturnFlightID(returnFlightID);
-    
   };
 
   const handleSubmit = async () => {
     console.log(selectedDepartureFlightID);
     console.log(selectedReturnFlightID);
-    if(selectedDepartureFlightID == '' || selectedReturnFlightID == ''){
-      alert('Please select a departure flight and a return flight')
+    if (selectedDepartureFlightID == "" || selectedReturnFlightID == "") {
+      alert("Please select a departure flight and a return flight");
+    } else {
+      console.log("ekhtrna both");
     }
-    else{
-      console.log('ekhtrna both');
-    }
-    
   };
 
   const location = useLocation();
@@ -98,54 +91,57 @@ export const FlightList = (props) => {
 
   return departureFlightList && returnFlightList ? (
     <div>
-
-  <Container  style={{ marginTop: "100px" }}>
+      <Container style={{ marginTop: "100px" }}>
         Choose your departure flight
-        <br/>
-        <br/>
-        <CardMedia/>
+        <br />
+        <br />
+        <CardMedia />
         {departureFlightList?.map((flight) => (
-          <Button variant="outlined" style={{ width: "50%", height: "100px", padding: "100px"}}
-          className={props.cardAction}
-          onClick={event => {handleSelectDepartureFlight(flight._id)}}
-      >
-              {moment(flight.departureDateTime).format(
-                    "hh:mm A"
-                  )} - {moment(flight.arrivalDateTime).format(
-                    "hh:mm A"
-                  )}
-              <br/>
-              {flight.from} - {flight.to}
-        
-        </Button>
+          <Button
+            variant="outlined"
+            style={{ width: "50%", height: "100px", padding: "100px" }}
+            className={props.cardAction}
+            onClick={(event) => {
+              handleSelectDepartureFlight(flight._id);
+            }}
+          >
+            {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
+            {moment(flight.arrivalDateTime).format("hh:mm A")}
+            <br />
+            {flight.from} - {flight.to}
+          </Button>
         ))}
-      
       </Container>
 
-      <Container  style={{ marginTop: "100px" }}>
+      <Container style={{ marginTop: "100px" }}>
         Choose your return flight
-        <br/>
-        <br/>
-        <CardMedia/>
+        <br />
+        <br />
+        <CardMedia />
         {returnFlightList?.map((flight) => (
-          <Button variant="outlined" style={{ width: "50%", height: "100px", padding: "100px"}}
-          className={props.cardAction}
-          onClick={event => {handleSelectReturnFlight(flight._id)}}
-      >
-              {moment(flight.departureDateTime).format(
-                    "hh:mm A"
-                  )} - {moment(flight.arrivalDateTime).format(
-                    "hh:mm A"
-                  )}
-              <br/>
-              {flight.from} - {flight.to}
-        </Button>
+          <Button
+            variant="outlined"
+            style={{ width: "50%", height: "100px", padding: "100px" }}
+            className={props.cardAction}
+            onClick={(event) => {
+              handleSelectReturnFlight(flight._id);
+            }}
+          >
+            {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
+            {moment(flight.arrivalDateTime).format("hh:mm A")}
+            <br />
+            {flight.from} - {flight.to}
+          </Button>
         ))}
-      
       </Container>
-      <br/>
-      <Button variant="contained" onClick={event => {handleSubmit()}} >
-Proceed
+      <br />
+      <Button
+        variant="contained"
+        onClick={(event) => {
+          handleSubmit();
+        }}
+      >
+        Proceed
       </Button>
 
       <Container style={{ marginTop: "100px" }}>
