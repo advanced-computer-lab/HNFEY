@@ -4,23 +4,11 @@ import Axios from "axios";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
-import {
-  TableBody,
-  TableCell,
-  TableRow,
-  TableContainer,
-  TableHead,
-  Paper,
-  Table,
-} from "@material-ui/core";
-
 import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
-import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 
 export const FlightList = () => {
-  const history = useHistory();
   const [departureFlightList, setDepartureList] = useState([]);
   const [returnFlightList, setReturnList] = useState([]);
 
