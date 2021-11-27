@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar/Navbar";
 import AdminHome from "./components/AdminHome/AdminHome";
 import SearchResultsGuest from "./components/SearchResultsGuest/SearchResultsGuest";
 import Home from "./components/Home/Home";
+import FlightDetails from "./components/FlightDetails/FlightDetails";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/create-flight" exact component={CreateFlightForm} />
           <Route path="/list-all-flights" exact component={ListAllFlights} />
           <Route path="/edit/:id" exact component={EditFlight} />
+          <Route path="/flight/:id" exact component={FlightDetails} />
         </Switch>
       </Router>
     </MuiThemeProvider>
