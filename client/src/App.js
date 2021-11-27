@@ -10,6 +10,8 @@ import Navbar from "./components/Navbar/Navbar";
 import AdminHome from "./components/AdminHome/AdminHome";
 import SearchResultsGuest from "./components/SearchResultsGuest/SearchResultsGuest";
 import Home from "./components/Home/Home";
+import SignUpForm from "./components/SignUpForm/SignUpForm";
+import { ListUsers } from "./components/ListUsers/ListUsers";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -21,6 +23,8 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/sign-up" exact component={SignUpForm} />
+          <Route path="/get-users" exact component={ListUsers} />
           <Route path="/admin" exact component={AdminHome} />
           <Route path="/search" exact component={SearchForm} />
           <Route
