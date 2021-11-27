@@ -22,6 +22,9 @@ import Button from '@mui/material/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import Card from "@mui/material/Card";
+import Container from "@mui/material/Container";
+import { Link } from "react-router-dom";
 
 
 export const FlightList = (props) => {
@@ -33,11 +36,6 @@ export const FlightList = (props) => {
     }}
 
   const history = useHistory();
-import Card from "@mui/material/Card";
-import Container from "@mui/material/Container";
-import { Link } from "react-router-dom";
-
-export const FlightList = () => {
   const [departureFlightList, setDepartureList] = useState([]);
   const [returnFlightList, setReturnList] = useState([]);
   const [selectedDepartureFlightID, setSelectedDepartureFlightID] = useState('');
