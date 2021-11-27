@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const Navbar = () => {
   return (
@@ -26,6 +27,7 @@ const Navbar = () => {
         <Button component={Link} to={`/create-flight`} color="secondary">
           Add Flight
         </Button>
+        <AccountCircleIcon />
       </Toolbar>
     </AppBar>
   );

@@ -33,6 +33,11 @@ export const FlightList = (props) => {
     }}
 
   const history = useHistory();
+import Card from "@mui/material/Card";
+import Container from "@mui/material/Container";
+import { Link } from "react-router-dom";
+
+export const FlightList = () => {
   const [departureFlightList, setDepartureList] = useState([]);
   const [returnFlightList, setReturnList] = useState([]);
   const [selectedDepartureFlightID, setSelectedDepartureFlightID] = useState('');
@@ -72,8 +77,7 @@ export const FlightList = (props) => {
     departureDay: departureQuery.returnDate,
     passengers: departureQuery.passengers,
     class: departureQuery.class,
-  }
-
+  };
 
   const noOfKeys = Object.keys(departureQuery).length;
 
@@ -82,7 +86,6 @@ export const FlightList = (props) => {
     let last = i + 1 === noOfKeys ? "" : "&";
     return (departureUrl += key + "=" + value + last);
   });
-
 
   Object.entries(returnQuery).map((entry, i) => {
     let [key, value] = entry;
@@ -147,6 +150,37 @@ export const FlightList = (props) => {
 Proceed
       </Button>
 
+      <Container style={{ marginTop: "100px" }}>
+        Choose your departure flight
+        <br />
+        <br />
+        {departureFlightList?.map((flight) => (
+          <Link to={"/"}>
+            <Card style={{ width: "50%", height: "100px" }}>
+              {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
+              {moment(flight.arrivalDateTime).format("hh:mm A")}
+              <br />
+              {flight.from} - {flight.to}
+            </Card>
+          </Link>
+        ))}
+      </Container>
+
+      <Container style={{ marginTop: "100px" }}>
+        Choose your return flight
+        <br />
+        <br />
+        {returnFlightList?.map((flight) => (
+          <Link to={"/"}>
+            <Card style={{ width: "50%", height: "100px" }}>
+              {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
+              {moment(flight.arrivalDateTime).format("hh:mm A")}
+              <br />
+              {flight.from} - {flight.to}
+            </Card>
+          </Link>
+        ))}
+      </Container>
     </div>
   ) : null;
 };

@@ -50,16 +50,21 @@ export const ListAllFlights = () => {
     });
   };
 
-  const handleDelete = async (flightid) => {
+  const handleDelete = async (flightId) => {
     // e.preventDefault();
-    Axios.delete("http://localhost:8000/hnfey/flight/" + flightid);
+    Axios.delete("http://localhost:8000/hnfey/flight/" + flightId);
     setDeleted(true);
     history.push("/list-all-flights");
   };
 
-  const handleEdit = async (e, flightid) => {
+  const handleCellClick = async (flightId) => {
+    console.log(flightId);
+    history.push("/flight/" + flightId);
+  };
+
+  const handleEdit = async (e, flightId) => {
     e.preventDefault();
-    history.push("/edit/" + flightid);
+    history.push("/edit/" + flightId);
   };
 
   return (
@@ -82,7 +87,11 @@ export const ListAllFlights = () => {
           <TableBody>
             {flights.map((flight) => (
               <TableRow key={flight._id}>
-                <TableCell component="th" scope="row">
+                <TableCell
+                  onClick={() => handleCellClick(flight._id)}
+                  component="th"
+                  scope="row"
+                >
                   {flight.flightNumber}
                 </TableCell>
                 <TableCell align="center">{flight.from}</TableCell>
