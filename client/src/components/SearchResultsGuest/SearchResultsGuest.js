@@ -4,65 +4,50 @@ import Axios from "axios";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
-import {
-  TableBody,
-  TableCell,
-  TableRow,
-  TableContainer,
-  TableHead,
-  Paper,
-  Table,
-} from "@material-ui/core";
-
-import Card from '@mui/material/Card';
-import Container from '@mui/material/Container';
-import { useHistory } from "react-router";
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
-import { Link } from "react-router-dom";
-
+import { useHistory } from "react-router";
+import Button from "@mui/material/Button";
+import { Typography } from "@material-ui/core";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
 export const FlightList = (props) => {
-
-  const styles = {
-    cardAction: {
-      display: 'block',
-      textAlign: 'initial'
-    }}
-
   const history = useHistory();
   const [departureFlightList, setDepartureList] = useState([]);
+  const [dropdownArrowDeparture, setDropdownArrowDeparture] = useState([]);
   const [returnFlightList, setReturnList] = useState([]);
-  const [selectedDepartureFlightID, setSelectedDepartureFlightID] = useState('');
-  const [selectedReturnFlightID, setSelectedReturnFlightID] = useState('');
+  const [selectedDepartureFlightID, setSelectedDepartureFlightID] =
+    useState("");
+  const [selectedReturnFlightID, setSelectedReturnFlightID] = useState("");
+  var counter = 0;
 
-
-  const handleSelectDepartureFlight = async (departureFlightID) => {
+  const handleSelectDepartureFlight = (departureFlightID) => {
     console.log(departureFlightID);
-    setSelectedDepartureFlightID(departureFlightID); 
+    setSelectedDepartureFlightID(departureFlightID);
   };
 
-  const handleSelectReturnFlight = async (returnFlightID) => {
+  const handleDropdownClick = (i) => {
+    setDropdownArrowDeparture(
+      dropdownArrowDeparture.map((entry, index) =>
+        index === i ? (entry = !entry) : null
+      )
+    );
+    console.log(dropdownArrowDeparture);
+  };
+
+  const handleSelectReturnFlight = (returnFlightID) => {
     console.log(returnFlightID);
     setSelectedReturnFlightID(returnFlightID);
-    
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     console.log(selectedDepartureFlightID);
     console.log(selectedReturnFlightID);
-    if(selectedDepartureFlightID == '' || selectedReturnFlightID == ''){
-      alert('Please select a departure flight and a return flight')
+    if (selectedDepartureFlightID === "" || selectedReturnFlightID === "") {
+      alert("Please select a departure flight and a return flight");
+    } else {
+      console.log("ekhtrna both");
     }
-    else{
-      console.log('ekhtrna both');
-    }
-    
   };
 
   const location = useLocation();
@@ -92,93 +77,131 @@ export const FlightList = (props) => {
   });
 
   useEffect(() => {
-    Axios.get(departureUrl).then((res) => setDepartureList(res.data.flights));
+    Axios.get(departureUrl).then((res) => {
+      setDepartureList(res.data.flights);
+      for (let index = 0; index < res.data.flights.length; index++) {
+        setDropdownArrowDeparture([...dropdownArrowDeparture, false]);
+      }
+    });
     Axios.get(returnUrl).then((res) => setReturnList(res.data.flights));
   }, [departureUrl, returnUrl]); //might be flights
 
   return departureFlightList && returnFlightList ? (
     <div>
-
-  <Container  style={{ marginTop: "100px" }}>
-        Choose your departure flight
-        <br/>
-        <br/>
-        <CardMedia/>
-        {departureFlightList?.map((flight) => (
-          <Button variant="outlined" style={{ width: "50%", height: "100px", padding: "100px"}}
-          className={props.cardAction}
-          onClick={event => {handleSelectDepartureFlight(flight._id)}}
-      >
-              {moment(flight.departureDateTime).format(
-                    "hh:mm A"
-                  )} - {moment(flight.arrivalDateTime).format(
-                    "hh:mm A"
-                  )}
-              <br/>
+      <Container style={{ marginTop: "100px" }}>
+        <Typography variant="h5">Choose your departure flight</Typography>
+        <br />
+        <br />
+        {departureFlightList?.map((flight, i) => (
+          <>
+            <Button
+              key={flight._id}
+              variant="outlined"
+              style={{ width: "50%", height: "100px", padding: "100px" }}
+              className={props.cardAction}
+              onClick={() => {
+                handleSelectDepartureFlight(flight._id);
+              }}
+            >
+              {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
+              {moment(flight.arrivalDateTime).format("hh:mm A")}
+              <br />
               {flight.from} - {flight.to}
-        
-        </Button>
+            </Button>
+            <div
+              style={{ display: "inline" }}
+              onClick={() => handleDropdownClick(i)}
+            >
+              {dropdownArrowDeparture[i] ? (
+                <>
+                  <ArrowDropUpIcon
+                    key={flight._id}
+                    style={{ height: "35px", width: "35px", opacity: "50%" }}
+                  />
+                  {Object.entries(flight).map((entry) => {
+                    let [key, value] = entry;
+                    let result = key.replace(/([A-Z])/g, " $1");
+                    let finalResult =
+                      result.charAt(0).toUpperCase() + result.slice(1);
+
+                    if (
+                      key !== "numberOfAvailableEconomySeats" &&
+                      key !== "numberOfAvailableBusinessSeats" &&
+                      key !== "numberOfEconomySeats" &&
+                      key !== "numberOfBusinessSeats" &&
+                      key !== "departureDay" &&
+                      key !== "arrivalDay" &&
+                      key !== "createdAt" &&
+                      key !== "updatedAt" &&
+                      key !== "_id" &&
+                      key !== "__v"
+                    ) {
+                      counter++;
+                      switch (key) {
+                        case "departureDateTime":
+                        case "arrivalDateTime":
+                          return (
+                            <Typography variant="h6" key={counter}>
+                              {key === "departureDateTime"
+                                ? "Departing"
+                                : "Arriving"}
+                              : {moment(value).format("DD-MM-YYYY hh:mm A")}
+                            </Typography>
+                          );
+                        case "baggageAllowance":
+                        case "price":
+                          return (
+                            <Typography variant="h6" key={counter}>
+                              {finalResult}: {value}{" "}
+                              {key === "baggageAllowance" ? "KG" : "EGP"}
+                            </Typography>
+                          );
+                        default:
+                          return (
+                            <Typography variant="h6" key={counter}>
+                              {finalResult}: {value}
+                            </Typography>
+                          );
+                      }
+                    }
+                    return null;
+                  })}
+                </>
+              ) : (
+                <ArrowDropDownIcon
+                  style={{ height: "35px", width: "35px", opacity: "50%" }}
+                />
+              )}
+            </div>
+          </>
         ))}
-      
       </Container>
 
-      <Container  style={{ marginTop: "100px" }}>
-        Choose your return flight
-        <br/>
-        <br/>
-        <CardMedia/>
+      <Container style={{ marginTop: "100px" }}>
+        <Typography variant="h5">Choose your return flight</Typography>
+        <br />
+        <br />
         {returnFlightList?.map((flight) => (
-          <Button variant="outlined" style={{ width: "50%", height: "100px", padding: "100px"}}
-          className={props.cardAction}
-          onClick={event => {handleSelectReturnFlight(flight._id)}}
-      >
-              {moment(flight.departureDateTime).format(
-                    "hh:mm A"
-                  )} - {moment(flight.arrivalDateTime).format(
-                    "hh:mm A"
-                  )}
-              <br/>
-              {flight.from} - {flight.to}
-        </Button>
+          <Button
+            key={flight._id}
+            variant="outlined"
+            style={{ width: "50%", height: "100px", padding: "100px" }}
+            className={props.cardAction}
+            onClick={() => {
+              handleSelectReturnFlight(flight._id);
+            }}
+          >
+            {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
+            {moment(flight.arrivalDateTime).format("hh:mm A")}
+            <br />
+            {flight.from} - {flight.to}
+          </Button>
         ))}
-      
       </Container>
-      <br/>
-      <Button variant="contained" onClick={event => {handleSubmit()}} >
-Proceed
+      <br />
+      <Button variant="contained" onClick={handleSubmit}>
+        Proceed
       </Button>
-
-      <Container style={{ marginTop: "100px" }}>
-        Choose your departure flight
-        <br />
-        <br />
-        {departureFlightList?.map((flight) => (
-          <Link to={"/"}>
-            <Card style={{ width: "50%", height: "100px" }}>
-              {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
-              {moment(flight.arrivalDateTime).format("hh:mm A")}
-              <br />
-              {flight.from} - {flight.to}
-            </Card>
-          </Link>
-        ))}
-      </Container>
-
-      <Container style={{ marginTop: "100px" }}>
-        Choose your return flight
-        <br />
-        <br />
-        {returnFlightList?.map((flight) => (
-          <Link to={"/"}>
-            <Card style={{ width: "50%", height: "100px" }}>
-              {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
-              {moment(flight.arrivalDateTime).format("hh:mm A")}
-              <br />
-              {flight.from} - {flight.to}
-            </Card>
-          </Link>
-        ))}
-      </Container>
     </div>
   ) : null;
 };

@@ -16,14 +16,6 @@ const FlightDetails = () => {
 
   return flight ? (
     <Container style={{ marginTop: "70px" }}>
-      {/* <h1>{flight.flightNumber}</h1>
-      <h1>{flight.to}</h1>
-
-      <h1>{flight.arrivalDateTime}</h1>
-      <h1>{flight.arrivalTerminal}</h1>
-      <h1>{flight.departureDateTime}</h1>
-      <h1>{flight.price}</h1>
-      <h1>{flight.to}</h1> */}
       {Object.entries(flight).map((entry) => {
         let [key, value] = entry;
         let result = key.replace(/([A-Z])/g, " $1");
