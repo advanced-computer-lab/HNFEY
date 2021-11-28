@@ -9,11 +9,18 @@ import {
   MenuItem,
   FormControl,
 } from "@material-ui/core";
+import airports from "../../data/airports";
 import { useHistory } from "react-router";
 
 const FlightForm = () => {
   const history = useHistory();
+  const [selected, setSelected] = useState("Economy");
+  const [selectedFrom, setSelectedFrom] = useState("");
+
   const handleChange = (e) => {
+    if (e.target.name === "class") {
+      setSelected(e.target.value);
+    }
     setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
     // console.log(e.target.name);
     // console.log(e.target.value);
@@ -44,6 +51,37 @@ const FlightForm = () => {
         </Typography>
         <br />
         <br />
+
+        {/* <FormControl style={{ width: 95, margin: "0px 5px 10px 0px" }}>
+          <InputLabel
+            id="demo-simple-select-label"
+            style={{
+              position: "absolute",
+              textIndent: 15,
+              bottom: 10,
+            }}
+            required
+          >
+            From
+          </InputLabel>
+          <Select
+            style={{ width: 95, margin: "0px 5px 10px 0px" }}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="From"
+            name="from"
+            value={selected}
+            variant="outlined"
+            onChange={handleChange}
+            // defaultValue="Economy"
+          >
+            {airports.map((airport) => {
+              <MenuItem value={airport.code}></MenuItem>
+            })}
+            <MenuItem value={"Economy"}>Economy</MenuItem>
+            <MenuItem value={"Business"}>Business</MenuItem>
+          </Select>
+        </FormControl> */}
 
         <TextField
           style={{ width: 95, margin: "0px 5px 10px 0px" }}
@@ -105,6 +143,7 @@ const FlightForm = () => {
             id="demo-simple-select"
             label="Class"
             name="class"
+            value={selected}
             variant="outlined"
             onChange={handleChange}
             // defaultValue="Economy"
