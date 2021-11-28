@@ -23,12 +23,10 @@ export const ListAllFlights = () => {
   const history = useHistory();
   useEffect(() => {
     Axios.get("http://localhost:8000/hnfey/flight/list-flights").then((res) => {
-      if (res.data.flight !== flights) {
-        setFlights(res.data.flights);
-      }
+      setFlights(() => res.data.flights);
 
       if (deleted) {
-        setDeleted(false);
+        setDeleted(() => false);
       }
     });
   }, [deleted]);
