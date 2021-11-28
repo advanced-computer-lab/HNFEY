@@ -13,7 +13,9 @@ import { useHistory } from "react-router";
 
 const FlightForm = () => {
   const history = useHistory();
+
   const [selected, setSelected] = useState("Economy");
+  const [flightDetails, setFlightDetails] = useState({ class: "Economy" });
 
   const handleChange = (e) => {
     if (e.target.name === "class") {
@@ -38,7 +40,6 @@ const FlightForm = () => {
       console.log(err);
     }
   };
-  const [flightDetails, setFlightDetails] = useState({});
 
   return (
     <Container component="main" align="center" style={{ marginTop: "65px" }}>
