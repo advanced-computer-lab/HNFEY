@@ -13,8 +13,9 @@ import LuggageIcon from "@mui/icons-material/Luggage";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import getTimeDifference from "../../utils/time";
 import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
+import Tooltip from "@mui/material/Tooltip";
 
-export const SearchResultsUser = (props) => {
+export const SearchResultsUser = () => {
   const [departureFlightList, setDepartureList] = useState([]);
   const [returnFlightList, setReturnList] = useState([]);
   const [selectedDepartureFlightID, setSelectedDepartureFlightID] =
@@ -22,12 +23,15 @@ export const SearchResultsUser = (props) => {
   const [selectedReturnFlightID, setSelectedReturnFlightID] = useState("");
 
   const handleSelectDepartureFlight = (departureFlightID) => {
-    setSelectedDepartureFlightID(departureFlightID);
+    setSelectedDepartureFlightID((prev) =>
+      prev !== departureFlightID ? departureFlightID : ""
+    );
   };
 
   const handleSelectReturnFlight = (returnFlightID) => {
-    console.log(returnFlightID);
-    setSelectedReturnFlightID(returnFlightID);
+    setSelectedReturnFlightID((prev) =>
+      prev !== returnFlightID ? returnFlightID : ""
+    );
   };
 
   const handleSubmit = () => {
@@ -111,10 +115,12 @@ export const SearchResultsUser = (props) => {
                     flexDirection: "row",
                   }}
                 >
-                  <AirplaneTicketIcon
-                    fontSize="small"
-                    style={{ color: "#666", marginInline: "2%" }}
-                  />
+                  <Tooltip title="Departing terminal">
+                    <AirplaneTicketIcon
+                      fontSize="small"
+                      style={{ color: "#666", marginInline: "2%" }}
+                    />
+                  </Tooltip>
                   <Typography variant="body2" display="inline">
                     {flight.departureTerminal}
                   </Typography>
@@ -130,10 +136,12 @@ export const SearchResultsUser = (props) => {
                     marginBottom: "3%",
                   }}
                 >
-                  <FlightTakeoff
-                    fontSize="large"
-                    style={{ color: "#666", marginInline: "6%" }}
-                  />
+                  <Tooltip title="Departure">
+                    <FlightTakeoff
+                      fontSize="large"
+                      style={{ color: "#666", marginInline: "6%" }}
+                    />
+                  </Tooltip>
                   <Typography
                     variant="h6"
                     style={{ color: "#666", marginInline: "6%" }}
@@ -143,10 +151,12 @@ export const SearchResultsUser = (props) => {
                       flight.arrivalDateTime
                     )}
                   </Typography>
-                  <FlightLandIcon
-                    fontSize="large"
-                    style={{ color: "#666", marginInline: "6%" }}
-                  />
+                  <Tooltip title="Arrival">
+                    <FlightLandIcon
+                      fontSize="large"
+                      style={{ color: "#666", marginInline: "6%" }}
+                    />
+                  </Tooltip>
                 </div>
                 <div
                   style={{
@@ -156,17 +166,21 @@ export const SearchResultsUser = (props) => {
                     justifyContent: "center",
                   }}
                 >
-                  <LuggageIcon
-                    fontSize="medium"
-                    style={{ color: "#666", marginInline: "1%" }}
-                  />
+                  <Tooltip title="Baggage allowance">
+                    <LuggageIcon
+                      fontSize="medium"
+                      style={{ color: "#666", marginInline: "1%" }}
+                    />
+                  </Tooltip>
                   <Typography display="inline" variant="body2">
                     {flight.baggageAllowance} KG
                   </Typography>
-                  <AttachMoneyIcon
-                    fontSize="medium"
-                    style={{ color: "#666", marginInline: "1%" }}
-                  />
+                  <Tooltip title="Price">
+                    <AttachMoneyIcon
+                      fontSize="medium"
+                      style={{ color: "#666", marginInline: "1%" }}
+                    />
+                  </Tooltip>
                   <Typography display="inline" variant="body2">
                     {flight.price} EGP
                   </Typography>
@@ -188,10 +202,12 @@ export const SearchResultsUser = (props) => {
                     flexDirection: "row",
                   }}
                 >
-                  <AirplaneTicketIcon
-                    fontSize="small"
-                    style={{ color: "#666", marginInline: "2%" }}
-                  />
+                  <Tooltip title="Arriving terminal">
+                    <AirplaneTicketIcon
+                      fontSize="small"
+                      style={{ color: "#666", marginInline: "2%" }}
+                    />
+                  </Tooltip>
                   <Typography variant="body2" display="inline">
                     {flight.arrivalTerminal}
                   </Typography>
@@ -245,10 +261,12 @@ export const SearchResultsUser = (props) => {
                     flexDirection: "row",
                   }}
                 >
-                  <AirplaneTicketIcon
-                    fontSize="small"
-                    style={{ color: "#666", marginInline: "2%" }}
-                  />
+                  <Tooltip title="Departing terminal">
+                    <AirplaneTicketIcon
+                      fontSize="small"
+                      style={{ color: "#666", marginInline: "2%" }}
+                    />
+                  </Tooltip>
                   <Typography variant="body2" display="inline">
                     {flight.departureTerminal}
                   </Typography>
@@ -264,10 +282,12 @@ export const SearchResultsUser = (props) => {
                     marginBottom: "3%",
                   }}
                 >
-                  <FlightTakeoff
-                    fontSize="large"
-                    style={{ color: "#666", marginInline: "6%" }}
-                  />
+                  <Tooltip title="Departure">
+                    <FlightTakeoff
+                      fontSize="large"
+                      style={{ color: "#666", marginInline: "6%" }}
+                    />
+                  </Tooltip>
                   <Typography
                     variant="h6"
                     style={{ color: "#666", marginInline: "6%" }}
@@ -277,10 +297,12 @@ export const SearchResultsUser = (props) => {
                       flight.arrivalDateTime
                     )}
                   </Typography>
-                  <FlightLandIcon
-                    fontSize="large"
-                    style={{ color: "#666", marginInline: "6%" }}
-                  />
+                  <Tooltip title="Arrival">
+                    <FlightLandIcon
+                      fontSize="large"
+                      style={{ color: "#666", marginInline: "6%" }}
+                    />
+                  </Tooltip>
                 </div>
                 <div
                   style={{
@@ -290,17 +312,21 @@ export const SearchResultsUser = (props) => {
                     justifyContent: "center",
                   }}
                 >
-                  <LuggageIcon
-                    fontSize="medium"
-                    style={{ color: "#666", marginInline: "1%" }}
-                  />
+                  <Tooltip title="Baggage allowance">
+                    <LuggageIcon
+                      fontSize="medium"
+                      style={{ color: "#666", marginInline: "1%" }}
+                    />
+                  </Tooltip>
                   <Typography display="inline" variant="body2">
                     {flight.baggageAllowance} KG
                   </Typography>
-                  <AttachMoneyIcon
-                    fontSize="medium"
-                    style={{ color: "#666", marginInline: "1%" }}
-                  />
+                  <Tooltip title="Price">
+                    <AttachMoneyIcon
+                      fontSize="medium"
+                      style={{ color: "#666", marginInline: "1%" }}
+                    />
+                  </Tooltip>
                   <Typography display="inline" variant="body2">
                     {flight.price} EGP
                   </Typography>
@@ -322,10 +348,12 @@ export const SearchResultsUser = (props) => {
                     flexDirection: "row",
                   }}
                 >
-                  <AirplaneTicketIcon
-                    fontSize="small"
-                    style={{ color: "#666", marginInline: "2%" }}
-                  />
+                  <Tooltip title="Arriving terminal">
+                    <AirplaneTicketIcon
+                      fontSize="small"
+                      style={{ color: "#666", marginInline: "2%" }}
+                    />
+                  </Tooltip>
                   <Typography variant="body2" display="inline">
                     {flight.arrivalTerminal}
                   </Typography>
