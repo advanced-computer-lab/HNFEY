@@ -2,27 +2,357 @@ import React, { useEffect, useState } from "react";
 import queryString from "query-string";
 import { useLocation } from "react-router";
 import axios from "axios";
+import { Container, Grid, Tooltip, Typography } from "@material-ui/core";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import CheckIcon from "@mui/icons-material/Check";
+import FlightIcon from "@mui/icons-material/Flight";
+import moment from "moment";
+import getTimeDifference from "../../utils/time";
+import PowerIcon from "@mui/icons-material/Power";
+import WifiIcon from "@mui/icons-material/Wifi";
+import AccessibleIcon from "@mui/icons-material/Accessible";
+import LuggageIcon from "@mui/icons-material/Luggage";
+import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
+
 const Summary = () => {
   const location = useLocation();
   const query = location.search;
-  const flightIds = queryString.parse(query);
+  const flightInfo = queryString.parse(query);
+  const fare = flightInfo.class;
+  const passengers = flightInfo.passengers;
+  console.log(passengers);
+  console.log([...Array(Number(passengers)).keys()]);
   const [departingFlight, setDepartingFlight] = useState({});
   const [returnFlight, setReturnFlight] = useState({});
-  console.log(flightIds.departingFlight);
+  const flights = [departingFlight, returnFlight];
   const departingUrl =
-    "http://localhost:8000/hnfey/flight/" + flightIds.departingFlight;
-  console.log(departingUrl);
+    "http://localhost:8000/hnfey/flight/" + flightInfo.departingFlight;
   const arrivalUrl =
-    "http://localhost:8000/hnfey/flight/" + flightIds.returnFlight;
+    "http://localhost:8000/hnfey/flight/" + flightInfo.returnFlight;
 
   useEffect(() => {
-    axios
-      .get(departingUrl)
-      .then((res) => setDepartingFlight(() => res.data.flight));
-    axios.get(arrivalUrl).then((res) => setReturnFlight(() => res.data.flight));
+    axios.get(departingUrl).then((res) => {
+      setDepartingFlight(() => res.data.flight);
+    });
+    axios.get(arrivalUrl).then((res) => {
+      setReturnFlight(() => res.data.flight);
+    });
   }, [departingUrl, arrivalUrl]);
 
-  return <div style={{ marginTop: "7%" }}>{flightIds.departingFlight}</div>;
+  return departingFlight._id && returnFlight._id && flights.length > 0 ? (
+    <Container component="main" style={{ marginTop: "6%" }}>
+      <Grid container alignItems="stretch" spacing={3}>
+        <Grid item md={8}>
+          <div>
+            <Typography
+              variant="body1"
+              display="inline"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "5%",
+              }}
+            >
+              HNFEY • {departingFlight.from}{" "}
+              <ArrowForwardIcon fontSize="small" /> {departingFlight.to}
+              {"  "}
+              <ArrowForwardIosIcon fontSize="small" />
+              {"  "}HNFEY • {returnFlight.from}{" "}
+              <ArrowForwardIcon fontSize="small" /> {returnFlight.to}
+              <ArrowForwardIosIcon fontSize="small" />
+              <Typography style={{ fontWeight: 700 }}>
+                Review your trip
+              </Typography>
+            </Typography>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              borderRadius: "10px",
+              backgroundColor: "#fff",
+              alignItems: "center",
+              marginBottom: "4%",
+            }}
+          >
+            <CheckIcon style={{ marginLeft: "2%", color: "#" }} />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "2% 0%",
+              }}
+            >
+              <Typography
+                variant="body1"
+                style={{ marginInline: "4%", fontWeight: "500" }}
+              >
+                No change fees for all flights
+              </Typography>
+              <Typography variant="body2" style={{ marginInline: "4%" }}>
+                You can change these flights without paying a fee if plans
+                change. Because flexibility matters.
+              </Typography>
+            </div>
+          </div>
+          {flights.map((flight) => (
+            <div
+              key={flight._id}
+              style={{
+                display: "flex",
+                borderRadius: "10px",
+                backgroundColor: "#fff",
+                flexDirection: "column",
+                marginBottom: "4%",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "4% 4% 0%",
+                }}
+              >
+                <Typography
+                  variant="h2"
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: 500,
+                    marginBottom: "1%",
+                  }}
+                >
+                  {flight.from.split(" ")[0]} to {flight.to.split(" ")[0]}{" "}
+                </Typography>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  margin: "0% 4% 3%",
+                }}
+              >
+                <FlightIcon
+                  fontSize="small"
+                  style={{ color: "#00000070", transform: "rotate(40deg)" }}
+                />
+                <Typography
+                  display="inline"
+                  variant="body1"
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: 300,
+                  }}
+                >
+                  HNFEY • {moment(flight.departureDay).format("ddd, MMM Do")}
+                </Typography>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "0% 4% 6%",
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  style={{ fontSize: "0.875rem", fontWeight: 500 }}
+                >
+                  {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
+                  {moment(flight.arrivalDateTime).format("hh:mm A")}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  style={{ fontSize: "0.875rem", fontWeight: 300 }}
+                >
+                  {getTimeDifference(
+                    flight.departureDateTime,
+                    flight.arrivalDateTime
+                  )}
+                </Typography>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  <Tooltip title="Power">
+                    <PowerIcon
+                      fontSize="small"
+                      style={{ marginRight: "0.2%" }}
+                    />
+                  </Tooltip>
+                  <Tooltip title="Wifi">
+                    <WifiIcon
+                      fontSize="small"
+                      style={{ marginInline: "0.2%" }}
+                    />
+                  </Tooltip>
+                  <Tooltip title="Accessible">
+                    <AccessibleIcon
+                      fontSize="small"
+                      style={{ marginInline: "0.2%" }}
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "0% 4% 6%",
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  style={{ fontSize: "0.875rem", fontWeight: 500 }}
+                >
+                  Fare: {fare}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  style={{ fontSize: "0.875rem", fontWeight: 400 }}
+                >
+                  Your selection applies to all flights
+                </Typography>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "0% 4% 8%",
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  style={{ fontSize: "0.875rem", fontWeight: 500 }}
+                >
+                  Bags
+                </Typography>
+
+                <Typography
+                  variant="body1"
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: 400,
+                    textIndent: "20px",
+                  }}
+                >
+                  • Carry-on bag included
+                </Typography>
+                <Typography
+                  variant="body1"
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: 400,
+                    textIndent: "20px",
+                  }}
+                >
+                  • 2 checked bags included
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginLeft: "2%",
+                  }}
+                >
+                  <Tooltip title="Baggage weight">
+                    <LuggageIcon
+                      fontSize="small"
+                      style={{ marginRight: "1%" }}
+                    />
+                  </Tooltip>
+                  <Typography
+                    variant="body1"
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 400,
+                    }}
+                  >
+                    {flight.baggageAllowance} KG
+                  </Typography>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "0% 4% 6%",
+                }}
+              >
+                <Typography
+                  display="inline"
+                  ariant="body1"
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  Price:
+                </Typography>
+                <div style={{ display: "flex", marginLeft: "2%" }}>
+                  <Tooltip title="Price">
+                    <PaidRoundedIcon
+                      fontSize="small"
+                      style={{ marginRight: "1%" }}
+                    />
+                  </Tooltip>
+                  <Typography
+                    variant="body1"
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 400,
+                    }}
+                  >
+                    {flight.price} EGP
+                  </Typography>
+                </div>
+              </div>
+            </div>
+          ))}
+        </Grid>
+        <Grid item md={4}>
+          <div>
+            <div
+              style={{
+                margin: "17% 3% 0%",
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "5%",
+                borderRadius: "7px",
+                backgroundColor: "#fff",
+              }}
+            >
+              <Typography
+                variant="body1"
+                display="inline"
+                style={{
+                  margin: "2% 5% 5%",
+                  fontSize: "1.5rem",
+                  fontWeight: 500,
+                }}
+              >
+                Price Summary
+              </Typography>
+
+              {/* <div style={{ marginTop: "5%" }}>
+                {[...Array(Number(passengers)).keys()].map((passenger) => (
+                  <div
+                    style={{
+                      margin: "17% 3% 0%",
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "5%",
+                      borderRadius: "7px",
+                      backgroundColor: "#fff",
+                    }}
+                  >
+                    <Typography>Passenger</Typography>
+                  </div>
+                ))}
+              </div> */}
+            </div>
+          </div>
+        </Grid>
+      </Grid>
+    </Container>
+  ) : null;
 };
 
 export default Summary;

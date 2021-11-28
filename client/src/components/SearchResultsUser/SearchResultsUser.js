@@ -22,6 +22,10 @@ export const SearchResultsUser = () => {
     useState("");
   const [selectedReturnFlightID, setSelectedReturnFlightID] = useState("");
   const history = useHistory();
+  const location = useLocation();
+  const query = queryString.parse(location.search);
+  const searchClass = query.class + "";
+  const passengers = query.passengers + "";
 
   const handleSelectDepartureFlight = (departureFlightID) => {
     setSelectedDepartureFlightID((prev) =>
@@ -44,13 +48,16 @@ export const SearchResultsUser = () => {
         "departingFlight=" +
         selectedDepartureFlightID +
         "&returnFlight=" +
-        selectedReturnFlightID;
+        selectedReturnFlightID +
+        "&passengers=" +
+        passengers +
+        "&class=" +
+        searchClass;
 
       history.push(url);
     }
   };
 
-  const location = useLocation();
   let departureUrl = "http://localhost:8000/hnfey/flight/?";
   let returnUrl = "http://localhost:8000/hnfey/flight/?";
   let departureQuery = queryString.parse(location.search);
