@@ -20,6 +20,11 @@ const UserProfile = () => {
     let last = i + 1 === noOfKeys ? "" : "&";
     return (url += key + "=" + value + last);
   });
+  
+  const handleSubmit = () => {
+    history.push('/edit-user'+location.search)
+  };
+
 
   useEffect(() => {
     Axios.get(url).then((res) => setUser(res.data.user)
@@ -35,9 +40,10 @@ const UserProfile = () => {
                    <>
          <h1>{user.firstName}  {user.lastName}</h1>
          <h4> {user.email}</h4>
-               <Card style={{width:'350px',alignment:'center',margin:'auto'}}>
-                <Button variant='outlined' style={{width:'100%'}}>Edit</Button>
-                </Card>
+        
+                <Button variant='outlined' style={{width:'40%'}}
+                onClick={handleSubmit}
+                >Edit</Button>
               </>
                ))}
            
