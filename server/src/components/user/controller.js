@@ -15,6 +15,23 @@ const fetchAll = async (req, res, next) => {
   }
 };
 
+const findUser = async (req, res, next) => {
+  try {
+    const user = req.query;
+    const userResults = await model.findUser(user);
+    if (userResults) {
+      req.user = userResults;
+      next();
+    } else {
+      const err = new Error("Cannot find User");
+
+      next(err);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 const createUser = async (req, res, next) => {
   try {
     const user = req.body.user;
@@ -41,7 +58,13 @@ const createPipeline = [
   createUser,
 ];
 
+const findPipeline = [
+  //verify Admin,
+  findUser,
+];
+
 module.exports = {
   fetchAllPipeline,
   createPipeline,
+  findPipeline
 };
