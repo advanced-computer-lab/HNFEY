@@ -17,4 +17,11 @@ router.post("/", controller.createPipeline, async (req, res) => {
   });
 });
 
+router.get("/find-user", controller.findPipeline, async (req, res) => {
+  res.status(200).json({
+    message: "user available:",
+    user: req.user,
+  });
+});
+
 module.exports = router;
