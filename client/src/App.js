@@ -13,6 +13,7 @@ import Home from "./components/Home/Home";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import { ListUsers } from "./components/ListUsers/ListUsers";
 import FlightDetails from "./components/FlightDetails/FlightDetails";
+import Summary from "./components/Summary/Summary";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/list-all-flights" exact component={ListAllFlights} />
           <Route path="/edit/:id" exact component={EditFlight} />
           <Route path="/flight/:id" exact component={FlightDetails} />
+          <Route path="/flight-information" exact component={Summary} />
         </Switch>
       </Router>
     </MuiThemeProvider>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
 import Container from "@mui/material/Container";
@@ -21,6 +21,7 @@ export const SearchResultsUser = () => {
   const [selectedDepartureFlightID, setSelectedDepartureFlightID] =
     useState("");
   const [selectedReturnFlightID, setSelectedReturnFlightID] = useState("");
+  const history = useHistory();
 
   const handleSelectDepartureFlight = (departureFlightID) => {
     setSelectedDepartureFlightID((prev) =>
@@ -35,12 +36,17 @@ export const SearchResultsUser = () => {
   };
 
   const handleSubmit = () => {
-    console.log(selectedDepartureFlightID);
-    console.log(selectedReturnFlightID);
     if (selectedDepartureFlightID === "" || selectedReturnFlightID === "") {
       alert("Please select a departure flight and a return flight");
     } else {
-      console.log("ekhtrna both");
+      const url =
+        "/flight-information?" +
+        "departingFlight=" +
+        selectedDepartureFlightID +
+        "&returnFlight=" +
+        selectedReturnFlightID;
+
+      history.push(url);
     }
   };
 
@@ -85,13 +91,7 @@ export const SearchResultsUser = () => {
       <br />
       <Paper elevation={5} style={{ margin: "3% 0% 7%" }}>
         {departureFlightList.map((flight, i) => (
-          <div
-            key={flight._id}
-            style={{
-              backgroundColor:
-                selectedDepartureFlightID === flight._id ? "#084C6150" : "#FFF",
-            }}
-          >
+          <div key={flight._id}>
             <Grid
               container
               alignItems="center"
@@ -216,10 +216,22 @@ export const SearchResultsUser = () => {
               <Grid item md={1}>
                 <Button
                   variant="outlined"
-                  style={{ borderColor: "#084C61", color: "#084C61" }}
+                  style={{
+                    borderColor: "#084C61",
+                    color:
+                      selectedDepartureFlightID !== flight._id
+                        ? "#084C61"
+                        : "#FFF",
+                    backgroundColor:
+                      selectedDepartureFlightID === flight._id
+                        ? "#084C61"
+                        : "#FFF",
+                  }}
                   onClick={() => handleSelectDepartureFlight(flight._id)}
                 >
-                  Select flight
+                  {selectedDepartureFlightID === flight._id
+                    ? "Flight Selected"
+                    : "Select Flight"}
                 </Button>
               </Grid>
             </Grid>
@@ -232,13 +244,7 @@ export const SearchResultsUser = () => {
       <br />
       <Paper elevation={5} style={{ margin: "3% 0% 5%" }}>
         {returnFlightList.map((flight, i) => (
-          <div
-            key={flight._id}
-            style={{
-              backgroundColor:
-                selectedReturnFlightID === flight._id ? "#084C6150" : "#FFF",
-            }}
-          >
+          <div key={flight._id}>
             <Grid
               container
               alignItems="stretch"
@@ -362,10 +368,22 @@ export const SearchResultsUser = () => {
               <Grid item md={1}>
                 <Button
                   variant="outlined"
-                  style={{ borderColor: "#084C61", color: "#084C61" }}
+                  style={{
+                    borderColor: "#084C61",
+                    color:
+                      selectedReturnFlightID !== flight._id
+                        ? "#084C61"
+                        : "#FFF",
+                    backgroundColor:
+                      selectedReturnFlightID === flight._id
+                        ? "#084C61"
+                        : "#FFF",
+                  }}
                   onClick={() => handleSelectReturnFlight(flight._id)}
                 >
-                  Select flight
+                  {selectedReturnFlightID === flight._id
+                    ? "Flight Selected"
+                    : "Select Flight"}
                 </Button>
               </Grid>
             </Grid>

@@ -9,13 +9,11 @@ import {
   MenuItem,
   FormControl,
 } from "@material-ui/core";
-import airports from "../../data/airports";
 import { useHistory } from "react-router";
 
 const FlightForm = () => {
   const history = useHistory();
   const [selected, setSelected] = useState("Economy");
-  const [selectedFrom, setSelectedFrom] = useState("");
 
   const handleChange = (e) => {
     if (e.target.name === "class") {
