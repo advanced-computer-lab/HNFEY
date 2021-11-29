@@ -19,7 +19,7 @@ const UserProfile = () => {
     return (url += key + "=" + value + last);
   });
 
-  const handleSubmit = () => {
+  const handleEdit = () => {
     history.push("/edit-user" + location.search);
   };
 
@@ -45,9 +45,20 @@ const UserProfile = () => {
           <Button
             variant="outlined"
             style={{ width: "40%" }}
-            onClick={handleSubmit}
+            onClick={handleEdit}
           >
             Edit
+          </Button>
+          <br />
+          <br />
+          <Button
+            variant="outlined"
+            style={{ width: "40%" }}
+            onClick={() => {
+              history.push("/user-reservations");
+            }}
+          >
+            View Reservations
           </Button>
         </>
         {/* ))} */}
