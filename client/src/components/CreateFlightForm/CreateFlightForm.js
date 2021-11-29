@@ -53,7 +53,6 @@ export const CreateFlightForm = () => {
     const numberOfSeats =
       Number(flightDetails.numberOfBusinessSeats) +
       Number(flightDetails.numberOfEconomySeats);
-    console.log(numberOfSeats);
     delete flightDetails.seats;
     const flight = {
       flight: flightDetails,
@@ -163,27 +162,23 @@ export const CreateFlightForm = () => {
           }
           seatsArray.push(seat);
         }
-        // console.log(seatsArray);
       });
       const seats = {
         seats: seatsArray,
       };
       const seatsId = [];
       await Axios.post(seatsUrl, seats).then((res) => {
-        res.data.seats.map((seat) => {
-          seatsId.push(seat._id);
-        });
+        res.data.seats.map((seat) => seatsId.push(seat._id));
       });
 
       const flightSeats = {
-        flight: { ...flightDetails, seats: seatsId },
+        flight: { _id: flightId, seats: seatsId },
       };
-      console.log(flightSeats);
       await Axios.put(flightSeatsUrl, flightSeats).then((res) => {
         console.log(res.data);
       });
 
-      // history.push("/list-all-flights");
+      history.push("/list-all-flights");
     } catch (err) {
       alert(err);
     }
