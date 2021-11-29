@@ -7,7 +7,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 
 const UserProfile = () => {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
   const location = useLocation();
   let url = "http://localhost:8000/hnfey/user/find-user?";
   let query = queryString.parse(location.search);
@@ -35,22 +35,22 @@ const UserProfile = () => {
           width="500px"
         />
         {console.log(user)}
-        {user?.map((user) => (
-          <>
-            <h1>
-              {user.firstName} {user.lastName}
-            </h1>
-            <h4> {user.email}</h4>
+        {/* {user?.map((user) => ( */}
+        <>
+          <h1>
+            {user.firstName} {user.lastName}
+          </h1>
+          <h4> {user.email}</h4>
 
-            <Button
-              variant="outlined"
-              style={{ width: "40%" }}
-              onClick={handleSubmit}
-            >
-              Edit
-            </Button>
-          </>
-        ))}
+          <Button
+            variant="outlined"
+            style={{ width: "40%" }}
+            onClick={handleSubmit}
+          >
+            Edit
+          </Button>
+        </>
+        {/* ))} */}
       </Container>
     </div>
   );

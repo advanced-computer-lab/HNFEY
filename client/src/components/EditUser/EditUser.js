@@ -1,13 +1,14 @@
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useHistory,useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import queryString from "query-string";
+import { CircularProgress } from "@material-ui/core";
 
 const EditUser = () => {
   const history = useHistory();
 
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
   const location = useLocation();
   let url = "http://localhost:8000/hnfey/user/find-user?";
   let query = queryString.parse(location.search);
@@ -19,18 +20,17 @@ const EditUser = () => {
   });
 
   useEffect(() => {
-    Axios.get(url).then((res) => setUser(res.data.user)
-    );
+    Axios.get(url).then((res) => {
+      setUser(res.data.user);
+    });
   }, [url]);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-
-
- const handleSubmit = async (e) => {
-     /*
+  const handleSubmit = async (e) => {
+    /*
     e.preventDefault();
     try {
       const flight = { flight: flightDetails };
@@ -41,22 +41,150 @@ const EditUser = () => {
       console.log(err);
     }
     */
-   console.log('farouha')
+    console.log("farouha");
   };
-  
 
-  return  (
+  // return (
+  //   <div>
+  //     <Container component="main" align="center" style={{ marginTop: "65px" }}>
+  //       {user.map((user) => {
+  //         {
+  //           console.log(user.firstName);
+  //         }
+
+  //         <>
+  //           <br />
+  //           <br />
+  //           <form onSubmit={handleSubmit}>
+  //             <Typography
+  //               style={{ marginTop: "65px" }}
+  //               variant="h4"
+  //               color="textSecondary"
+  //             >
+  //               Edit Information
+  //             </Typography>
+  //             <br />
+  //             <TextField
+  //               style={{ width: 500 }}
+  //               name="firstName"
+  //               onChange={handleChange}
+  //               value={user.firstName}
+  //               variant="outlined"
+  //               label="First Name"
+  //               type="text"
+  //               required
+  //             />
+  //             <br />
+  //             <br />
+
+  //             <TextField
+  //               style={{ width: 500 }}
+  //               name="lastName"
+  //               onChange={handleChange}
+  //               variant="outlined"
+  //               label="Last Name"
+  //               value={user.lastName}
+  //               type="text"
+  //               required
+  //             />
+  //             <br />
+  //             <br />
+  //             <TextField
+  //               style={{ width: 500 }}
+  //               name="email"
+  //               onChange={handleChange}
+  //               variant="outlined"
+  //               label="Email"
+  //               value={user.email}
+  //               type="text"
+  //               required
+  //             />
+
+  //             <br />
+  //             <br />
+
+  //             <TextField
+  //               style={{ width: 500 }}
+  //               name="password"
+  //               onChange={handleChange}
+  //               variant="outlined"
+  //               label="Password"
+  //               value={user.password}
+  //               type="password"
+  //               required
+  //             />
+
+  //             <br />
+  //             <br />
+
+  //             <TextField
+  //               style={{ width: 500 }}
+  //               name="homeAddress"
+  //               onChange={handleChange}
+  //               variant="outlined"
+  //               label="Home Address"
+  //               value={user.homeAddress}
+  //               type="text"
+  //               required
+  //             />
+
+  //             <br />
+  //             <br />
+  //             <TextField
+  //               style={{ width: 500 }}
+  //               name="countryCode"
+  //               onChange={handleChange}
+  //               variant="outlined"
+  //               label="Country Code"
+  //               value={user.countryCode}
+  //               type="text"
+  //               required
+  //             />
+
+  //             <br />
+  //             <br />
+
+  //             {user.telephoneNumbers.map((telephone) => {
+  //               <>
+  //                 <TextField
+  //                   style={{ width: 500 }}
+  //                   name="telephoneNumber"
+  //                   onChange={handleChange}
+  //                   variant="outlined"
+  //                   label="Telephone Number"
+  //                   value={telephone}
+  //                   type="text"
+  //                   required
+  //                 />
+
+  //                 <br />
+  //                 <br />
+  //               </>;
+  //             })}
+
+  //             <Button
+  //               type="submit"
+  //               style={{ width: 500 }}
+  //               variant="contained"
+  //               color="primary"
+  //             >
+  //               Edit
+  //             </Button>
+  //           </form>
+  //         </>;
+  //       })}
+  //     </Container>
+  //   </div>
+  // );
+
+  return user._id ? (
     <div>
-      <Container component="main" align="center" style={{ marginTop: "65px" }}>
-         
-      {user.map((user)=> {
-           {console.log(user.firstName)}
-        
-      <>
-         <br/>
-         <br/>
-      <form onSubmit={handleSubmit}>
-        
+      <Container component="main" align="center" style={{ marginTop: "px" }}>
+        {/* {user?.map((user) => { */}
+        {console.log(user.telephoneNumbers)}
+        <br />
+        <br />
+        <form onSubmit={handleSubmit}>
           <Typography
             style={{ marginTop: "65px" }}
             variant="h4"
@@ -117,7 +245,7 @@ const EditUser = () => {
 
           <br />
           <br />
-          
+
           <TextField
             style={{ width: 500 }}
             name="homeAddress"
@@ -145,26 +273,26 @@ const EditUser = () => {
           <br />
           <br />
 
-          {user.telephoneNumbers.map((telephone)=> 
-          {
-              <>
-            <TextField
-            style={{ width: 500 }}
-            name="telephoneNumber"
-            onChange={handleChange}
-            variant="outlined"
-            label="Telephone Number"
-            value={telephone}
-            type="text"
-            required
-          />
+          {user.telephoneNumbers.map((telephone) => {
+            console.log(user.telephoneNumbers);
 
-          <br />
-          <br />
-          </>
+            return (
+              <>
+                <TextField
+                  style={{ width: 500 }}
+                  name="telephoneNumber"
+                  onChange={handleChange}
+                  variant="outlined"
+                  label="Telephone Number"
+                  value={telephone}
+                  type="text"
+                  required
+                />
+                <br />
+                <br />
+              </>
+            );
           })}
-        
-        
 
           <Button
             type="submit"
@@ -174,156 +302,14 @@ const EditUser = () => {
           >
             Edit
           </Button>
-     
-      </form>
-      
-      </>
-       
-        
-         })}
-         </Container>
+        </form>
+
+        {/* })} */}
+      </Container>
     </div>
-  ) 
-
-// return  (
-//     <div>
-//       <Container component="main" align="center" style={{ marginTop: "px" }}>
-         
-//       {user?.map((user)=> {
-//           return(
-        
-//       <>
-//          <br/>
-//          <br/>
-//       <form onSubmit={handleSubmit}>
-//           <Typography
-//             style={{ marginTop: "65px" }}
-//             variant="h4"
-//             color="textSecondary"
-//           >
-//             Edit Information
-//           </Typography>
-//           <br />
-//           <TextField
-//             style={{ width: 500 }}
-//             name="firstName"
-//             onChange={handleChange}
-//             value={user.firstName}
-//             variant="outlined"
-//             label="First Name"
-//             type="text"
-//             required
-//           />
-//           <br />
-//           <br />
-
-//           <TextField
-//             style={{ width: 500 }}
-//             name="lastName"
-//             onChange={handleChange}
-//             variant="outlined"
-//             label="Last Name"
-//             value={user.lastName}
-//             type="text"
-//             required
-//           />
-//           <br />
-//           <br />
-//           <TextField
-//             style={{ width: 500 }}
-//             name="email"
-//             onChange={handleChange}
-//             variant="outlined"
-//             label="Email"
-//             value={user.email}
-//             type="text"
-//             required
-//           />
-
-//           <br />
-//           <br />
-
-//           <TextField
-//             style={{ width: 500 }}
-//             name="password"
-//             onChange={handleChange}
-//             variant="outlined"
-//             label="Password"
-//             value={user.password}
-//             type="password"
-//             required
-//           />
-
-//           <br />
-//           <br />
-          
-//           <TextField
-//             style={{ width: 500 }}
-//             name="homeAddress"
-//             onChange={handleChange}
-//             variant="outlined"
-//             label="Home Address"
-//             value={user.homeAddress}
-//             type="text"
-//             required
-//           />
-
-//           <br />
-//           <br />
-//           <TextField
-//             style={{ width: 500 }}
-//             name="countryCode"
-//             onChange={handleChange}
-//             variant="outlined"
-//             label="Country Code"
-//             value={user.countryCode}
-//             type="text"
-//             required
-//           />
-
-//           <br />
-//           <br />
-
-//           {user.telephoneNumbers.map((telephone)=> 
-//           {
-//               console.log(user.telephoneNumbers)
-//               return(
-              
-//             <TextField
-//             style={{ width: 500 }}
-//             name="telephoneNumber"
-//             onChange={handleChange}
-//             variant="outlined"
-//             label="Telephone Number"
-//             value={telephone}
-//             type="text"
-//             required
-//           />
-//           )
-//           })}
-//         <br/>
-//           <br/>
-        
-        
-
-//           <Button
-//             type="submit"
-//             style={{ width: 500 }}
-//             variant="contained"
-//             color="primary"
-//           >
-//             Edit
-//           </Button>
-     
-//       </form>
-      
-//       </>
-       
-        
-//          )})}
-//          </Container>
-//     </div>
-//   ) 
+  ) : (
+    <CircularProgress />
+  );
 };
 
 export default EditUser;
