@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Container, Button } from "@material-ui/core";
+import { TextField, Container, Button, Link } from "@material-ui/core";
 import { useHistory } from "react-router";
 
 const Login = () => {
@@ -28,7 +28,7 @@ const Login = () => {
   };
   return (
     <div>
-      <Container component="main" align="center" style={{ marginTop: "65px" }}>
+      <Container component="main" align="center" style={{ marginTop: "100px" }}>
         <form onSubmit={handleSubmit}>
           <br />
           <TextField
@@ -62,6 +62,11 @@ const Login = () => {
           >
             Login
           </Button>
+          <br />
+          <br />
+          <Link href="/sign-up" style={{ fontSize: "20px" }}>
+            Create Account
+          </Link>
         </form>
       </Container>
     </div>

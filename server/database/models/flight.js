@@ -61,11 +61,22 @@ const flightSchema = new Schema(
       type: Number,
       required: true,
     },
-    price: {
+    economyPrice: {
       // type: mongoose.Types.Decimal128,
       type: Number,
       required: true,
     },
+    businessPrice: {
+      // type: mongoose.Types.Decimal128,
+      type: Number,
+      required: true,
+    },
+    seats: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Seat",
+      },
+    ],
   },
   { timestamps: true }
 );

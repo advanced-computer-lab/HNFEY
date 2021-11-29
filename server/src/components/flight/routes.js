@@ -10,6 +10,13 @@ router.get("/list-flights", controller.findPipeline, async (req, res) => {
   });
 });
 
+router.get("/all", controller.fetchAllPipeline, async (req, res) => {
+  res.status(200).json({
+    message: "Flight fetched successfully",
+    flights: req.flights,
+  });
+});
+
 router.get("/:id", controller.fetchPipeline, async (req, res) => {
   res.status(200).json({
     message: "Flight fetched successfully",

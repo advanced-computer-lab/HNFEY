@@ -43,18 +43,28 @@ export const SearchResultsUser = () => {
     if (selectedDepartureFlightID === "" || selectedReturnFlightID === "") {
       alert("Please select a departure flight and a return flight");
     } else {
-      const url =
-        "/flight-information?" +
-        "departingFlight=" +
-        selectedDepartureFlightID +
-        "&returnFlight=" +
-        selectedReturnFlightID +
-        "&passengers=" +
-        passengers +
-        "&class=" +
-        searchClass;
+      const reservation = {
+        departingFlight: departureFlightList.find(
+          (flight) => flight._id === selectedDepartureFlightID
+        ),
+        returnFlight: returnFlightList.find(
+          (flight) => flight._id === selectedReturnFlightID
+        ),
+        passengers: passengers,
+        class: searchClass,
+      };
+      const url = "/flight-information";
+      // +
+      // "departingFlight=" +
+      // selectedDepartureFlightID +
+      // "&returnFlight=" +
+      // selectedReturnFlightID +
+      // "&passengers=" +
+      // passengers +
+      // "&class=" +
+      // searchClass;
 
-      history.push(url);
+      history.push(url, reservation);
     }
   };
 

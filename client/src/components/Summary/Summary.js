@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import queryString from "query-string";
-import { useLocation } from "react-router";
-import axios from "axios";
 import {
   Button,
   Container,
@@ -21,47 +18,45 @@ import AccessibleIcon from "@mui/icons-material/Accessible";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
-const Summary = () => {
-  const location = useLocation();
-  const query = location.search;
-  const flightInfo = queryString.parse(query);
-  const fare = flightInfo.class;
-  const passengers = flightInfo.passengers;
-  console.log(passengers);
-  console.log([...Array(Number(passengers)).keys()]);
+const Summary = (props) => {
+  const fare = props.location.state.class;
+  const passengers = props.location.state.passengers;
   const [departingFlight, setDepartingFlight] = useState({});
   const [returnFlight, setReturnFlight] = useState({});
   const flights = [departingFlight, returnFlight];
-  const departingUrl =
-    "http://localhost:8000/hnfey/flight/" +
-    flightInfo.departingFlight +
-    "?class=" +
-    fare +
-    "&passengers=" +
-    passengers;
-  const arrivalUrl =
-    "http://localhost:8000/hnfey/flight/" +
-    flightInfo.returnFlight +
-    "?class=" +
-    fare +
-    "&passengers=" +
-    passengers;
 
   useEffect(() => {
-    axios.get(departingUrl).then((res) => {
-      setDepartingFlight(() => res.data.flight);
-    });
-    axios.get(arrivalUrl).then((res) => {
-      setReturnFlight(() => res.data.flight);
-    });
-  }, [departingUrl, arrivalUrl]);
+    setDepartingFlight(props.location.state.departingFlight);
+    setReturnFlight(props.location.state.returnFlight);
+  }, [props.location.state]);
 
-  return departingFlight._id && returnFlight._id && flights.length > 0 ? (
+  const submit = (flightId) => {
+    confirmAlert({
+      title: "Are you sure you want to reserve this flight?",
+      message: "Click yes if you want to reserve this flight, no otherwise.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            // handleDelete(flightId);
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
+  return departingFlight?._id && returnFlight?._id && flights.length > 0 ? (
     <Container component="main" style={{ marginTop: "6%" }}>
       <Grid container alignItems="stretch" spacing={3}>
         <Grid item md={8}>
-          <div>
+          <div style={{ display: "flex" }}>
             <Typography
               variant="body1"
               display="inline"
@@ -78,9 +73,9 @@ const Summary = () => {
               {"  "}HNFEY • {returnFlight.from}{" "}
               <ArrowForwardIcon fontSize="small" /> {returnFlight.to}
               <ArrowForwardIosIcon fontSize="small" />
-              <Typography style={{ fontWeight: 700 }}>
-                Review your trip
-              </Typography>
+            </Typography>
+            <Typography style={{ fontWeight: 700 }}>
+              Review your trip
             </Typography>
           </div>
           <div
@@ -348,8 +343,8 @@ const Summary = () => {
                 Price summary
               </Typography>
 
-              {[...Array(Number(passengers)).keys()].map((passenger) => (
-                <div>
+              {[...Array(Number(passengers)).keys()].map((passenger, i) => (
+                <div key={i}>
                   <div
                     style={{
                       margin: "3% 5% 0%",
@@ -487,6 +482,7 @@ const Summary = () => {
               >
                 <Button
                   type="submit"
+                  onClick={submit}
                   style={{ width: 500 }}
                   variant="contained"
                   color="primary"
@@ -507,7 +503,7 @@ const Summary = () => {
             >
               <AccessTimeFilledIcon
                 fontSize="large"
-                style={{ color: "red", margin: "5% 1% 5% 3%" }}
+                style={{ color: "#329F5B", margin: "5% 1% 5% 3%" }}
               />
               <div
                 style={{

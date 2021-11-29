@@ -15,13 +15,17 @@ const update = async (_id, updatedUser) => {
 };
 
 const findUser = async (user) => {
-  return await User.find(user);
+  return await User.findOne(user);
+};
+
+const updateUser = async (_id, updatedUser) => {
+  return await User.findByIdAndUpdate(_id, updatedUser);
 };
 
 module.exports = {
   fetchAll,
   fetch,
-  update,
+  updateUser,
   createUser,
-  findUser
+  findUser,
 };
