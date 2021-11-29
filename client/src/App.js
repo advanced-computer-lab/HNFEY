@@ -16,6 +16,7 @@ import FlightDetails from "./components/FlightDetails/FlightDetails";
 import Summary from "./components/Summary/Summary";
 import UserProfile from "./components/UserProfile/UserProfile";
 import Login from "./components/Login/Login";
+import EditUser from "./components/EditUser/EditUser";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/get-users" exact component={ListUsers} />
           <Route path="/admin" exact component={AdminHome} />
           <Route path="/login" exact component={Login} />
+          <Route path="/edit-user" exact component={EditUser} />
           <Route path="/search" exact component={SearchForm} />
           <Route
             path="/flights-results-guest"
