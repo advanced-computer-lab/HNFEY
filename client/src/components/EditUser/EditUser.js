@@ -27,6 +27,8 @@ const EditUser = () => {
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+    // setNewUser({ ...user, [e.target.name]: e.target.value });
+    // console.log(newUser);
   };
 
   const handleSubmit = async (e) => {
