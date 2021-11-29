@@ -17,6 +17,7 @@ import Summary from "./components/Summary/Summary";
 import UserProfile from "./components/UserProfile/UserProfile";
 import Login from "./components/Login/Login";
 import EditUser from "./components/EditUser/EditUser";
+import UserReservations from "./components/UserReservations/UserReservations";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/flight/:id" exact component={FlightDetails} />
           <Route path="/flight-information" exact component={Summary} />
           <Route path="/user-profile" exact component={UserProfile} />
+          <Route path="/user-reservations" exact component={UserReservations} />
         </Switch>
       </Router>
     </MuiThemeProvider>
