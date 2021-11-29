@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const seatSchema = new Schema(
   {
-    flightId: { type: Schema.Types.ObjectId, ref: "Flight" },
+    flightId: { type: Schema.Types.ObjectId, ref: "Flight", required: true },
 
     seatNumber: {
       type: String,

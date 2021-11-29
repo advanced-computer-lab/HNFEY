@@ -3,52 +3,52 @@ const controller = require("./controller");
 
 const router = express.Router();
 
-router.get("/list-flights", controller.findPipeline, async (req, res) => {
+router.get("/list-seats", controller.findPipeline, async (req, res) => {
   res.status(200).json({
-    message: "Flight fetched successfully",
-    flights: req.flights,
+    message: "Seat fetched successfully",
+    seats: req.seats,
+  });
+});
+
+router.get("/", controller.findUserSeatsPipeline, async (req, res) => {
+  res.status(200).json({
+    message: "Seat fetched successfully",
+    seats: req.seats,
   });
 });
 
 router.get("/:id", controller.fetchPipeline, async (req, res) => {
   res.status(200).json({
-    message: "Flight fetched successfully",
-    flight: req.flight,
+    message: "Seat fetched successfully",
+    seat: req.seat,
   });
 });
 
-router.get("/", controller.findUserFlightsPipeline, async (req, res) => {
-  res.status(200).json({
-    message: "Flight fetched successfully",
-    flights: req.flights,
-  });
-});
-
-router.post("/create-flight", controller.createPipeline, async (req, res) => {
+router.post("/", controller.createPipeline, async (req, res) => {
   res.status(201).json({
-    message: "Flight created successfully",
-    flight: req.flight,
+    message: "Seat created successfully",
+    seat: req.seat,
   });
 });
 
-router.put("/edit-flight", controller.updatePipeline, async (req, res) => {
+router.put("/edit-seat", controller.updatePipeline, async (req, res) => {
   res.status(200).json({
-    message: "Flight updated successfully",
-    flight: req.updatedFlight,
+    message: "Seat updated successfully",
+    seat: req.updatedSeat,
   });
 });
 
-router.post("/find-flight", controller.findPipeline, async (req, res) => {
+router.post("/find-seat", controller.findPipeline, async (req, res) => {
   res.status(200).json({
-    message: "Flights available:",
-    flights: req.flights,
+    message: "Seats available:",
+    seats: req.seats,
   });
 });
 
 router.delete("/:id", controller.deletePipeline, async (req, res) => {
   if (req.transaction) await req.transaction.commit();
   res.status(200).json({
-    message: "Flight deleted successfully",
+    message: "Seat deleted successfully",
   });
 });
 
