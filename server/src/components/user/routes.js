@@ -24,4 +24,11 @@ router.get("/find-user", controller.findPipeline, async (req, res) => {
   });
 });
 
+router.put("/edit-user", controller.updatePipeline, async (req, res) => {
+  res.status(200).json({
+    message: "User information updated successfully",
+    user: req.updatedUser,
+  });
+});
+
 module.exports = router;

@@ -48,6 +48,22 @@ const createUser = async (req, res, next) => {
   }
 };
 
+const updateUser = async (req, res, next) => {
+  try {
+    const userID = req.body.user._id;
+    const userUpdated = req.body.user;
+    await model.updateUser(userID, req.body.user);
+    if (userUpdated) {
+      next();
+    } else {
+      const err = new Error("Cannot update user");
+      next(err);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 const fetchAllPipeline = [
   //verify Admin,
   fetchAll,
@@ -63,8 +79,14 @@ const findPipeline = [
   findUser,
 ];
 
+const updatePipeline = [
+  //verify admin
+  updateUser,
+];
+
 module.exports = {
   fetchAllPipeline,
   createPipeline,
   findPipeline,
+  updatePipeline
 };
