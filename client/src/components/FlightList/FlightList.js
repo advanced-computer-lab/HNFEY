@@ -83,7 +83,7 @@ export const FlightList = () => {
                 key={flight._id}
                 //   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell component="th" scope="row" key={flight._id}>
                   {flight.flightNumber}
                 </TableCell>
                 <TableCell align="center">{flight.from}</TableCell>

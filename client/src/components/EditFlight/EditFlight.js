@@ -28,6 +28,7 @@ const EditFlight = () => {
     setFlightDetails({
       ...flightDetails,
       departureDateTime: moment(newValue).format("YYYY-MM-DD hh:mm"),
+      departureDay: moment(newValue).format("YYYY-MM-DD"),
     });
   };
 
@@ -35,6 +36,7 @@ const EditFlight = () => {
     setFlightDetails({
       ...flightDetails,
       arrivalDateTime: moment(newValue).format("YYYY-MM-DD hh:mm"),
+      arrivalDay: moment(newValue).format("YYYY-MM-DD"),
     });
   };
 

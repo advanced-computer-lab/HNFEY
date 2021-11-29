@@ -17,10 +17,10 @@ router.post("/", controller.createPipeline, async (req, res) => {
   });
 });
 
-router.post("/find-flight", controller.findFlightsPipeline, async (req, res) => {
+router.get("/find-user", controller.findPipeline, async (req, res) => {
   res.status(200).json({
-    message: "Flights available:",
-    flights: req.flights,
+    message: "user available:",
+    user: req.user,
   });
 });
 
