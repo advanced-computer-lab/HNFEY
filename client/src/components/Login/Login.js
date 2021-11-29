@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 import { TextField, Container, Button } from "@material-ui/core";
-import Axios from "axios";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import InputAdornment from "@mui/material/InputAdornment";
 import { useHistory } from "react-router";
-
 
 const Login = () => {
   const history = useHistory();
   const [userDetails, setUserDetails] = useState({});
-
-
- 
 
   const handleChange = (e) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
@@ -37,8 +30,8 @@ const Login = () => {
     <div>
       <Container component="main" align="center" style={{ marginTop: "65px" }}>
         <form onSubmit={handleSubmit}>
-             <br/>
-         <TextField
+          <br />
+          <TextField
             label="User Name"
             name="username"
             onChange={handleChange}
@@ -60,8 +53,7 @@ const Login = () => {
           />
           <br />
           <br />
-          
-            
+
           <Button
             type="submit"
             style={{ width: 500 }}

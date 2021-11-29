@@ -67,7 +67,15 @@ const updateFlight = async (req, res, next) => {
 const fetch = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const flight = await model.findFlightById(id);
+    let flight;
+    if (req.query) {
+      const flightSearch = {
+        id,
+        class: req.query.class,
+        passengers: req.query.passengers,
+      };
+      flight = await model.findFlightById(flightSearch);
+    } else flight = await model.findFlightById(id);
     if (flight) {
       req.flight = flight;
       next();

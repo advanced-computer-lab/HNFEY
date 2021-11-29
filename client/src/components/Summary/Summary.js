@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import queryString from "query-string";
 import { useLocation } from "react-router";
 import axios from "axios";
-import { Container, Grid, Tooltip, Typography } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  Grid,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CheckIcon from "@mui/icons-material/Check";
@@ -14,6 +20,7 @@ import WifiIcon from "@mui/icons-material/Wifi";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 
 const Summary = () => {
   const location = useLocation();
@@ -27,9 +34,19 @@ const Summary = () => {
   const [returnFlight, setReturnFlight] = useState({});
   const flights = [departingFlight, returnFlight];
   const departingUrl =
-    "http://localhost:8000/hnfey/flight/" + flightInfo.departingFlight;
+    "http://localhost:8000/hnfey/flight/" +
+    flightInfo.departingFlight +
+    "?class=" +
+    fare +
+    "&passengers=" +
+    passengers;
   const arrivalUrl =
-    "http://localhost:8000/hnfey/flight/" + flightInfo.returnFlight;
+    "http://localhost:8000/hnfey/flight/" +
+    flightInfo.returnFlight +
+    "?class=" +
+    fare +
+    "&passengers=" +
+    passengers;
 
   useEffect(() => {
     axios.get(departingUrl).then((res) => {
@@ -313,7 +330,7 @@ const Summary = () => {
               style={{
                 margin: "17% 3% 0%",
                 display: "flex",
-                alignItems: "center",
+                flexDirection: "column",
                 marginBottom: "5%",
                 borderRadius: "7px",
                 backgroundColor: "#fff",
@@ -328,25 +345,190 @@ const Summary = () => {
                   fontWeight: 500,
                 }}
               >
-                Price Summary
+                Price summary
               </Typography>
 
-              {/* <div style={{ marginTop: "5%" }}>
-                {[...Array(Number(passengers)).keys()].map((passenger) => (
+              {[...Array(Number(passengers)).keys()].map((passenger) => (
+                <div>
                   <div
                     style={{
-                      margin: "17% 3% 0%",
+                      margin: "3% 5% 0%",
                       display: "flex",
-                      alignItems: "center",
+                      flexDirection: "row",
                       marginBottom: "5%",
-                      borderRadius: "7px",
-                      backgroundColor: "#fff",
                     }}
                   >
-                    <Typography>Passenger</Typography>
+                    <Typography
+                      variant="h4"
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 500,
+                        flexGrow: 1,
+                      }}
+                    >
+                      Passenger {passenger + 1}
+                    </Typography>
+                    <Typography
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 500,
+                      }}
+                    >
+                      EGP {""}
+                      {departingFlight.price + returnFlight.price}
+                    </Typography>
                   </div>
-                ))}
-              </div> */}
+                  <div
+                    style={{
+                      margin: "1% 5% 0%",
+                      display: "flex",
+                      flexDirection: "row",
+                      marginBottom: "5%",
+                    }}
+                  >
+                    <Typography
+                      variant="h4"
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 300,
+                        flexGrow: 1,
+                      }}
+                    >
+                      Departure Flight
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 300,
+                      }}
+                    >
+                      EGP {departingFlight.price}
+                    </Typography>
+                  </div>
+                  <div
+                    style={{
+                      margin: "1% 5% 0%",
+                      display: "flex",
+                      flexDirection: "row",
+                      marginBottom: "5%",
+                    }}
+                  >
+                    <Typography
+                      variant="h4"
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 300,
+                        flexGrow: 1,
+                      }}
+                    >
+                      Return Flight
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 300,
+                      }}
+                    >
+                      EGP {returnFlight.price}
+                    </Typography>
+                  </div>
+                </div>
+              ))}
+              <div
+                style={{
+                  margin: "1% 5% 1%",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{
+                    fontSize: "1.25rem",
+                    fontWeight: 500,
+                    flexGrow: 1,
+                  }}
+                >
+                  Trip total
+                </Typography>
+                <Typography
+                  variant="h4"
+                  style={{
+                    fontSize: "1.25rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  EGP{" "}
+                  {(departingFlight.price + returnFlight.price) * passengers}
+                </Typography>
+              </div>
+              <div
+                style={{
+                  margin: "1% 5% 15%",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{ fontSize: "0.625rem", fontWeight: 300 }}
+                >
+                  Rates are quoted in Egyptian Pounds
+                </Typography>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  margin: "0% 10% 5%",
+                }}
+              >
+                <Button
+                  type="submit"
+                  style={{ width: 500 }}
+                  variant="contained"
+                  color="primary"
+                >
+                  Check out
+                </Button>
+              </div>
+            </div>
+            <div
+              style={{
+                margin: "17% 3% 0%",
+                display: "flex",
+                flexDirection: "row",
+                marginBottom: "5%",
+                borderRadius: "7px",
+                backgroundColor: "#fff",
+              }}
+            >
+              <AccessTimeFilledIcon
+                fontSize="large"
+                style={{ color: "red", margin: "5% 1% 5% 3%" }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "5%",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{ fontSize: "0.875rem", fontWeight: 500 }}
+                >
+                  Free cancellation
+                </Typography>
+                <Typography
+                  variant="h4"
+                  style={{ fontSize: "0.875rem", fontWeight: 300 }}
+                >
+                  There's no fee to cancel within 24 hours of booking.
+                </Typography>
+              </div>
             </div>
           </div>
         </Grid>
