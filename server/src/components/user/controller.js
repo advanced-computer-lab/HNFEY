@@ -66,5 +66,5 @@ const findPipeline = [
 module.exports = {
   fetchAllPipeline,
   createPipeline,
-  findPipeline
+  findPipeline,
 };

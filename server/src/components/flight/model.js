@@ -31,8 +31,21 @@ const findUserFlights = async (flight) => {
   }
 };
 
-const findFlightById = (_id) => {
-  return Flight.findById(_id);
+const findFlightById = (flight) => {
+  if (flight.class) {
+    if (flight.class === "Economy" && flight.passengers) {
+      return Flight.findOne({
+        _id: flight.id,
+        numberOfAvailableEconomySeats: { $gte: flight.passengers },
+      });
+    } else if (flight.class === "Business" && flight.passengers) {
+      return Flight.findOne({
+        _id: flight.id,
+        numberOfAvailableBusinessSeats: { $gte: flight.passengers },
+      });
+    }
+  }
+  return Flight.findById(flight);
 };
 const removeFlight = (_id) => Flight.deleteOne({ _id });
 

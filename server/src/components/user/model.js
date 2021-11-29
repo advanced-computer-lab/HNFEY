@@ -15,7 +15,7 @@ const update = async (_id, updatedUser) => {
 };
 
 const findUser = async (user) => {
-  return await User.find(user);
+  return await User.findOne(user);
 };
 
 module.exports = {
@@ -23,5 +23,5 @@ module.exports = {
   fetch,
   update,
   createUser,
-  findUser
+  findUser,
 };
