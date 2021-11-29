@@ -45,7 +45,10 @@ const EditFlight = () => {
     try {
       const flight = { flight: flightDetails };
       Axios.put("http://localhost:8000/hnfey/flight/edit-flight", flight).then(
-        () => history.push("/list-all-flights")
+        (res) => {
+          console.log(res.data);
+          history.push("/list-all-flights");
+        }
       );
     } catch (err) {
       console.log(err);
@@ -217,10 +220,24 @@ const EditFlight = () => {
           <TextField
             style={{ width: 500 }}
             onChange={handleChange}
-            value={flightDetails.price}
-            name="price"
+            value={flightDetails.economyPrice}
+            name="economyPrice"
             variant="outlined"
-            label="Price"
+            label="Economy Price"
+            type="text"
+            required
+          />
+
+          <br />
+          <br />
+
+          <TextField
+            style={{ width: 500 }}
+            onChange={handleChange}
+            value={flightDetails.businessPrice}
+            name="businessPrice"
+            variant="outlined"
+            label="Business Price"
             type="text"
             required
           />

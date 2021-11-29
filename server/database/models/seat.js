@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const seatSchema = new Schema(
   {
-    flightId: { type: Schema.Types.ObjectId, ref: "Flight", required: true },
+    flightId: { type: Schema.Types.ObjectId, ref: "flight", required: true },
 
     seatNumber: {
       type: String,
@@ -13,9 +13,14 @@ const seatSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    class: {
+      type: String,
+      required: true,
+      enum: ["Economy", "Business"],
+    },
   },
   { timestamps: true }
 );
 
-const Seat = mongoose.model("seat", seatSchema);
-module.exports = Seat;
+const seat = mongoose.model("seat", seatSchema);
+module.exports = seat;

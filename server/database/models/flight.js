@@ -74,12 +74,12 @@ const flightSchema = new Schema(
     seats: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Seat",
+        ref: "seat",
       },
     ],
   },
   { timestamps: true }
 );
 
-const Flight = mongoose.model("flight", flightSchema);
-module.exports = Flight;
+const flight = mongoose.model("flight", flightSchema);
+module.exports = flight;

@@ -54,6 +54,7 @@ const updateFlight = async (req, res, next) => {
     const flightUpdated = req.body.flight;
     await model.updateFlight(flightId, req.body.flight);
     if (flightUpdated) {
+      req.updatedFlight = flightUpdated;
       next();
     } else {
       const err = new Error("Cannot update flight");
@@ -68,7 +69,7 @@ const fetch = async (req, res, next) => {
   try {
     const id = req.params.id;
     let flight;
-    if (req.query) {
+    if (req.query.class && req.query.passengers) {
       const flightSearch = {
         id,
         class: req.query.class,

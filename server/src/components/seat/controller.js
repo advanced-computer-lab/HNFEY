@@ -47,6 +47,22 @@ const createSeat = async (req, res, next) => {
   }
 };
 
+const createSeatsBulk = async (req, res, next) => {
+  try {
+    const seats = req.body.seats;
+    const seatsCreated = await model.createSeatsBulk(seats);
+    if (seatsCreated) {
+      req.seats = seatsCreated;
+      next();
+    } else {
+      const err = new Error("Cannot create seat");
+      next(err);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 const updateSeat = async (req, res, next) => {
   try {
     const seatId = req.body.seat._id;
@@ -123,6 +139,11 @@ const createPipeline = [
   createSeat,
 ];
 
+const createBulkPipeline = [
+  //verify Admin,
+  createSeatsBulk,
+];
+
 const updatePipeline = [
   //verify admin
   updateSeat,
@@ -152,4 +173,5 @@ module.exports = {
   findUserSeatsPipeline,
   findPipeline,
   deletePipeline,
+  createBulkPipeline,
 };
