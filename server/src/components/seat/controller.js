@@ -2,12 +2,12 @@ const model = require("./model");
 
 const fetchAll = async (req, res, next) => {
   try {
-    const flights = await model.fetchAll();
-    if (flights) {
-      req.flights = flights;
+    const seats = await model.fetchAll();
+    if (seats) {
+      req.seats = seats;
       next();
     } else {
-      const err = new Error("Flights not found");
+      const err = new Error("Seats not found");
       next(err);
     }
   } catch (err) {
@@ -15,16 +15,15 @@ const fetchAll = async (req, res, next) => {
   }
 };
 
-const fetchUserFlights = async (req, res, next) => {
+const fetchUserSeats = async (req, res, next) => {
   try {
-    const flight = req.query;
-    const flightResults = await model.findUserFlights(flight);
-    if (flightResults) {
-      req.flights = flightResults;
+    const seat = req.query;
+    const seatResults = await model.findUserSeats(seat);
+    if (seatResults) {
+      req.seats = seatResults;
       next();
     } else {
-      const err = new Error("Cannot find flight");
-
+      const err = new Error("Cannot find seat");
       next(err);
     }
   } catch (err) {
@@ -32,15 +31,15 @@ const fetchUserFlights = async (req, res, next) => {
   }
 };
 
-const createFlight = async (req, res, next) => {
+const createSeat = async (req, res, next) => {
   try {
-    const flight = req.body.flight;
-    const flightCreated = await model.createFlight(flight);
-    if (flightCreated) {
-      req.flight = flightCreated;
+    const seat = req.body.seat;
+    const seatCreated = await model.createSeat(seat);
+    if (seatCreated) {
+      req.seat = seatCreated;
       next();
     } else {
-      const err = new Error("Cannot create flight");
+      const err = new Error("Cannot create seat");
       next(err);
     }
   } catch (err) {
@@ -48,15 +47,15 @@ const createFlight = async (req, res, next) => {
   }
 };
 
-const updateFlight = async (req, res, next) => {
+const updateSeat = async (req, res, next) => {
   try {
-    const flightId = req.body.flight._id;
-    const flightUpdated = req.body.flight;
-    await model.updateFlight(flightId, req.body.flight);
-    if (flightUpdated) {
+    const seatId = req.body.seat._id;
+    const seatUpdated = req.body.seat;
+    await model.updateSeat(seatId, req.body.seat);
+    if (seatUpdated) {
       next();
     } else {
-      const err = new Error("Cannot update flight");
+      const err = new Error("Cannot update seat");
       next(err);
     }
   } catch (err) {
@@ -67,20 +66,20 @@ const updateFlight = async (req, res, next) => {
 const fetch = async (req, res, next) => {
   try {
     const id = req.params.id;
-    let flight;
+    let seat;
     if (req.query) {
-      const flightSearch = {
+      const seatSearch = {
         id,
         class: req.query.class,
         passengers: req.query.passengers,
       };
-      flight = await model.findFlightById(flightSearch);
-    } else flight = await model.findFlightById(id);
-    if (flight) {
-      req.flight = flight;
+      seat = await model.findSeatById(seatSearch);
+    } else seat = await model.findSeatById(id);
+    if (seat) {
+      req.seat = seat;
       next();
     } else {
-      const err = new Error("Cannot find flight");
+      const err = new Error("Cannot find seat");
       next(err);
     }
   } catch (err) {
@@ -88,15 +87,15 @@ const fetch = async (req, res, next) => {
   }
 };
 
-const findFlight = async (req, res, next) => {
+const findSeat = async (req, res, next) => {
   try {
-    const flight = req.query;
-    const flightResults = await model.findFlight(flight);
-    if (flightResults) {
-      req.flights = flightResults;
+    const seat = req.query;
+    const seatResults = await model.findSeat(seat);
+    if (seatResults) {
+      req.seats = seatResults;
       next();
     } else {
-      const err = new Error("Cannot find flight");
+      const err = new Error("Cannot find seat");
 
       next(err);
     }
@@ -105,9 +104,9 @@ const findFlight = async (req, res, next) => {
   }
 };
 
-const removeFlight = async (req, res, next) => {
+const removeSeat = async (req, res, next) => {
   try {
-    await model.removeFlight(req.params.id);
+    await model.removeSeat(req.params.id);
     next();
   } catch (err) {
     next(err);
@@ -121,28 +120,28 @@ const fetchAllPipeline = [
 
 const createPipeline = [
   //verify Admin,
-  createFlight,
+  createSeat,
 ];
 
 const updatePipeline = [
   //verify admin
-  updateFlight,
+  updateSeat,
 ];
 const findPipeline = [
   //verify Admin,
-  findFlight,
+  findSeat,
 ];
 
-const findUserFlightsPipeline = [
+const findUserSeatsPipeline = [
   //verify Admin,
-  fetchUserFlights,
+  fetchUserSeats,
 ];
 
 const fetchPipeline = [fetch];
 
 const deletePipeline = [
   //verify Admin,
-  removeFlight,
+  removeSeat,
 ];
 
 module.exports = {
@@ -150,7 +149,7 @@ module.exports = {
   fetchPipeline,
   createPipeline,
   updatePipeline,
-  findUserFlightsPipeline,
+  findUserSeatsPipeline,
   findPipeline,
   deletePipeline,
 };
