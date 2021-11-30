@@ -13,9 +13,14 @@ const seatSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    class: {
+      type: String,
+      required: true,
+      enum: ["Economy", "Business"],
+    },
   },
   { timestamps: true }
 );
 
-const Seat = mongoose.model("seat", seatSchema);
+const Seat = mongoose.model("Seat", seatSchema);
 module.exports = Seat;

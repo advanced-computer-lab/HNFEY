@@ -31,17 +31,17 @@ router.post("/", controller.createPipeline, async (req, res) => {
   });
 });
 
+router.post("/bulk-create", controller.createBulkPipeline, async (req, res) => {
+  res.status(201).json({
+    message: "Seat created successfully",
+    seats: req.seats,
+  });
+});
+
 router.put("/edit-seat", controller.updatePipeline, async (req, res) => {
   res.status(200).json({
     message: "Seat updated successfully",
     seat: req.updatedSeat,
-  });
-});
-
-router.post("/find-seat", controller.findPipeline, async (req, res) => {
-  res.status(200).json({
-    message: "Seats available:",
-    seats: req.seats,
   });
 });
 

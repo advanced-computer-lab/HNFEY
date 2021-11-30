@@ -11,6 +11,7 @@ export const CreateFlightForm = () => {
   const history = useHistory();
   const [departureValue, setDepartureValue] = useState(null);
   const [arrivalValue, setArrivalValue] = useState(null);
+  const [flightDetails, setFlightDetails] = useState({});
 
   const handleChange = (e) => {
     if (e.target.name === "numberOfEconomySeats") {
@@ -49,21 +50,139 @@ export const CreateFlightForm = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-
+    const numberOfSeats =
+      Number(flightDetails.numberOfBusinessSeats) +
+      Number(flightDetails.numberOfEconomySeats);
+    delete flightDetails.seats;
     const flight = {
       flight: flightDetails,
     };
 
     let url = "http://localhost:8000/hnfey/flight/create-flight";
-
+    let seatsUrl = "http://localhost:8000/hnfey/seat/bulk-create";
+    let flightSeatsUrl = "http://localhost:8000/hnfey/flight/edit-flight";
+    const seatsArray = [];
+    let flightId;
     try {
-      await Axios.post(url, flight);
+      await Axios.post(url, flight).then((res) => {
+        flightId = res.data.flight._id;
+        for (let index = 0; index < numberOfSeats; index++) {
+          let seat = {
+            flightId: flightId,
+            seatNumber: "",
+            reserved: false,
+            class: "",
+          };
+          if (index < flightDetails.numberOfBusinessSeats) {
+            seat.class = "Business";
+          } else {
+            seat.class = "Economy";
+          }
+          switch (Math.floor(index / 10)) {
+            case 0:
+              seat.seatNumber = "A" + (index % 10);
+              break;
+            case 1:
+              seat.seatNumber = "B" + (index % 10);
+              break;
+            case 2:
+              seat.seatNumber = "C" + (index % 10);
+              break;
+            case 3:
+              seat.seatNumber = "D" + (index % 10);
+              break;
+            case 4:
+              seat.seatNumber = "E" + (index % 10);
+              break;
+            case 5:
+              seat.seatNumber = "F" + (index % 10);
+              break;
+            case 6:
+              seat.seatNumber = "G" + (index % 10);
+              break;
+            case 7:
+              seat.seatNumber = "H" + (index % 10);
+              break;
+            case 8:
+              seat.seatNumber = "I" + (index % 10);
+              break;
+            case 9:
+              seat.seatNumber = "J" + (index % 10);
+              break;
+            case 10:
+              seat.seatNumber = "K" + (index % 10);
+              break;
+            case 11:
+              seat.seatNumber = "L" + (index % 10);
+              break;
+            case 12:
+              seat.seatNumber = "M" + (index % 10);
+              break;
+            case 13:
+              seat.seatNumber = "N" + (index % 10);
+              break;
+            case 14:
+              seat.seatNumber = "O" + (index % 10);
+              break;
+            case 15:
+              seat.seatNumber = "P" + (index % 10);
+              break;
+            case 16:
+              seat.seatNumber = "Q" + (index % 10);
+              break;
+            case 17:
+              seat.seatNumber = "R" + (index % 10);
+              break;
+            case 18:
+              seat.seatNumber = "S" + (index % 10);
+              break;
+            case 19:
+              seat.seatNumber = "T" + (index % 10);
+              break;
+            case 20:
+              seat.seatNumber = "U" + (index % 10);
+              break;
+            case 21:
+              seat.seatNumber = "V" + (index % 10);
+              break;
+            case 22:
+              seat.seatNumber = "W" + (index % 10);
+              break;
+            case 23:
+              seat.seatNumber = "X" + (index % 10);
+              break;
+            case 24:
+              seat.seatNumber = "Y" + (index % 10);
+              break;
+            case 25:
+              seat.seatNumber = "Z" + (index % 10);
+              break;
+            default:
+              break;
+          }
+          seatsArray.push(seat);
+        }
+      });
+      const seats = {
+        seats: seatsArray,
+      };
+      const seatsId = [];
+      await Axios.post(seatsUrl, seats).then((res) => {
+        res.data.seats.map((seat) => seatsId.push(seat._id));
+      });
+
+      const flightSeats = {
+        flight: { _id: flightId, seats: seatsId },
+      };
+      await Axios.put(flightSeatsUrl, flightSeats).then((res) => {
+        console.log(res.data);
+      });
+
       history.push("/list-all-flights");
     } catch (err) {
       alert(err);
     }
   };
-  const [flightDetails, setFlightDetails] = useState({});
 
   return (
     <Container component="main" align="center" style={{ marginTop: "65px" }}>
@@ -175,6 +294,7 @@ export const CreateFlightForm = () => {
             style={{ width: 500 }}
             onChange={handleChange}
             name="numberOfEconomySeats"
+            InputProps={{ inputProps: { max: 200, step: 1 } }}
             variant="outlined"
             label="Number of Economy Seats"
             type="number"
@@ -188,6 +308,16 @@ export const CreateFlightForm = () => {
             style={{ width: 500 }}
             onChange={handleChange}
             name="numberOfBusinessSeats"
+            InputProps={{
+              inputProps: {
+                max:
+                  260 -
+                  (!flightDetails.numberOfEconomySeats
+                    ? 0
+                    : flightDetails.numberOfEconomySeats),
+                step: 1,
+              },
+            }}
             variant="outlined"
             label="Number of Business Seats"
             type="number"
@@ -213,9 +343,22 @@ export const CreateFlightForm = () => {
           <TextField
             style={{ width: 500 }}
             onChange={handleChange}
-            name="price"
+            name="economyPrice"
             variant="outlined"
-            label="Price"
+            label="Economy Price"
+            type="number"
+            required
+          />
+
+          <br />
+          <br />
+
+          <TextField
+            style={{ width: 500 }}
+            onChange={handleChange}
+            name="businessPrice"
+            variant="outlined"
+            label="Business Price"
             type="number"
             required
           />
