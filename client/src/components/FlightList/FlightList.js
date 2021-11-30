@@ -32,6 +32,7 @@ export const FlightList = () => {
 
   useEffect(() => {
     Axios.get(url).then((res) => setList(res.data.flights));
+    console.log(url);
   }, [url]); //might be flights
 
   const submit = (flightId) => {
