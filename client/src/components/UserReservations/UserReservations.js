@@ -18,13 +18,17 @@ import { CircularProgress } from "@material-ui/core";
 
 const UserReservations = () => {
 
-    const history = useHistory();
+  const history = useHistory();
 
   const [user, setUser] = useState({});
-  const [userReservations, setUserReservations] = useState({});
+  const [userReservations, setUserReservations] = useState([]);
+  const [departingFlight, setDepartingFlight] = useState({});
+  const [arrivalFlight, setArrivalFlight] = useState({});
   const location = useLocation();
   let url = "http://localhost:8000/hnfey/user/find-user?";
   let url2= "http://localhost:8000/hnfey/reservation/find-reservation?";
+  let url3= "http://localhost:8000/hnfey/flight/list-flights?";
+  let url4= "http://localhost:8000/hnfey/flight/list-flights?";
   let query = queryString.parse(location.search);
   const noOfKeys = Object.keys(query).length;
   Object.entries(query).map((entry, i) => {
@@ -34,30 +38,65 @@ const UserReservations = () => {
   });
   
 useEffect(() => {
-    Axios.get(url).then((res) => {
+   const fetchData = async () => {
+    await Axios.get(url).then((res) => {
         setUser(() => res.data.user);
+          const userIDQuery = "userId="+res.data.user._id;
+          url2+= userIDQuery;
+          
     });
-    if(user._id){
-        const userIDQuery = "userId="+user._id;
-        url2+= userIDQuery;
-        console.log(url2);
-        Axios.get(url2).then((res) => {
+    
+       await Axios.get(url2).then((res) => {
             setUserReservations(() => res.data.reservation);
-      });
-    }
-    else{
-      console.log('Loading')
-    }
-  }, [url]);
+            const flightIDQuery = "_id="+res.data.reservation[0].departingFlightId;
+          url3+= flightIDQuery;
+          
 
-    return (
+          const flightIDQuery1 = "_id="+res.data.reservation[0].arrvivalFlightId;
+          url4+= flightIDQuery1;
+          
+
+      });
+
+          await Axios.get(url3)
+          .then((res) => {
+          res.data.flights.map((flight) =>{
+            setDepartingFlight({ ...departingFlight, ['id'+ flight._id]:flight });
+
+          })
+          
+             //setDepartingFlight(() => res.data.flights);
+            //console.log(departingFlight);
+
+       })
+
+       await Axios.get(url4)
+          .then((res) => {
+            res.data.flights.map((flight) =>{
+              setArrivalFlight({ ...arrivalFlight, ['id'+ flight._id]:flight });
+  
+            })
+
+       })
+  }
+  fetchData();
+    },[]);
+
+    return user._id ? (
         <div>
-            {console.log(user)}
+          {/* {console.log(arrivalFlight.id61a13cdde995fc9671399ebe)} */}
+          {userReservations.map((reservation) => {
+            {const concat = 'id'+reservation.departingFlightId;
+             console.log(concat);
+             if(departingFlight._id)
+            console.log(departingFlight.id61890bcf7c8b767173907e47.to)}
+
+          })}
         </div>
       )
-      // : (
-      //   <CircularProgress />
-      // );
+      : (
+        <CircularProgress />
+      );
 }
 
 export default UserReservations
