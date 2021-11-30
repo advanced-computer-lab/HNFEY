@@ -13,6 +13,8 @@ import {
   Table,
 } from "@material-ui/core";
 import { useEffect } from "react";
+import { CircularProgress } from "@material-ui/core";
+
 
 const UserReservations = () => {
 
@@ -43,13 +45,19 @@ useEffect(() => {
             setUserReservations(() => res.data.reservation);
       });
     }
+    else{
+      console.log('Loading')
+    }
   }, [url]);
 
     return (
         <div>
-            {console.log(userReservations)}
+            {console.log(user)}
         </div>
-      ); 
+      )
+      // : (
+      //   <CircularProgress />
+      // );
 }
 
 export default UserReservations
