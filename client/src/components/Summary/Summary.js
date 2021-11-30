@@ -20,6 +20,7 @@ import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { useHistory } from "react-router";
 
 const Summary = (props) => {
   const fare = props.location.state.class;
@@ -27,6 +28,7 @@ const Summary = (props) => {
   const [departingFlight, setDepartingFlight] = useState({});
   const [returnFlight, setReturnFlight] = useState({});
   const flights = [departingFlight, returnFlight];
+  const history = useHistory();
 
   useEffect(() => {
     setDepartingFlight(props.location.state.departingFlight);
@@ -41,6 +43,18 @@ const Summary = (props) => {
         {
           label: "Yes",
           onClick: () => {
+            history.push("/flight/seat-selection", {
+              flightToSelect: {
+                ...departingFlight,
+                class: fare,
+                passengers: Number(passengers),
+              },
+              flightInQueue: {
+                ...returnFlight,
+                class: fare,
+                passengers: Number(passengers),
+              },
+            });
             // handleDelete(flightId);
           },
         },

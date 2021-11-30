@@ -18,6 +18,7 @@ import UserProfile from "./components/UserProfile/UserProfile";
 import Login from "./components/Login/Login";
 import EditUser from "./components/EditUser/EditUser";
 import UserReservations from "./components/UserReservations/UserReservations";
+import SeatSelection from "./components/SeatSelection/SeatSelection";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -47,6 +48,11 @@ const App = () => {
           <Route path="/create-flight" exact component={CreateFlightForm} />
           <Route path="/list-all-flights" exact component={ListAllFlights} />
           <Route path="/edit/:id" exact component={EditFlight} />
+          <Route
+            path="/flight/seat-selection"
+            exact
+            component={SeatSelection}
+          />
           <Route path="/flight/:id" exact component={FlightDetails} />
           <Route path="/flight-information" exact component={Summary} />
           <Route path="/user-profile" exact component={UserProfile} />

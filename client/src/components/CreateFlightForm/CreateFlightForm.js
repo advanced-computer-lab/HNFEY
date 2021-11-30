@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, TextField, Container, Typography } from "@material-ui/core";
-import { useHistory } from "react-router";
 import Axios from "axios";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -8,7 +7,6 @@ import DateTimePicker from "@mui/lab/DateTimePicker";
 import moment from "moment";
 
 export const CreateFlightForm = () => {
-  const history = useHistory();
   const [departureValue, setDepartureValue] = useState(null);
   const [arrivalValue, setArrivalValue] = useState(null);
   const [flightDetails, setFlightDetails] = useState({});
@@ -50,9 +48,6 @@ export const CreateFlightForm = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    const numberOfSeats =
-      Number(flightDetails.numberOfBusinessSeats) +
-      Number(flightDetails.numberOfEconomySeats);
     delete flightDetails.seats;
     const flight = {
       flight: flightDetails,
@@ -66,102 +61,212 @@ export const CreateFlightForm = () => {
     try {
       await Axios.post(url, flight).then((res) => {
         flightId = res.data.flight._id;
-        for (let index = 0; index < numberOfSeats; index++) {
-          let seat = {
-            flightId: flightId,
-            seatNumber: "",
-            reserved: false,
-            class: "",
-          };
-          if (index < flightDetails.numberOfBusinessSeats) {
-            seat.class = "Business";
-          } else {
-            seat.class = "Economy";
+        let businessSeatsInRow = 6;
+        for (
+          let index = 1;
+          index <= Math.ceil(Number(flightDetails.numberOfBusinessSeats) / 6);
+          index++
+        ) {
+          if (
+            index === Math.ceil(Number(flightDetails.numberOfBusinessSeats) / 6)
+          ) {
+            businessSeatsInRow =
+              Number(flightDetails.numberOfBusinessSeats) % 6;
           }
-          switch (Math.floor(index / 10)) {
-            case 0:
-              seat.seatNumber = "A" + (index % 10);
-              break;
-            case 1:
-              seat.seatNumber = "B" + (index % 10);
-              break;
-            case 2:
-              seat.seatNumber = "C" + (index % 10);
-              break;
-            case 3:
-              seat.seatNumber = "D" + (index % 10);
-              break;
-            case 4:
-              seat.seatNumber = "E" + (index % 10);
-              break;
-            case 5:
-              seat.seatNumber = "F" + (index % 10);
-              break;
-            case 6:
-              seat.seatNumber = "G" + (index % 10);
-              break;
-            case 7:
-              seat.seatNumber = "H" + (index % 10);
-              break;
-            case 8:
-              seat.seatNumber = "I" + (index % 10);
-              break;
-            case 9:
-              seat.seatNumber = "J" + (index % 10);
-              break;
-            case 10:
-              seat.seatNumber = "K" + (index % 10);
-              break;
-            case 11:
-              seat.seatNumber = "L" + (index % 10);
-              break;
-            case 12:
-              seat.seatNumber = "M" + (index % 10);
-              break;
-            case 13:
-              seat.seatNumber = "N" + (index % 10);
-              break;
-            case 14:
-              seat.seatNumber = "O" + (index % 10);
-              break;
-            case 15:
-              seat.seatNumber = "P" + (index % 10);
-              break;
-            case 16:
-              seat.seatNumber = "Q" + (index % 10);
-              break;
-            case 17:
-              seat.seatNumber = "R" + (index % 10);
-              break;
-            case 18:
-              seat.seatNumber = "S" + (index % 10);
-              break;
-            case 19:
-              seat.seatNumber = "T" + (index % 10);
-              break;
-            case 20:
-              seat.seatNumber = "U" + (index % 10);
-              break;
-            case 21:
-              seat.seatNumber = "V" + (index % 10);
-              break;
-            case 22:
-              seat.seatNumber = "W" + (index % 10);
-              break;
-            case 23:
-              seat.seatNumber = "X" + (index % 10);
-              break;
-            case 24:
-              seat.seatNumber = "Y" + (index % 10);
-              break;
-            case 25:
-              seat.seatNumber = "Z" + (index % 10);
-              break;
-            default:
-              break;
+          for (let i = 1; i <= businessSeatsInRow; i++) {
+            let seat = {
+              flightId: flightId,
+              seatNumber: "",
+              reserved: false,
+              class: "Business",
+            };
+            switch (i) {
+              case 1:
+                seat.seatNumber = "A" + index;
+                break;
+              case 2:
+                seat.seatNumber = "B" + index;
+                break;
+              case 3:
+                seat.seatNumber = "C" + index;
+                break;
+              case 4:
+                seat.seatNumber = "D" + index;
+                break;
+              case 5:
+                seat.seatNumber = "E" + index;
+                break;
+              case 6:
+                seat.seatNumber = "F" + index;
+                break;
+              default:
+                break;
+            }
+            seatsArray.push(seat);
           }
-          seatsArray.push(seat);
         }
+        let economySeatsInRow = 10;
+        let businessRows = Math.ceil(
+          Number(flightDetails.numberOfBusinessSeats) / 6
+        );
+        for (
+          let index = businessRows + 1;
+          index <=
+          Math.ceil(Number(flightDetails.numberOfEconomySeats) / 10) +
+            businessRows;
+          index++
+        ) {
+          if (
+            index ===
+            Math.ceil(Number(flightDetails.numberOfEconomySeats) / 6) +
+              businessRows
+          ) {
+            economySeatsInRow = Number(flightDetails.numberOfEconomySeats) % 10;
+          }
+          for (let i = 1; i <= economySeatsInRow; i++) {
+            let seat = {
+              flightId: flightId,
+              seatNumber: "",
+              reserved: false,
+              class: "Economy",
+            };
+            switch (i) {
+              case 1:
+                seat.seatNumber = "A" + index;
+                break;
+              case 2:
+                seat.seatNumber = "B" + index;
+                break;
+              case 3:
+                seat.seatNumber = "C" + index;
+                break;
+              case 4:
+                seat.seatNumber = "D" + index;
+                break;
+              case 5:
+                seat.seatNumber = "E" + index;
+                break;
+              case 6:
+                seat.seatNumber = "F" + index;
+                break;
+              case 7:
+                seat.seatNumber = "G" + index;
+                break;
+              case 8:
+                seat.seatNumber = "H" + index;
+                break;
+              case 9:
+                seat.seatNumber = "I" + index;
+                break;
+              case 10:
+                seat.seatNumber = "J" + index;
+                break;
+              default:
+                break;
+            }
+            seatsArray.push(seat);
+          }
+        }
+        console.log(seatsArray);
+        // for (let index = 0; index < numberOfSeats; index++) {
+        //   let seat = {
+        //     flightId: flightId,
+        //     seatNumber: "",
+        //     reserved: false,
+        //     class: "",
+        //   };
+        //   if (index < flightDetails.numberOfBusinessSeats) {
+        //   }
+
+        //   if (index < flightDetails.numberOfBusinessSeats) {
+        //     seat.class = "Business";
+        //   } else {
+        //     seat.class = "Economy";
+        //   }
+        //   switch (Math.floor(index / 10)) {
+        //     case 0:
+        //       seat.seatNumber = "A" + (index % 10);
+        //       break;
+        //     case 1:
+        //       seat.seatNumber = "B" + (index % 10);
+        //       break;
+        //     case 2:
+        //       seat.seatNumber = "C" + (index % 10);
+        //       break;
+        //     case 3:
+        //       seat.seatNumber = "D" + (index % 10);
+        //       break;
+        //     case 4:
+        //       seat.seatNumber = "E" + (index % 10);
+        //       break;
+        //     case 5:
+        //       seat.seatNumber = "F" + (index % 10);
+        //       break;
+        //     case 6:
+        //       seat.seatNumber = "G" + (index % 10);
+        //       break;
+        //     case 7:
+        //       seat.seatNumber = "H" + (index % 10);
+        //       break;
+        //     case 8:
+        //       seat.seatNumber = "I" + (index % 10);
+        //       break;
+        //     case 9:
+        //       seat.seatNumber = "J" + (index % 10);
+        //       break;
+        //     case 10:
+        //       seat.seatNumber = "K" + (index % 10);
+        //       break;
+        //     case 11:
+        //       seat.seatNumber = "L" + (index % 10);
+        //       break;
+        //     case 12:
+        //       seat.seatNumber = "M" + (index % 10);
+        //       break;
+        //     case 13:
+        //       seat.seatNumber = "N" + (index % 10);
+        //       break;
+        //     case 14:
+        //       seat.seatNumber = "O" + (index % 10);
+        //       break;
+        //     case 15:
+        //       seat.seatNumber = "P" + (index % 10);
+        //       break;
+        //     case 16:
+        //       seat.seatNumber = "Q" + (index % 10);
+        //       break;
+        //     case 17:
+        //       seat.seatNumber = "R" + (index % 10);
+        //       break;
+        //     case 18:
+        //       seat.seatNumber = "S" + (index % 10);
+        //       break;
+        //     case 19:
+        //       seat.seatNumber = "T" + (index % 10);
+        //       break;
+        //     case 20:
+        //       seat.seatNumber = "U" + (index % 10);
+        //       break;
+        //     case 21:
+        //       seat.seatNumber = "V" + (index % 10);
+        //       break;
+        //     case 22:
+        //       seat.seatNumber = "W" + (index % 10);
+        //       break;
+        //     case 23:
+        //       seat.seatNumber = "X" + (index % 10);
+        //       break;
+        //     case 24:
+        //       seat.seatNumber = "Y" + (index % 10);
+        //       break;
+        //     case 25:
+        //       seat.seatNumber = "Z" + (index % 10);
+        //       break;
+        //     default:
+        //       break;
+        //   }
+        //   seatsArray.push(seat);
+        // }
       });
       const seats = {
         seats: seatsArray,
@@ -178,7 +283,7 @@ export const CreateFlightForm = () => {
         console.log(res.data);
       });
 
-      history.push("/list-all-flights");
+      // history.push("/list-all-flights");
     } catch (err) {
       alert(err);
     }
@@ -294,7 +399,7 @@ export const CreateFlightForm = () => {
             style={{ width: 500 }}
             onChange={handleChange}
             name="numberOfEconomySeats"
-            InputProps={{ inputProps: { max: 200, step: 1 } }}
+            InputProps={{ inputProps: { min: 40, max: 200, step: 1 } }}
             variant="outlined"
             label="Number of Economy Seats"
             type="number"
