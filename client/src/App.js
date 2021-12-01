@@ -18,6 +18,7 @@ import UserProfile from "./components/UserProfile/UserProfile";
 import Login from "./components/Login/Login";
 import EditUser from "./components/EditUser/EditUser";
 import UserReservations from "./components/UserReservations/UserReservations";
+import Reservations from "./components/Reservations/Reservations";
 import SeatSelection from "./components/SeatSelection/SeatSelection";
 
 const App = () => {
@@ -57,6 +58,7 @@ const App = () => {
           <Route path="/flight-information" exact component={Summary} />
           <Route path="/user-profile" exact component={UserProfile} />
           <Route path="/user-reservations" exact component={UserReservations} />
+          <Route path="/reservations" exact component={Reservations} />
         </Switch>
       </Router>
     </MuiThemeProvider>
