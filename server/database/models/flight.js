@@ -73,8 +73,19 @@ const flightSchema = new Schema(
     },
     seats: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Seat",
+        seatNumber: {
+          type: String,
+          required: true,
+        },
+        reserved: {
+          type: Boolean,
+          required: true,
+        },
+        class: {
+          type: String,
+          required: true,
+          enum: ["Economy", "Business"],
+        },
       },
     ],
   },
