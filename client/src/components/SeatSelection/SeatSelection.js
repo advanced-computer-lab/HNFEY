@@ -1,5 +1,5 @@
 import { Container, Grid, Tooltip, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import PowerIcon from "@mui/icons-material/Power";
@@ -16,7 +16,17 @@ import getTimeDifference from "../../utils/time";
 const SeatSelection = (props) => {
   const flight = props.location.state.flightToSelect;
   const [seatsSelected, setSeatsSelected] = useState(0);
+  const [businessSeats, setBusinessSeats] = useState([]);
+  const [economySeats, setEconomySeats] = useState([]);
 
+  useEffect(() => {
+    flight?.seats.map((seat) =>
+      seat.class === "Business"
+        ? setBusinessSeats((prev) => [...prev, seat])
+        : setEconomySeats((prev) => [...prev, seat])
+    );
+  }, [flight]);
+  console.log(flight.seats);
   return (
     <Container component="main" style={{ marginTop: "6%" }}>
       <Grid container alignItems="stretch" spacing={3}>
@@ -460,91 +470,123 @@ const SeatSelection = (props) => {
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
 
-                {[...Array(flight.numberOfBusinessSeats).keys()].map(
-                  (businessSeat, i) => {
-                    if (i % 6 === 0) {
-                      return (
-                        <>
-                          <Grid item md={1}>
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                width: "25px",
-                                height: "25px",
-                              }}
+                {businessSeats.map((seat, i) => {
+                  if (i % 6 === 0) {
+                    return (
+                      <>
+                        <Grid item md={1}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: "25px",
+                              height: "25px",
+                            }}
+                          >
+                            <Typography
+                              variant="h3"
+                              style={{ fontSize: "1rem", fontWeight: 500 }}
                             >
-                              <Typography
-                                variant="h3"
-                                style={{ fontSize: "1rem", fontWeight: 500 }}
-                              >
-                                {Math.floor(i / 6) + 1}
-                              </Typography>
-                            </div>
-                          </Grid>
+                              {Math.floor(i / 6) + 1}
+                            </Typography>
+                          </div>
+                        </Grid>
 
-                          <Grid item md={1}>
-                            <div style={{ cursor: "not-allowed" }}>
-                              <Seat
-                                fill={flight.class === "Business" ? "" : "#666"}
-                                style={{ width: "25px", height: "25px" }}
-                              />
-                            </div>
-                          </Grid>
-                        </>
-                      );
-                    } else if (i % 6 === 5) {
-                      return (
-                        <>
-                          <Grid item md={1}>
-                            {/* <img
+                        <Grid item md={1}>
+                          <div
+                            style={{
+                              cursor:
+                                flight.class === "Business"
+                                  ? "allowed"
+                                  : "not-allowed",
+                            }}
+                          >
+                            <Seat
+                              fill={flight.class === "Business" ? "" : "#666"}
+                              style={{ width: "25px", height: "25px" }}
+                              onClick={() => {}}
+                            />
+                          </div>
+                        </Grid>
+                      </>
+                    );
+                  } else if (i % 6 === 5) {
+                    return (
+                      <>
+                        <Grid
+                          item
+                          md={1}
+                          style={{
+                            cursor:
+                              flight.class === "Business"
+                                ? "allowed"
+                                : "not-allowed",
+                          }}
+                        >
+                          {/* <img
                               src={seatIcon}
                               alt=""
                               style={{ width: "25px", height: "25px" }}
                             /> */}
-                            <Seat
-                              fill={flight.class === "Business" ? "" : "#666"}
-                              style={{ width: "25px", height: "25px" }}
-                            />
-                          </Grid>
-                          <Grid item md={1}>
-                            <div
-                              style={{ width: "25px", height: "25px" }}
-                            ></div>
-                          </Grid>
-                        </>
-                      );
-                    } else if (i % 2 === 1) {
-                      return (
-                        <>
-                          <Grid item md={1}>
-                            <Seat
-                              fill={flight.class === "Business" ? "" : "#666"}
-                              style={{ width: "25px", height: "25px" }}
-                            />
-                          </Grid>
-                          <Grid item md={2}>
-                            <div
-                              style={{ width: "80px", height: "25px" }}
-                            ></div>
-                          </Grid>
-                        </>
-                      );
-                    } else {
-                      return (
-                        <>
-                          <Grid item md={1}>
-                            <Seat
-                              fill={flight.class === "Business" ? "" : "#666"}
-                              style={{ width: "25px", height: "25px" }}
-                            />
-                          </Grid>
-                        </>
-                      );
-                    }
+                          <Seat
+                            fill={flight.class === "Business" ? "" : "#666"}
+                            style={{ width: "25px", height: "25px" }}
+                          />
+                        </Grid>
+                        <Grid item md={1}>
+                          <div
+                            fill={flight.class === "Business" ? "" : "#666"}
+                            style={{ width: "25px", height: "25px" }}
+                          ></div>
+                        </Grid>
+                      </>
+                    );
+                  } else if (i % 2 === 1) {
+                    return (
+                      <>
+                        <Grid
+                          item
+                          md={1}
+                          style={{
+                            cursor:
+                              flight.class === "Business"
+                                ? "allowed"
+                                : "not-allowed",
+                          }}
+                        >
+                          <Seat
+                            fill={flight.class === "Business" ? "" : "#666"}
+                            style={{ width: "25px", height: "25px" }}
+                          />
+                        </Grid>
+                        <Grid item md={2}>
+                          <div style={{ width: "80px", height: "25px" }}></div>
+                        </Grid>
+                      </>
+                    );
+                  } else {
+                    return (
+                      <>
+                        <Grid
+                          item
+                          md={1}
+                          style={{
+                            cursor:
+                              flight.class === "Business"
+                                ? "allowed"
+                                : "not-allowed",
+                          }}
+                        >
+                          <Seat
+                            fill={flight.class === "Business" ? "" : "#666"}
+                            style={{ width: "25px", height: "25px" }}
+                          />
+                        </Grid>
+                      </>
+                    );
                   }
-                )}
+                })}
               </Grid>
             </div>
             <div
@@ -740,70 +782,93 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                {[...Array(flight.numberOfEconomySeats).keys()].map(
-                  (economySeat, i) => {
-                    if (i % 10 === 2) {
-                      return (
-                        <>
-                          <Grid item md={1}>
-                            <img
-                              src={seatIcon}
-                              style={{ width: "25px", height: "25px" }}
-                              alt=""
-                            />
-                          </Grid>
-                          <Grid item md={1}>
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                width: "25px",
-                                height: "25px",
-                              }}
+                {economySeats.map((economySeat, i) => {
+                  if (i % 10 === 2) {
+                    return (
+                      <>
+                        <Grid
+                          item
+                          md={1}
+                          style={{
+                            cursor:
+                              flight.class === "Economy"
+                                ? "allowed"
+                                : "not-allowed",
+                          }}
+                        >
+                          <img
+                            src={seatIcon}
+                            style={{ width: "25px", height: "25px" }}
+                            alt=""
+                          />
+                        </Grid>
+                        <Grid item md={1}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: "25px",
+                              height: "25px",
+                            }}
+                          >
+                            <Typography
+                              variant="h3"
+                              style={{ fontSize: "1rem", fontWeight: 500 }}
                             >
-                              <Typography
-                                variant="h3"
-                                style={{ fontSize: "1rem", fontWeight: 500 }}
-                              >
-                                {Math.floor(i / 10) + 1}
-                              </Typography>
-                            </div>
-                          </Grid>
-                        </>
-                      );
-                    } else if (i % 10 === 6) {
-                      return (
-                        <>
-                          <Grid item md={1}>
-                            <img
-                              src={seatIcon}
-                              style={{ width: "25px", height: "25px" }}
-                              alt=""
-                            />
-                          </Grid>
-                          <Grid item md={1}>
-                            <div
-                              style={{ width: "25px", height: "25px" }}
-                            ></div>
-                          </Grid>
-                        </>
-                      );
-                    } else {
-                      return (
-                        <>
-                          <Grid item md={1}>
-                            <img
-                              src={seatIcon}
-                              alt=""
-                              style={{ width: "25px", height: "25px" }}
-                            />
-                          </Grid>
-                        </>
-                      );
-                    }
+                              {Math.floor(i / 10) + 1}
+                            </Typography>
+                          </div>
+                        </Grid>
+                      </>
+                    );
+                  } else if (i % 10 === 6) {
+                    return (
+                      <>
+                        <Grid
+                          item
+                          md={1}
+                          style={{
+                            cursor:
+                              flight.class === "Economy"
+                                ? "allowed"
+                                : "not-allowed",
+                          }}
+                        >
+                          <img
+                            src={seatIcon}
+                            style={{ width: "25px", height: "25px" }}
+                            alt=""
+                          />
+                        </Grid>
+                        <Grid item md={1}>
+                          <div style={{ width: "25px", height: "25px" }}></div>
+                        </Grid>
+                      </>
+                    );
+                  } else {
+                    return (
+                      <>
+                        <Grid
+                          item
+                          md={1}
+                          style={{
+                            cursor:
+                              flight.class === "Economy"
+                                ? "allowed"
+                                : "not-allowed",
+                          }}
+                        >
+                          <img
+                            src={seatIcon}
+                            alt=""
+                            style={{ width: "25px", height: "25px" }}
+                          />
+                        </Grid>
+                      </>
+                    );
                   }
-                )}
+                })}
               </Grid>
             </div>
           </div>
