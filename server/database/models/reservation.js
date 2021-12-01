@@ -12,7 +12,7 @@ const reservationSchema = new Schema({
     ref: "Flight",
     required: true,
   },
-  arrvivalFlightId: {
+  arrivalFlightId: {
     type: Schema.Types.ObjectId,
     ref: "Flight",
     required: true,
@@ -24,7 +24,7 @@ const reservationSchema = new Schema({
   class: {
     type: String,
     required: true,
-    enum: ["Economy", "Buisness"],
+    enum: ["Economy", "Business"],
   },
   status: {
     type: String,
