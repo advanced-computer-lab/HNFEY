@@ -26,6 +26,7 @@ const UserReservations = () => {
   const [userReservations, setUserReservations] = useState([]);
   const [departingFlight, setDepartingFlight] = useState({});
   const [arrivalFlight, setArrivalFlight] = useState({});
+  const [cancelPressed, setCancelPressed] = useState(false);
   const location = useLocation();
   let url = "http://localhost:8000/hnfey/user/find-user?";
   let url2= "http://localhost:8000/hnfey/reservation/find-reservation?";
@@ -82,7 +83,20 @@ useEffect(() => {
        })
   }
   fetchData();
-    },[]);
+    },[cancelPressed]);
+
+    const handleCancel = async (e, reservationId) => {
+      e.preventDefault();
+      
+      const reservation = {
+        reservation: {_id:reservationId, status: "Cancelled" },
+      };
+      await Axios.put("http://localhost:8000/hnfey/reservation/edit-reservation", reservation).then((res) =>{
+        console.log(res.data);
+        setCancelPressed(true);
+        console.log(cancelPressed);
+      })
+    };
 
     return user._id ? (
           
@@ -99,6 +113,7 @@ useEffect(() => {
               <TableCell align="center">Arrival Time</TableCell>
               <TableCell align="center">Departure Terminal</TableCell>
               <TableCell align="center">Arrival Terminal</TableCell>
+              <TableCell align="center">Number of Passengers</TableCell>
               <TableCell align="center">Cancel</TableCell>
               
             
@@ -112,7 +127,7 @@ useEffect(() => {
                 if(departingFlight[concat] && arrivalFlight[concat2]){
          return(
           <>
-              <TableRow key={departingFlight[concat]._id}>
+              <TableRow key={departingFlight[concat]._id}> 
                 <TableCell
                   // onClick={() => handleCellClick(flight._id)}
                   component="th"
@@ -132,12 +147,13 @@ useEffect(() => {
                 </TableCell>
                 <TableCell align="center">{departingFlight[concat].departureTerminal}</TableCell>
                 <TableCell align="center">{departingFlight[concat].arrivalTerminal}</TableCell>
+                <TableCell align="center">{reservation.numberOfPassengers}</TableCell>
                 <TableCell align="center">
                   <Button
                     style={{ width: 100 }}
                     variant="contained"
                     color="primary"
-                    // onClick={(e) => handleEdit(e, flight._id)}
+                    onClick={(e) => handleCancel(e, reservation._id)}
                   >
                     Cancel
                   </Button>
@@ -165,14 +181,19 @@ useEffect(() => {
                           </TableCell>
                           <TableCell align="center">{arrivalFlight[concat2].departureTerminal}</TableCell>
                           <TableCell align="center">{arrivalFlight[concat2].arrivalTerminal}</TableCell>
+                          <TableCell align="center">{reservation.numberOfPassengers}</TableCell>
                           <TableCell align="center">
                             <Button
                               style={{ width: 100 }}
                               variant="contained"
                               color="primary"
-                              // onClick={(e) => handleEdit(e, flight._id)}
+                              onClick={(e) => handleCancel(e, reservation._id)}
+                              disabled = {cancelPressed? true : false}
+
                             >
-                              Cancel
+                              {cancelPressed? "Cancelled" : "Cancel"}
+                              
+                              
                             </Button>
                             </TableCell>
                     </TableRow>

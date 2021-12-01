@@ -13,10 +13,17 @@ const fetch = async (_id) => {
 const findReservation = async (reservation) => {
   return await Reservation.find(reservation);
 };
+const cancelReservation = (_id) => Flight.deleteOne({ _id });
+
+const updateReservation = async (_id, updatedReservation) => {
+  return await Reservation.findByIdAndUpdate(_id, updatedReservation);
+};
 
 module.exports = {
   fetchAll,
   fetch,
   createReservation,
   findReservation,
+  cancelReservation,
+  updateReservation
 };
