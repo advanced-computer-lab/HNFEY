@@ -102,30 +102,32 @@ useEffect(() => {
           
         <div>
             <h1>My reservations</h1>
-           <TableContainer component={Paper} style={{ marginTop: "65px" }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell> Flight Number</TableCell>
-              <TableCell align="center">From</TableCell>
-              <TableCell align="center">To</TableCell>
-              <TableCell align="center">Departure Time</TableCell>
-              <TableCell align="center">Arrival Time</TableCell>
-              <TableCell align="center">Departure Terminal</TableCell>
-              <TableCell align="center">Arrival Terminal</TableCell>
-              <TableCell align="center">Number of Passengers</TableCell>
-              <TableCell align="center">Cancel</TableCell>
-              
-            
-            </TableRow>
-          </TableHead>
-          <TableBody>
+
             { userReservations.map((reservation) => {
                 {const concat = 'id'+reservation.departingFlightId;
                 const concat2='id'+reservation.arrvivalFlightId;
                 console.log(arrivalFlight[concat2]);
                 if(departingFlight[concat] && arrivalFlight[concat2]){
          return(
+           <>
+          <TableContainer component={Paper} style={{ marginTop: "65px" }}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell> Flight Number</TableCell>
+                <TableCell align="center">From</TableCell>
+                <TableCell align="center">To</TableCell>
+                <TableCell align="center">Departure Time</TableCell>
+                <TableCell align="center">Arrival Time</TableCell>
+                <TableCell align="center">Departure Terminal</TableCell>
+                <TableCell align="center">Arrival Terminal</TableCell>
+                <TableCell align="center">Number of Passengers</TableCell>
+                {/* <TableCell align="center">Cancel</TableCell> */}
+              
+              </TableRow>
+            </TableHead>
+            <TableBody>
+
           <>
               <TableRow key={departingFlight[concat]._id}> 
                 <TableCell
@@ -149,14 +151,7 @@ useEffect(() => {
                 <TableCell align="center">{departingFlight[concat].arrivalTerminal}</TableCell>
                 <TableCell align="center">{reservation.numberOfPassengers}</TableCell>
                 <TableCell align="center">
-                  <Button
-                    style={{ width: 100 }}
-                    variant="contained"
-                    color="primary"
-                    onClick={(e) => handleCancel(e, reservation._id)}
-                  >
-                    Cancel
-                  </Button>
+                  
                   </TableCell>
       </TableRow>
      
@@ -183,28 +178,29 @@ useEffect(() => {
                           <TableCell align="center">{arrivalFlight[concat2].arrivalTerminal}</TableCell>
                           <TableCell align="center">{reservation.numberOfPassengers}</TableCell>
                           <TableCell align="center">
-                            <Button
-                              style={{ width: 100 }}
-                              variant="contained"
-                              color="primary"
-                              onClick={(e) => handleCancel(e, reservation._id)}
-                              disabled = {cancelPressed? true : false}
-
-                            >
-                              {cancelPressed? "Cancelled" : "Cancel"}
-                              
-                              
-                            </Button>
                             </TableCell>
                     </TableRow>
       </>
-                    
-        )}}})}
-
-            
-          </TableBody>
+      </TableBody>
           </Table>
           </TableContainer>
+          <br/>
+          <br/>
+          <Button align="center"
+          style={{ width: 500}}
+          variant="contained"
+          color="primary"
+          onClick={(e) => handleCancel(e, reservation._id)}
+          disabled = {cancelPressed? true : false}
+
+        >
+          {cancelPressed? "Cancelled" : "Cancel"}
+          
+          
+        </Button>  
+        </>     
+        )}}})}
+
           </div>
       )
       : (
