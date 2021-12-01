@@ -53,6 +53,11 @@ const App = () => {
             exact
             component={SeatSelection}
           />
+          <Route
+            path="/flight/return-seat-selection"
+            exact
+            component={SeatSelection}
+          />
           <Route path="/flight/:id" exact component={FlightDetails} />
           <Route path="/flight-information" exact component={Summary} />
           <Route path="/user-profile" exact component={UserProfile} />

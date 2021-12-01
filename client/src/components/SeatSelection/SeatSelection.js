@@ -1,4 +1,10 @@
-import { Container, Grid, Tooltip, Typography } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  Grid,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -9,15 +15,19 @@ import LuggageIcon from "@mui/icons-material/Luggage";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
 import FlightIcon from "@mui/icons-material/Flight";
 import { ReactComponent as Seat } from "./images/seat.svg";
-import seatIcon from "./images/seat.svg";
 import moment from "moment";
 import getTimeDifference from "../../utils/time";
+import { useHistory } from "react-router";
 
 const SeatSelection = (props) => {
   const flight = props.location.state.flightToSelect;
-  const [seatsSelected, setSeatsSelected] = useState(0);
+  console.log(props.location.state);
+  const [seatsSelected, setSeatsSelected] = useState([]);
+  const [noOfSeatsSelected, setNoOfSeatsSelected] = useState(0);
+
   const [businessSeats, setBusinessSeats] = useState([]);
   const [economySeats, setEconomySeats] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     flight?.seats.map((seat) =>
@@ -26,8 +36,52 @@ const SeatSelection = (props) => {
         : setEconomySeats((prev) => [...prev, seat])
     );
   }, [flight]);
-  console.log(flight.seats);
-  return (
+
+  const onSeatClick = (seat) => {
+    if (!seat.reserved) {
+      if (seatsSelected.includes(seat)) {
+        setSeatsSelected((prev) =>
+          prev.filter((prevSeat) => prevSeat._id !== seat._id)
+        );
+        setNoOfSeatsSelected((prev) => prev - 1);
+        return;
+      }
+      if (seat.class === flight.class) {
+        if (noOfSeatsSelected < flight.passengers) {
+          setSeatsSelected((prev) => [...prev, seat]);
+          setNoOfSeatsSelected((prev) => prev + 1);
+        }
+      }
+    }
+  };
+
+  const handleSubmit = () => {
+    if (seatsSelected.length !== flight.passengers) {
+      alert("Select your flights");
+      return;
+    }
+    let state;
+    if (!props.location.state.departingFlightSeats) {
+      const newFlight = props.location.state.flightInQueue;
+      delete props.location.state.flightInQueue;
+      state = {
+        ...props.location.state,
+        departingFlightSeats: seatsSelected,
+        flightToSelect: newFlight,
+        departingFlight: props.location.state.flightToSelect,
+      };
+      history.push("/flight/seat-selection", state);
+      history.go(0);
+    } else {
+      state = {
+        ...props.location.state,
+        returnFlightSeats: seatsSelected,
+      };
+      history.push("/", state);
+    }
+  };
+
+  return flight ? (
     <Container component="main" style={{ marginTop: "6%" }}>
       <Grid container alignItems="stretch" spacing={3}>
         <Grid item md={6}>
@@ -79,7 +133,10 @@ const SeatSelection = (props) => {
                 fontWeight: 500,
               }}
             >
-              Flight summary
+              {props.location.state.flightInQueue
+                ? "Departure flight"
+                : "Return flight"}{" "}
+              summary
             </Typography>
           </div>
           <div
@@ -284,6 +341,9 @@ const SeatSelection = (props) => {
               </div>
             </div>
           </div>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Check out
+          </Button>
         </Grid>
         <Grid item md={6}>
           <div
@@ -320,7 +380,7 @@ const SeatSelection = (props) => {
                     variant="body1"
                     style={{ fontSize: "1rem", fontWeight: 400 }}
                   >
-                    Seats Selected: {seatsSelected}
+                    Seats Selected: {noOfSeatsSelected}
                   </Typography>
                 </Grid>
                 <Grid item md={4}>
@@ -328,7 +388,7 @@ const SeatSelection = (props) => {
                     variant="body1"
                     style={{ fontSize: "1rem", fontWeight: 400 }}
                   >
-                    Seats Left: {flight.passengers - seatsSelected}
+                    Seats Left: {flight.passengers - noOfSeatsSelected}
                   </Typography>
                 </Grid>
               </Grid>
@@ -470,10 +530,10 @@ const SeatSelection = (props) => {
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
 
-                {businessSeats.map((seat, i) => {
+                {businessSeats.map((businessSeat, i) => {
                   if (i % 6 === 0) {
                     return (
-                      <>
+                      <React.Fragment key={i}>
                         <Grid item md={1}>
                           <div
                             style={{
@@ -497,93 +557,154 @@ const SeatSelection = (props) => {
                           <div
                             style={{
                               cursor:
-                                flight.class === "Business"
-                                  ? "allowed"
-                                  : "not-allowed",
+                                flight.class !== "Business" ||
+                                businessSeat.reserved
+                                  ? "not-allowed"
+                                  : "allowed",
                             }}
+                            onClick={() => onSeatClick(businessSeat)}
                           >
-                            <Seat
-                              fill={flight.class === "Business" ? "" : "#666"}
-                              style={{ width: "25px", height: "25px" }}
-                              onClick={() => {}}
-                            />
+                            <Tooltip title={businessSeat.seatNumber}>
+                              <Seat
+                                fill={
+                                  flight.class !== "Business"
+                                    ? "#666"
+                                    : businessSeat.reserved
+                                    ? "red"
+                                    : seatsSelected.length > 0
+                                    ? seatsSelected.includes(businessSeat)
+                                      ? "green"
+                                      : ""
+                                    : ""
+                                }
+                                style={{ width: "25px", height: "25px" }}
+                                onClick={() => {}}
+                              />
+                            </Tooltip>
                           </div>
                         </Grid>
-                      </>
+                      </React.Fragment>
                     );
                   } else if (i % 6 === 5) {
                     return (
-                      <>
-                        <Grid
-                          item
-                          md={1}
-                          style={{
-                            cursor:
-                              flight.class === "Business"
-                                ? "allowed"
-                                : "not-allowed",
-                          }}
-                        >
-                          {/* <img
-                              src={seatIcon}
-                              alt=""
-                              style={{ width: "25px", height: "25px" }}
-                            /> */}
-                          <Seat
-                            fill={flight.class === "Business" ? "" : "#666"}
-                            style={{ width: "25px", height: "25px" }}
-                          />
+                      <React.Fragment key={i}>
+                        <Grid item md={1}>
+                          <div
+                            style={{
+                              cursor:
+                                flight.class !== "Business" ||
+                                businessSeat.reserved
+                                  ? "not-allowed"
+                                  : "allowed",
+                            }}
+                            onClick={() => onSeatClick(businessSeat)}
+                          >
+                            <Tooltip title={businessSeat.seatNumber}>
+                              <Seat
+                                fill={
+                                  flight.class !== "Business"
+                                    ? "#666"
+                                    : businessSeat.reserved
+                                    ? "red"
+                                    : seatsSelected.length > 0
+                                    ? seatsSelected.includes(businessSeat)
+                                      ? "green"
+                                      : ""
+                                    : ""
+                                }
+                                style={{ width: "25px", height: "25px" }}
+                              />
+                            </Tooltip>
+                          </div>
                         </Grid>
                         <Grid item md={1}>
                           <div
-                            fill={flight.class === "Business" ? "" : "#666"}
+                            fill={
+                              flight.class !== "Business"
+                                ? "#666"
+                                : businessSeat.reserved
+                                ? "red"
+                                : seatsSelected.length > 0
+                                ? seatsSelected.includes(businessSeat)
+                                  ? "green"
+                                  : ""
+                                : ""
+                            }
                             style={{ width: "25px", height: "25px" }}
                           ></div>
                         </Grid>
-                      </>
+                      </React.Fragment>
                     );
                   } else if (i % 2 === 1) {
                     return (
-                      <>
-                        <Grid
-                          item
-                          md={1}
-                          style={{
-                            cursor:
-                              flight.class === "Business"
-                                ? "allowed"
-                                : "not-allowed",
-                          }}
-                        >
-                          <Seat
-                            fill={flight.class === "Business" ? "" : "#666"}
-                            style={{ width: "25px", height: "25px" }}
-                          />
+                      <React.Fragment key={i}>
+                        <Grid item md={1}>
+                          <div
+                            style={{
+                              cursor:
+                                flight.class !== "Business" ||
+                                businessSeat.reserved
+                                  ? "not-allowed"
+                                  : "allowed",
+                            }}
+                            onClick={() => onSeatClick(businessSeat)}
+                          >
+                            <Tooltip title={businessSeat.seatNumber}>
+                              <Seat
+                                fill={
+                                  flight.class !== "Business"
+                                    ? "#666"
+                                    : businessSeat.reserved
+                                    ? "red"
+                                    : seatsSelected.length > 0
+                                    ? seatsSelected.includes(businessSeat)
+                                      ? "green"
+                                      : ""
+                                    : ""
+                                }
+                                style={{ width: "25px", height: "25px" }}
+                              />
+                            </Tooltip>
+                          </div>
                         </Grid>
                         <Grid item md={2}>
                           <div style={{ width: "80px", height: "25px" }}></div>
                         </Grid>
-                      </>
+                      </React.Fragment>
                     );
                   } else {
                     return (
-                      <>
-                        <Grid
-                          item
-                          md={1}
-                          style={{
-                            cursor:
-                              flight.class === "Business"
-                                ? "allowed"
-                                : "not-allowed",
-                          }}
-                        >
-                          <Seat
-                            fill={flight.class === "Business" ? "" : "#666"}
-                            style={{ width: "25px", height: "25px" }}
-                          />
+                      <React.Fragment key={i}>
+                        <Grid item md={1}>
+                          <div
+                            style={{
+                              cursor:
+                                flight.class !== "Business" ||
+                                businessSeat.reserved
+                                  ? "not-allowed"
+                                  : "allowed",
+                            }}
+                            onClick={() => onSeatClick(businessSeat)}
+                          >
+                            <Tooltip title={businessSeat.seatNumber}>
+                              <Seat
+                                fill={
+                                  flight.class !== "Business"
+                                    ? "#666"
+                                    : businessSeat.reserved
+                                    ? "red"
+                                    : seatsSelected.length > 0
+                                    ? seatsSelected.includes(businessSeat)
+                                      ? "green"
+                                      : ""
+                                    : ""
+                                }
+                                style={{ width: "25px", height: "25px" }}
+                              />
+                            </Tooltip>
+                          </div>
                         </Grid>
-                      </>
+                      </React.Fragment>
                     );
                   }
                 })}
@@ -603,7 +724,7 @@ const SeatSelection = (props) => {
                 Economy Class
               </Typography>
             </div>
-            <div style={{ display: "flex", margin: "2%" }}>
+            <div style={{ display: "flex", margin: "2% 2% 10%" }}>
               <Grid container alignItems="stretch">
                 <Grid item md={1}>
                   <div
@@ -785,22 +906,35 @@ const SeatSelection = (props) => {
                 {economySeats.map((economySeat, i) => {
                   if (i % 10 === 2) {
                     return (
-                      <>
-                        <Grid
-                          item
-                          md={1}
-                          style={{
-                            cursor:
-                              flight.class === "Economy"
-                                ? "allowed"
-                                : "not-allowed",
-                          }}
-                        >
-                          <img
-                            src={seatIcon}
-                            style={{ width: "25px", height: "25px" }}
-                            alt=""
-                          />
+                      <React.Fragment key={i}>
+                        <Grid item md={1}>
+                          <div
+                            style={{
+                              cursor:
+                                flight.class !== "Economy" ||
+                                economySeat.reserved
+                                  ? "not-allowed"
+                                  : "allowed",
+                            }}
+                            onClick={() => onSeatClick(economySeat)}
+                          >
+                            <Tooltip title={economySeat.seatNumber}>
+                              <Seat
+                                fill={
+                                  flight.class !== "Economy"
+                                    ? "#666"
+                                    : economySeat.reserved
+                                    ? "red"
+                                    : seatsSelected.length > 0
+                                    ? seatsSelected.includes(economySeat)
+                                      ? "green"
+                                      : ""
+                                    : ""
+                                }
+                                style={{ width: "25px", height: "25px" }}
+                              />
+                            </Tooltip>
+                          </div>
                         </Grid>
                         <Grid item md={1}>
                           <div
@@ -816,56 +950,84 @@ const SeatSelection = (props) => {
                               variant="h3"
                               style={{ fontSize: "1rem", fontWeight: 500 }}
                             >
-                              {Math.floor(i / 10) + 1}
+                              {Math.floor(i / 10) +
+                                Math.ceil(flight.numberOfBusinessSeats / 6) +
+                                1}
                             </Typography>
                           </div>
                         </Grid>
-                      </>
+                      </React.Fragment>
                     );
                   } else if (i % 10 === 6) {
                     return (
-                      <>
-                        <Grid
-                          item
-                          md={1}
-                          style={{
-                            cursor:
-                              flight.class === "Economy"
-                                ? "allowed"
-                                : "not-allowed",
-                          }}
-                        >
-                          <img
-                            src={seatIcon}
-                            style={{ width: "25px", height: "25px" }}
-                            alt=""
-                          />
+                      <React.Fragment key={i}>
+                        <Grid item md={1}>
+                          <div
+                            style={{
+                              cursor:
+                                flight.class !== "Economy" ||
+                                economySeat.reserved
+                                  ? "not-allowed"
+                                  : "allowed",
+                            }}
+                            onClick={() => onSeatClick(economySeat)}
+                          >
+                            <Tooltip title={economySeat.seatNumber}>
+                              <Seat
+                                fill={
+                                  flight.class !== "Economy"
+                                    ? "#666"
+                                    : economySeat.reserved
+                                    ? "red"
+                                    : seatsSelected.length > 0
+                                    ? seatsSelected.includes(economySeat)
+                                      ? "green"
+                                      : ""
+                                    : ""
+                                }
+                                style={{ width: "25px", height: "25px" }}
+                              />
+                            </Tooltip>
+                          </div>
                         </Grid>
                         <Grid item md={1}>
                           <div style={{ width: "25px", height: "25px" }}></div>
                         </Grid>
-                      </>
+                      </React.Fragment>
                     );
                   } else {
                     return (
-                      <>
-                        <Grid
-                          item
-                          md={1}
-                          style={{
-                            cursor:
-                              flight.class === "Economy"
-                                ? "allowed"
-                                : "not-allowed",
-                          }}
-                        >
-                          <img
-                            src={seatIcon}
-                            alt=""
-                            style={{ width: "25px", height: "25px" }}
-                          />
+                      <React.Fragment key={i}>
+                        <Grid item md={1}>
+                          <div
+                            style={{
+                              cursor:
+                                flight.class !== "Economy" ||
+                                economySeat.reserved
+                                  ? "not-allowed"
+                                  : "allowed",
+                            }}
+                            onClick={() => onSeatClick(economySeat)}
+                          >
+                            <Tooltip title={economySeat.seatNumber}>
+                              <Seat
+                                fill={
+                                  flight.class !== "Economy"
+                                    ? "#666"
+                                    : economySeat.reserved
+                                    ? "red"
+                                    : seatsSelected.length > 0
+                                    ? seatsSelected.includes(economySeat)
+                                      ? "green"
+                                      : ""
+                                    : ""
+                                }
+                                style={{ width: "25px", height: "25px" }}
+                              />
+                            </Tooltip>
+                          </div>
                         </Grid>
-                      </>
+                      </React.Fragment>
                     );
                   }
                 })}
@@ -875,7 +1037,7 @@ const SeatSelection = (props) => {
         </Grid>
       </Grid>
     </Container>
-  );
+  ) : null;
 };
 
 export default SeatSelection;
