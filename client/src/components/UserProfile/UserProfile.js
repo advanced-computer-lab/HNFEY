@@ -22,6 +22,9 @@ const UserProfile = () => {
   const handleEdit = () => {
     history.push("/edit-user" + location.search);
   };
+  const handleViewReservation = () => {
+    history.push("/user-reservations" + location.search);
+  };
 
   useEffect(() => {
     Axios.get(url).then((res) => setUser(res.data.user));
@@ -34,8 +37,6 @@ const UserProfile = () => {
           style={{ fontSize: "150", marginTop: "20px" }}
           width="500px"
         />
-        {console.log(user)}
-        {/* {user?.map((user) => ( */}
         <>
           <h1>
             {user.firstName} {user.lastName}
@@ -54,9 +55,7 @@ const UserProfile = () => {
           <Button
             variant="outlined"
             style={{ width: "40%" }}
-            onClick={() => {
-              history.push("/user-reservations");
-            }}
+            onClick={handleViewReservation}
           >
             View Reservations
           </Button>

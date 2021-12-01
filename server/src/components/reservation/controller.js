@@ -46,6 +46,32 @@ const createReservation = async (req, res, next) => {
   }
 };
 
+const cancelReservation = async (req, res, next) => {
+  try {
+    await model.cancelReservation(req.params.id);
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateReservation = async (req, res, next) => {
+  try {
+    const reservationId = req.body.reservation._id;
+    const reservationUpdated = req.body.reservation;
+    await model.updateReservation(reservationId, req.body.reservation);
+    if (reservationUpdated) {
+      req.updatedReservation = reservationUpdated;
+      next();
+    } else {
+      const err = new Error("Cannot update reservation");
+      next(err);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 const fetchAllPipeline = [
   //verify Admin,
   fetchAll,
@@ -61,8 +87,20 @@ const findPipeline = [
   findReservaton,
 ];
 
+const deletePipeline = [
+  //verify Admin,
+  cancelReservation,
+];
+
+const updatePipeline = [
+  //verify admin
+  updateReservation,
+];
+
 module.exports = {
   fetchAllPipeline,
   createPipeline,
   findPipeline,
+  deletePipeline,
+  updatePipeline,
 };
