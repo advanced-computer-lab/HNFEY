@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router";
-import queryString from "query-string";
-import { Container, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import Axios from "axios";
 import {
   TableBody,
@@ -12,9 +11,8 @@ import {
   Paper,
   Table,
 } from "@material-ui/core";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { CircularProgress } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
 import moment from "moment";
 import { confirmAlert } from "react-confirm-alert";
 
@@ -27,10 +25,7 @@ const UserReservations = (props) => {
   const [arrivalFlight, setArrivalFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
   const location = useLocation();
-  // let url = "http://localhost:8000/hnfey/user/find-user?";
-  // let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
-  let url3 = "http://localhost:8000/hnfey/flight/list-flights?";
-  let url4 = "http://localhost:8000/hnfey/flight/list-flights?";
+ 
   const [mounted, setMounted] = useState(false);
   // let query = queryString.parse(location.search);
   // const noOfKeys = Object.keys(query).length;
@@ -53,10 +48,13 @@ const UserReservations = (props) => {
   }, []);
 
   useEffect(() => {
+    let url3= "http://localhost:8000/hnfey/flight/list-flights?";
+    let url4 = "http://localhost:8000/hnfey/flight/list-flights?";
     if (mounted) {
       console.log("hi bro");
       const fetchData = async () => {
         {
+         
           console.log(userReservations.departingFlightId);
           const flightIDQuery = "_id=" + userReservations.departingFlightId;
           url3 += flightIDQuery;

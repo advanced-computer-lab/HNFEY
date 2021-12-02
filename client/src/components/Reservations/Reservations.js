@@ -3,18 +3,9 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
-import moment from "moment";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { Typography, Grid, Paper } from "@material-ui/core";
-import FlightTakeoff from "@material-ui/icons/FlightTakeoff";
-import FlightLandIcon from "@material-ui/icons/FlightLand";
-import LuggageIcon from "@mui/icons-material/Luggage";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import getTimeDifference from "../../utils/time";
-import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
-import Tooltip from "@mui/material/Tooltip";
-import UserReservations from "../UserReservations/UserReservations";
 
 export const Reservations = () => {
   const [user, setUser] = useState({});
@@ -83,7 +74,7 @@ export const Reservations = () => {
                     spacing={3}
                     style={{ margin: "0% 4%", marginTop: "5%" }}
                   >
-                    <Grid item md={3}>
+                     <Grid item md={3}>
                       <Typography
                         variant="body1"
                         style={{ marginBottom: "2%" }}
@@ -91,12 +82,29 @@ export const Reservations = () => {
                         Reservation Number {reservation._id}
                       </Typography>
                     </Grid>
+                     <Grid item md={3}>
+                      <Typography
+                        variant="body1"
+                        style={{ marginBottom: "2%" }}
+                      >
+                        {user.firstName} {user.lastName}
+                      </Typography>
+                    </Grid>
                     <Grid item md={3}>
                       <Typography
                         variant="body1"
                         style={{ marginBottom: "2%" }}
                       >
-                        {reservation.numberOfPassengers}
+                      {user.passportNumber}
+                      </Typography>
+                    </Grid>
+                   
+                    <Grid item md={3}>
+                      <Typography
+                        variant="body1"
+                        style={{ marginBottom: "2%" }}
+                      >
+                        {reservation.numberOfPassengers} Passengers
                       </Typography>
                     </Grid>
                     <Grid item md={3}>
