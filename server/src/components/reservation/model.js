@@ -7,7 +7,7 @@ const createReservation = async (reservation) => {
 };
 
 const fetch = async (_id) => {
-  return await Reservation.find({ _id });
+  return await Reservation.findOne({ _id });
 };
 
 const findReservation = async (reservation) => {
@@ -25,5 +25,5 @@ module.exports = {
   createReservation,
   findReservation,
   cancelReservation,
-  updateReservation
+  updateReservation,
 };

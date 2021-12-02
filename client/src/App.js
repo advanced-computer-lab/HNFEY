@@ -63,14 +63,9 @@ const App = () => {
           <Route path="/flight/:id" exact component={FlightDetails} />
           <Route path="/flight-information" exact component={Summary} />
           <Route path="/user-profile" exact component={UserProfile} />
-<<<<<<< HEAD
           <Route path="/reservation" exact component={ReservationDetails} />
           <Route path="/all-reservations" exact component={AllReservations} />
-=======
-          <Route path="/user-reservations" exact component={UserReservations} />
-          <Route path="/reservations" exact component={Reservations} />
           <Route path="/checkout" exact component={Checkout} />
->>>>>>> 972cac798d9ea067fda91fe8b430bcacaafc71fc
         </Switch>
       </Router>
     </MuiThemeProvider>

@@ -14,6 +14,7 @@ export const AllReservations = () => {
   const location = useLocation();
   let url = "http://localhost:8000/hnfey/user/find-user?";
   let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
+
   let query = queryString.parse(location.search);
   const noOfKeys = Object.keys(query).length;
   Object.entries(query).map((entry, i) => {
@@ -27,6 +28,7 @@ export const AllReservations = () => {
       await Axios.get(url).then((res) => {
         setUser(() => res.data.user);
         const userIDQuery = "userId=" + res.data.user._id;
+        console.log(userIDQuery);
         url2 += userIDQuery;
       });
 
@@ -36,6 +38,7 @@ export const AllReservations = () => {
     };
     fetchData();
   }, []);
+
   const handleViewReservation = async (e, reservation) => {
     e.preventDefault();
     history.push({
