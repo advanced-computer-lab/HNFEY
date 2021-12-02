@@ -96,7 +96,7 @@ const EditUser = () => {
             variant="outlined"
             label="Email"
             value={user.email}
-            type="text"
+            type="email"
             required
           />
 
