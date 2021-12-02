@@ -12,7 +12,7 @@ const reservationSchema = new Schema({
     ref: "Flight",
     required: true,
   },
-  arrivalFlightId: {
+  returnFlightId: {
     type: Schema.Types.ObjectId,
     ref: "Flight",
     required: true,
@@ -21,6 +21,30 @@ const reservationSchema = new Schema({
     type: Number,
     required: true,
   },
+  passengers: [
+    {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+      passportNumber: {
+        type: String,
+        required: true,
+      },
+      departureSeat: {
+        type: String,
+        required: true,
+      },
+      returnSeat: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   class: {
     type: String,
     required: true,
