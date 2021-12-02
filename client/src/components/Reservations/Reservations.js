@@ -3,18 +3,9 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
-import moment from "moment";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { Typography, Grid, Paper } from "@material-ui/core";
-import FlightTakeoff from "@material-ui/icons/FlightTakeoff";
-import FlightLandIcon from "@material-ui/icons/FlightLand";
-import LuggageIcon from "@mui/icons-material/Luggage";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import getTimeDifference from "../../utils/time";
-import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
-import Tooltip from "@mui/material/Tooltip";
-import UserReservations from "../UserReservations/UserReservations";
 
 export const Reservations = () => {
   const [user, setUser] = useState({});
@@ -71,12 +62,75 @@ export const Reservations = () => {
         return (
           <>
             <Container component="main" style={{ marginTop: "2%" }}>
-              {/* <Typography variant="h4" style={{ fontWeight: 600, color: "#666" }}>
-        Choose your departing flight
-      </Typography> */}
+              {/* <Typography
+                variant="h4"
+                style={{ fontWeight: 600, color: "#666" }}
+              >
+                Your Reservations
+              </Typography> */}
               <br />
-              <Paper elevation={5} style={{ margin: "5% 0% 3%" }}>
-                <div key={reservation._id}>
+              <Paper elevation={6} style={{ margin: "5% 0% 2%" }}>
+                <Grid
+                  container
+                  spacing={3}
+                  style={{ margin: "0% 4%", marginTop: "5%" }}
+                >
+                  <Grid item md={6}>
+                    <Typography
+                      variant="h2"
+                      style={{
+                        fontSize: "1.5rem",
+                        fontWeight: 500,
+                        margin: "5% 0% 1% 2%",
+                      }}
+                    >
+                      Reservation Numeber
+                    </Typography>
+                    <Typography
+                      variant="h2"
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: 400,
+                        margin: "1% 0% 7% 2%",
+                      }}
+                    >
+                      {reservation._id}
+                    </Typography>
+
+                    <Typography
+                      variant="body1"
+                      style={{
+                        fontSize: "1rem",
+                        fontWeight: 500,
+                        margin: "1% 0% 3% 2%",
+                      }}
+                    >
+                      Fare: {reservation.class}
+                    </Typography>
+                  </Grid>
+                  <Grid item md={6}>
+                    <Typography
+                      variant="h6"
+                      style={{
+                        fontSize: "1.1rem",
+                        fontWeight: 500,
+                        margin: "12% 0% 1% 15%",
+                      }}
+                    >
+                      x{reservation.numberOfPassengers} passengers
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: 600,
+                        margin: "1% 0% 1% 15%",
+                      }}
+                    >
+                      Reservation {reservation.status}
+                    </Typography>
+                  </Grid>
+                  {/* <div key={reservation._id}>
                   <Grid
                     container
                     alignItems="center"
@@ -84,10 +138,7 @@ export const Reservations = () => {
                     style={{ margin: "0% 4%", marginTop: "5%" }}
                   >
                     <Grid item md={3}>
-                      <Typography
-                        variant="body1"
-                        style={{ marginBottom: "2%" }}
-                      >
+                      <Typography variant="h6" style={{ marginBottom: "2%" }}>
                         Reservation Number {reservation._id}
                       </Typography>
                     </Grid>
@@ -116,7 +167,8 @@ export const Reservations = () => {
                       </Typography>
                     </Grid>
                   </Grid>
-                </div>
+                </div> */}
+                </Grid>
                 <div
                   style={{
                     display: "flex",
@@ -127,7 +179,7 @@ export const Reservations = () => {
                   <Button
                     variant="contained"
                     color="primary"
-                    style={{ marginBottom: "2%" }}
+                    style={{ marginBottom: "2%", fontSize: "1.1rem" }}
                     // onClick={handleViewReservation(reservation)}
                     onClick={(e) => handleViewReservation(e, reservation)}
                   >

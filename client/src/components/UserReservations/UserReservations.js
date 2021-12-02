@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useHistory, useLocation } from "react-router";
-import queryString from "query-string";
-import { Container, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import Axios from "axios";
 import {
   TableBody,
@@ -14,18 +12,13 @@ import {
 } from "@material-ui/core";
 import { useEffect } from "react";
 import { CircularProgress } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
 import moment from "moment";
 
 const UserReservations = (props) => {
-  const history = useHistory();
-
-  const [user, setUser] = useState({});
   const [userReservations, setUserReservations] = useState({});
   const [departingFlight, setDepartingFlight] = useState({});
   const [arrivalFlight, setArrivalFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
-  const location = useLocation();
   // let url = "http://localhost:8000/hnfey/user/find-user?";
   // let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
   let url3 = "http://localhost:8000/hnfey/flight/list-flights?";
@@ -43,17 +36,12 @@ const UserReservations = (props) => {
   console.log(departingFlight);
   console.log(arrivalFlight);
   useEffect(() => {
-    //setUserReservations(location.state.userReservation);
-
     setUserReservations(() => props.location.state.userReservation);
     setMounted(() => true);
-
-    // console.log(userReservations);
   }, []);
 
   useEffect(() => {
     if (mounted) {
-      console.log("hi bro");
       const fetchData = async () => {
         {
           console.log(userReservations.departingFlightId);
@@ -121,11 +109,8 @@ const UserReservations = (props) => {
       console.log(cancelPressed);
     });
   };
-  // console.log(userReservations);
   return userReservations._id && departingFlight._id && arrivalFlight._id ? (
     <div>
-      <h1>My reservations</h1>
-
       {/* {userReservations.map((reservation) => {
         {
           const concat = "id" + userReservations.departingFlightId;
