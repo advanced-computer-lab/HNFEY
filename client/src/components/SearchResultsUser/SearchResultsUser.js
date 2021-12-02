@@ -6,7 +6,7 @@ import queryString from "query-string";
 import moment from "moment";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import { Typography, Grid, Paper } from "@material-ui/core";
+import { Typography, Grid, Paper, CircularProgress } from "@material-ui/core";
 import FlightTakeoff from "@material-ui/icons/FlightTakeoff";
 import FlightLandIcon from "@material-ui/icons/FlightLand";
 import LuggageIcon from "@mui/icons-material/Luggage";
@@ -100,7 +100,7 @@ export const SearchResultsUser = () => {
     Axios.get(returnUrl).then((res) => setReturnList(res.data.flights));
   }, [departureUrl, returnUrl]); //might be flights
 
-  return departureFlightList && returnFlightList ? (
+  return departureFlightList.length > 0 && returnFlightList.length > 0 ? (
     <Container component="main" style={{ marginTop: "7%" }}>
       <Typography variant="h4" style={{ fontWeight: 600, color: "#666" }}>
         Choose your departing flight
@@ -424,126 +424,20 @@ export const SearchResultsUser = () => {
         </Button>
       </div>
     </Container>
-  ) : null;
-
-  //   <div>
-  //     <Container style={{ marginTop: "100px" }}>
-  //       <Typography variant="h5">Choose your departure flight</Typography>
-  //       <br />
-  //       <br />
-  //       {departureFlightList?.map((flight, i) => (
-  //         <Grid container alignItems="stretch" spacing={3} key={flight._id}>
-  //           <Grid item>
-  //             <Button
-  //               variant="outlined"
-  //               style={{ width: "50%", height: "100px", padding: "100px" }}
-  //               className={props.cardAction}
-  //               onClick={() => {
-  //                 handleSelectDepartureFlight(flight._id);
-  //               }}
-  //             >
-  //               {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
-  //               {moment(flight.arrivalDateTime).format("hh:mm A")}
-  //               <br />
-  //               {flight.from} - {flight.to}
-  //             </Button>
-  //           </Grid>
-  //           <div
-  //             style={{ display: "inline" }}
-  //             onClick={() => handleDropdownClick(i)}
-  //           >
-  //             {dropdownArrowDeparture[i] ? (
-  //               <Grid item>
-  //                 <ArrowDropUpIcon
-  //                   style={{ height: "35px", width: "35px", opacity: "50%" }}
-  //                 />
-  //                 {Object.entries(flight).map((entry) => {
-  //                   let [key, value] = entry;
-  //                   let result = key.replace(/([A-Z])/g, " $1");
-  //                   let finalResult =
-  //                     result.charAt(0).toUpperCase() + result.slice(1);
-
-  //                   if (
-  //                     key !== "numberOfAvailableEconomySeats" &&
-  //                     key !== "numberOfAvailableBusinessSeats" &&
-  //                     key !== "numberOfEconomySeats" &&
-  //                     key !== "numberOfBusinessSeats" &&
-  //                     key !== "departureDay" &&
-  //                     key !== "arrivalDay" &&
-  //                     key !== "createdAt" &&
-  //                     key !== "updatedAt" &&
-  //                     key !== "_id" &&
-  //                     key !== "__v"
-  //                   ) {
-  //                     counter++;
-  //                     switch (key) {
-  //                       case "departureDateTime":
-  //                       case "arrivalDateTime":
-  //                         return (
-  //                           <Typography variant="h6" key={counter}>
-  //                             {key === "departureDateTime"
-  //                               ? "Departing"
-  //                               : "Arriving"}
-  //                             : {moment(value).format("DD-MM-YYYY hh:mm A")}
-  //                           </Typography>
-  //                         );
-  //                       case "baggageAllowance":
-  //                       case "price":
-  //                         return (
-  //                           <Typography variant="h6" key={counter}>
-  //                             {finalResult}: {value}{" "}
-  //                             {key === "baggageAllowance" ? "KG" : "EGP"}
-  //                           </Typography>
-  //                         );
-  //                       default:
-  //                         return (
-  //                           <Typography variant="h6" key={counter}>
-  //                             {finalResult}: {value}
-  //                           </Typography>
-  //                         );
-  //                     }
-  //                   }
-  //                   return null;
-  //                 })}
-  //               </Grid>
-  //             ) : (
-  //               <ArrowDropDownIcon
-  //                 style={{ height: "35px", width: "35px", opacity: "50%" }}
-  //               />
-  //             )}
-  //           </div>
-  //         </Grid>
-  //       ))}
-  //     </Container>
-
-  //     <Container style={{ marginTop: "100px" }}>
-  //       <Typography variant="h5">Choose your return flight</Typography>
-  //       <br />
-  //       <br />
-  //       {returnFlightList?.map((flight) => (
-  //         <div key={flight._id}>
-  //           <Button
-  //             variant="outlined"
-  //             style={{ width: "50%", height: "100px", padding: "100px" }}
-  //             className={props.cardAction}
-  //             onClick={() => {
-  //               handleSelectReturnFlight(flight._id);
-  //             }}
-  //           >
-  //             {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
-  //             {moment(flight.arrivalDateTime).format("hh:mm A")}
-  //             <br />
-  //             {flight.from} - {flight.to}
-  //           </Button>
-  //         </div>
-  //       ))}
-  //     </Container>
-  //     <br />
-  //     <Button variant="contained" onClick={handleSubmit}>
-  //       Proceed
-  //     </Button>
-  //   </div>
-  // ) : null;
+  ) : (
+    <Container component="main">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="secondary" />
+      </div>
+    </Container>
+  );
 };
 
 export default SearchResultsUser;

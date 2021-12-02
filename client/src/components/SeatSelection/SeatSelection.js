@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Container,
   Grid,
   Tooltip,
@@ -20,8 +21,7 @@ import getTimeDifference from "../../utils/time";
 import { useHistory } from "react-router";
 
 const SeatSelection = (props) => {
-  const flight = props.location.state.flightToSelect;
-  console.log(props.location.state);
+  const flight = props?.location?.state?.flightToSelect;
   const [seatsSelected, setSeatsSelected] = useState([]);
   const [noOfSeatsSelected, setNoOfSeatsSelected] = useState(0);
 
@@ -73,18 +73,32 @@ const SeatSelection = (props) => {
       history.push("/flight/seat-selection", state);
       history.go(0);
     } else {
+      const returnFlight = props.location.state.flightToSelect;
+      const { passengers } = returnFlight;
+      const cabin = returnFlight.class;
+      delete props.location.state.departingFlight.class;
+      delete props.location.state.departingFlight.passengers;
+      delete props.location.state.departingFlight.seats;
+      delete returnFlight.class;
+      delete returnFlight.passengers;
+      delete returnFlight.seats;
+
+      delete props.location.state.flightToSelect;
       state = {
         ...props.location.state,
+        returnFlight,
         returnFlightSeats: seatsSelected,
+        passengers,
+        cabin,
       };
-      history.push("/", state);
+      history.push("/checkout", state);
     }
   };
 
   return flight ? (
     <Container component="main" style={{ marginTop: "6%" }}>
       <Grid container alignItems="stretch" spacing={3}>
-        <Grid item md={6}>
+        <Grid item xs={6}>
           <div
             style={{
               display: "flex",
@@ -345,7 +359,7 @@ const SeatSelection = (props) => {
             Check out
           </Button>
         </Grid>
-        <Grid item md={6}>
+        <Grid item xs={6}>
           <div
             style={{
               display: "flex",
@@ -367,7 +381,7 @@ const SeatSelection = (props) => {
 
             <div style={{ display: "flex", margin: "2%" }}>
               <Grid container alignItems="stretch" spacing={3}>
-                <Grid item md={4}>
+                <Grid item xs={4}>
                   <Typography
                     variant="body1"
                     style={{ fontSize: "1rem", fontWeight: 400 }}
@@ -375,7 +389,7 @@ const SeatSelection = (props) => {
                     Passengers: {flight.passengers}
                   </Typography>
                 </Grid>
-                <Grid item md={4}>
+                <Grid item xs={4}>
                   <Typography
                     variant="body1"
                     style={{ fontSize: "1rem", fontWeight: 400 }}
@@ -383,7 +397,7 @@ const SeatSelection = (props) => {
                     Seats Selected: {noOfSeatsSelected}
                   </Typography>
                 </Grid>
-                <Grid item md={4}>
+                <Grid item xs={4}>
                   <Typography
                     variant="body1"
                     style={{ fontSize: "1rem", fontWeight: 400 }}
@@ -409,10 +423,10 @@ const SeatSelection = (props) => {
             </div>
             <div style={{ display: "flex", margin: "2%" }}>
               <Grid container alignItems="stretch">
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -429,7 +443,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -446,13 +460,13 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -469,7 +483,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -486,13 +500,13 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -509,7 +523,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -526,7 +540,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
 
@@ -534,7 +548,7 @@ const SeatSelection = (props) => {
                   if (i % 6 === 0) {
                     return (
                       <React.Fragment key={i}>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             style={{
                               display: "flex",
@@ -553,7 +567,7 @@ const SeatSelection = (props) => {
                           </div>
                         </Grid>
 
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             style={{
                               cursor:
@@ -588,7 +602,7 @@ const SeatSelection = (props) => {
                   } else if (i % 6 === 5) {
                     return (
                       <React.Fragment key={i}>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             style={{
                               cursor:
@@ -617,7 +631,7 @@ const SeatSelection = (props) => {
                             </Tooltip>
                           </div>
                         </Grid>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             fill={
                               flight.class !== "Business"
@@ -638,7 +652,7 @@ const SeatSelection = (props) => {
                   } else if (i % 2 === 1) {
                     return (
                       <React.Fragment key={i}>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             style={{
                               cursor:
@@ -667,7 +681,7 @@ const SeatSelection = (props) => {
                             </Tooltip>
                           </div>
                         </Grid>
-                        <Grid item md={2}>
+                        <Grid item xs={2}>
                           <div style={{ width: "80px", height: "25px" }}></div>
                         </Grid>
                       </React.Fragment>
@@ -675,7 +689,7 @@ const SeatSelection = (props) => {
                   } else {
                     return (
                       <React.Fragment key={i}>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             style={{
                               cursor:
@@ -726,7 +740,7 @@ const SeatSelection = (props) => {
             </div>
             <div style={{ display: "flex", margin: "2% 2% 10%" }}>
               <Grid container alignItems="stretch">
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -743,7 +757,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -760,7 +774,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -777,11 +791,11 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
 
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -798,7 +812,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -815,7 +829,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -832,7 +846,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -849,10 +863,10 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div style={{ width: "25px", height: "25px" }}></div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -869,7 +883,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -886,7 +900,7 @@ const SeatSelection = (props) => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item md={1}>
+                <Grid item xs={1}>
                   <div
                     style={{
                       display: "flex",
@@ -907,7 +921,7 @@ const SeatSelection = (props) => {
                   if (i % 10 === 2) {
                     return (
                       <React.Fragment key={i}>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             style={{
                               cursor:
@@ -936,7 +950,7 @@ const SeatSelection = (props) => {
                             </Tooltip>
                           </div>
                         </Grid>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             style={{
                               display: "flex",
@@ -961,7 +975,7 @@ const SeatSelection = (props) => {
                   } else if (i % 10 === 6) {
                     return (
                       <React.Fragment key={i}>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             style={{
                               cursor:
@@ -990,7 +1004,7 @@ const SeatSelection = (props) => {
                             </Tooltip>
                           </div>
                         </Grid>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div style={{ width: "25px", height: "25px" }}></div>
                         </Grid>
                       </React.Fragment>
@@ -998,7 +1012,7 @@ const SeatSelection = (props) => {
                   } else {
                     return (
                       <React.Fragment key={i}>
-                        <Grid item md={1}>
+                        <Grid item xs={1}>
                           <div
                             style={{
                               cursor:
@@ -1037,7 +1051,20 @@ const SeatSelection = (props) => {
         </Grid>
       </Grid>
     </Container>
-  ) : null;
+  ) : (
+    <Container component="main">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="secondary" />
+      </div>
+    </Container>
+  );
 };
 
 export default SeatSelection;

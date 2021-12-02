@@ -20,6 +20,7 @@ import EditUser from "./components/EditUser/EditUser";
 import UserReservations from "./components/UserReservations/UserReservations";
 import Reservations from "./components/Reservations/Reservations";
 import SeatSelection from "./components/SeatSelection/SeatSelection";
+import Checkout from "./components/Checkout/Checkout";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="/user-profile" exact component={UserProfile} />
           <Route path="/user-reservations" exact component={UserReservations} />
           <Route path="/reservations" exact component={Reservations} />
+          <Route path="/checkout" exact component={Checkout} />
         </Switch>
       </Router>
     </MuiThemeProvider>

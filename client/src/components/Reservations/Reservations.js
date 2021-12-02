@@ -3,18 +3,9 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
-import moment from "moment";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { Typography, Grid, Paper } from "@material-ui/core";
-import FlightTakeoff from "@material-ui/icons/FlightTakeoff";
-import FlightLandIcon from "@material-ui/icons/FlightLand";
-import LuggageIcon from "@mui/icons-material/Luggage";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import getTimeDifference from "../../utils/time";
-import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
-import Tooltip from "@mui/material/Tooltip";
-import UserReservations from "../UserReservations/UserReservations";
 
 export const Reservations = () => {
   const [user, setUser] = useState({});

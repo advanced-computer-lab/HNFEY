@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
+  CircularProgress,
   Container,
   Grid,
   Tooltip,
@@ -544,7 +545,20 @@ const Summary = (props) => {
         </Grid>
       </Grid>
     </Container>
-  ) : null;
+  ) : (
+    <Container component="main">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="secondary" />
+      </div>
+    </Container>
+  );
 };
 
 export default Summary;
