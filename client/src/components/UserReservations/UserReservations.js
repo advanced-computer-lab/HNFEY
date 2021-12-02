@@ -13,6 +13,7 @@ import {
 import { useEffect } from "react";
 import { CircularProgress } from "@material-ui/core";
 import moment from "moment";
+import { confirmAlert } from "react-confirm-alert";
 
 const UserReservations = (props) => {
   const [userReservations, setUserReservations] = useState({});
@@ -94,7 +95,24 @@ const UserReservations = (props) => {
     }
   }, [userReservations]);
 
+  const cancel = (e,reservationId) => {
+    confirmAlert({
+      title: "Are you sure you want to cancel this reservation?",
+      message: "Are you sure you want to cancel this reservation?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => handleCancel(e,reservationId),
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  };
   const handleCancel = async (e, reservationId) => {
+    
     e.preventDefault();
 
     const reservation = {
@@ -215,7 +233,7 @@ const UserReservations = (props) => {
           }}
           variant="contained"
           color="primary"
-          onClick={(e) => handleCancel(e, userReservations._id)}
+          onClick={(e) => cancel(e, userReservations._id)}
           disabled={cancelPressed ? true : false}
         >
           {cancelPressed ? "Cancelled" : "Cancel"}
