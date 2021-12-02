@@ -15,29 +15,19 @@ import { CircularProgress } from "@material-ui/core";
 import moment from "moment";
 import { confirmAlert } from "react-confirm-alert";
 
-const UserReservations = (props) => {
+const ReservationDetails = (props) => {
   const [userReservations, setUserReservations] = useState({});
+  const [user, setUser] = useState({});
   const [departingFlight, setDepartingFlight] = useState({});
   const [arrivalFlight, setArrivalFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
-  // let url = "http://localhost:8000/hnfey/user/find-user?";
-  // let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
   let url3 = "http://localhost:8000/hnfey/flight/list-flights?";
   let url4 = "http://localhost:8000/hnfey/flight/list-flights?";
   const [mounted, setMounted] = useState(false);
-  // let query = queryString.parse(location.search);
-  // const noOfKeys = Object.keys(query).length;
-  // Object.entries(query).map((entry, i) => {
-  //   let [key, value] = entry;
-  //   let last = i + 1 === noOfKeys ? "" : "&";
-  //   return (url += key + "=" + value + last);
-  // });
 
-  console.log(userReservations);
-  console.log(departingFlight);
-  console.log(arrivalFlight);
   useEffect(() => {
     setUserReservations(() => props.location.state.userReservation);
+    setUser(() => props.location.state.user);
     setMounted(() => true);
   }, []);
 
@@ -45,7 +35,6 @@ const UserReservations = (props) => {
     if (mounted) {
       const fetchData = async () => {
         {
-          console.log(userReservations.departingFlightId);
           const flightIDQuery = "_id=" + userReservations.departingFlightId;
           url3 += flightIDQuery;
 
@@ -57,37 +46,11 @@ const UserReservations = (props) => {
             setCancelPressed(true);
           }
         }
-        // await Axios.get(url).then((res) => {
-        //   setUser(() => res.data.user);
-        //   const userIDQuery = "userId=" + res.data.user._id;
-        //   url2 += userIDQuery;
-        // });
-        // console.log(location.state.userReservation);
-
-        // await Axios.get(url2).then((res) => {
-        //   setUserReservations(() => res.data.reservation);
-        //   const flightIDQuery = "_id=" + userReservations.departingFlightId;
-        //   url3 += flightIDQuery;
-
-        //   const flightIDQuery1 =
-        //     "_id=" + res.data.reservation[0].arrvivalFlightId;
-        //   url4 += flightIDQuery1;
-        // });
 
         await Axios.get(url3).then((res) => {
-          // res.data.flights.map((flight) => {
-          //   setDepartingFlight({
-          //   departingFlight,flight,
-          //   });
-          // });
-          // console.log(res.data.flights);
           setDepartingFlight(() => res.data.flights[0]);
-          //console.log(departingFlight);
         });
         await Axios.get(url4).then((res) => {
-          // res.data.flights.map((flight) => {
-          //   setArrivalFlight({ ...arrivalFlight, ["id" + flight._id]: flight });
-          // });
           setArrivalFlight(() => res.data.flights[0]);
         });
       };
@@ -95,14 +58,14 @@ const UserReservations = (props) => {
     }
   }, [userReservations]);
 
-  const cancel = (e,reservationId) => {
+  const cancel = (e, reservationId) => {
     confirmAlert({
       title: "Are you sure you want to cancel this reservation?",
       message: "Are you sure you want to cancel this reservation?",
       buttons: [
         {
           label: "Yes",
-          onClick: () => handleCancel(e,reservationId),
+          onClick: () => handleCancel(e, reservationId),
         },
         {
           label: "No",
@@ -112,7 +75,6 @@ const UserReservations = (props) => {
     });
   };
   const handleCancel = async (e, reservationId) => {
-    
     e.preventDefault();
 
     const reservation = {
@@ -127,16 +89,11 @@ const UserReservations = (props) => {
       console.log(cancelPressed);
     });
   };
-  return userReservations._id && departingFlight._id && arrivalFlight._id ? (
+  return userReservations._id &&
+    departingFlight._id &&
+    arrivalFlight._id &&
+    user._id ? (
     <div>
-      {/* {userReservations.map((reservation) => {
-        {
-          const concat = "id" + userReservations.departingFlightId;
-          const concat2 = "id" + userReservations.arrvivalFlightId;
-          console.log(arrivalFlight[concat2]);
-          if (departingFlight[concat] && arrivalFlight[concat2]) {
-            return (
-              <> */}
       <TableContainer component={Paper} style={{ marginTop: "65px" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -149,17 +106,12 @@ const UserReservations = (props) => {
               <TableCell align="center">Departure Terminal</TableCell>
               <TableCell align="center">Arrival Terminal</TableCell>
               <TableCell align="center">Number of Passengers</TableCell>
-              {/* <TableCell align="center">Cancel</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
             <>
               <TableRow key={departingFlight._id}>
-                <TableCell
-                  // onClick={() => handleCellClick(flight._id)}
-                  component="th"
-                  scope="row"
-                >
+                <TableCell component="th" scope="row">
                   {departingFlight.flightNumber}
                 </TableCell>
                 <TableCell align="center">{departingFlight.from}</TableCell>
@@ -187,14 +139,9 @@ const UserReservations = (props) => {
               </TableRow>
 
               <TableRow key={arrivalFlight._id}>
-                <TableCell
-                  // onClick={() => handleCellClick(flight._id)}
-                  component="th"
-                  scope="row"
-                >
+                <TableCell component="th" scope="row">
                   {arrivalFlight.flightNumber}
                 </TableCell>
-                {console.log(arrivalFlight.from)}
                 <TableCell align="center">{arrivalFlight.from}</TableCell>
                 <TableCell align="center">{arrivalFlight.to}</TableCell>
                 <TableCell align="center">
@@ -239,15 +186,10 @@ const UserReservations = (props) => {
           {cancelPressed ? "Cancelled" : "Cancel"}
         </Button>
       </div>
-      {/* </>
-            );
-          }
-        }
-      })} */}
     </div>
   ) : (
     <CircularProgress />
   );
 };
 
-export default UserReservations;
+export default ReservationDetails;
