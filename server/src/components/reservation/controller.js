@@ -30,6 +30,23 @@ const findReservaton = async (req, res, next) => {
     next(err);
   }
 };
+
+const fetch = async (req, res, next) => {
+  try {
+    const reservation = req.params.id;
+    const reservationResult = await model.fetch(reservation);
+    if (reservationResult) {
+      req.reservation = reservationResult;
+      next();
+    } else {
+      const err = new Error("Cannot find your reservation");
+
+      next(err);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
 const createReservation = async (req, res, next) => {
   try {
     const reservation = req.body.reservation;
@@ -77,6 +94,11 @@ const fetchAllPipeline = [
   fetchAll,
 ];
 
+const fetchPipeline = [
+  //verify Admin,
+  fetch,
+];
+
 const createPipeline = [
   //verify Admin,
   createReservation,
@@ -99,6 +121,7 @@ const updatePipeline = [
 
 module.exports = {
   fetchAllPipeline,
+  fetchPipeline,
   createPipeline,
   findPipeline,
   deletePipeline,

@@ -13,19 +13,52 @@ const reservationSchema = new Schema({
     ref: "Flight",
     required: true,
   },
-  arrvivalFlightId: {
+  returnFlightId: {
     type: Schema.Types.ObjectId,
     ref: "Flight",
     required: true,
   },
-  numberOfPassengers: {
-    type: Number,
-    required: true,
-  },
+
+  passengers: [
+    {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+      passportNumber: {
+        type: String,
+        required: true,
+      },
+      departureSeat: {
+        class: {
+          type: String,
+          required: true,
+        },
+        seatNumber: {
+          type: String,
+          required: true,
+        },
+      },
+      returnSeat: {
+        class: {
+          type: String,
+          required: true,
+        },
+        seatNumber: {
+          type: String,
+          required: true,
+        },
+      },
+    },
+  ],
   class: {
     type: String,
     required: true,
-    enum: ["Economy", "Buisness"],
+    enum: ["Economy", "Business"],
   },
   status: {
     type: String,
@@ -34,7 +67,12 @@ const reservationSchema = new Schema({
   },
   index: {
     type: Number,
-  }
+  },
+
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
 });
 reservationSchema.plugin(AutoIncrement, {id:'index_seq', inc_field: 'index'});
 const Reservation = mongoose.model("reservation", reservationSchema);

@@ -17,7 +17,6 @@ const SignUpForm = () => {
     setTelephoneList(list);
     // setTelephoneList(...telephoneList, e.target.value);
     setUserDetails({ ...userDetails, telephoneNumbers: telephoneList });
-    console.log(userDetails);
   };
 
   const handleAddClick = () => {

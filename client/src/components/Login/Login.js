@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { TextField, Container, Button, Link } from "@material-ui/core";
 import { useHistory } from "react-router";
+import axios from "axios";
 
-const Login = () => {
+const Login = (props) => {
   const history = useHistory();
   const [userDetails, setUserDetails] = useState({});
 
@@ -12,18 +13,34 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const noOfKeys = Object.keys(userDetails).length;
-    let search = "?";
-    Object.entries(userDetails).map((entry, i) => {
-      let [key, value] = entry;
-      let last = i + 1 === noOfKeys ? "" : "&";
-      return (search += key + "=" + value + last);
-    });
-    try {
-      history.push("/user-profile" + search);
-    } catch (err) {
-      console.log(err);
+    if (
+      props.location?.state?.flightToSelect &&
+      props.location?.state?.flightInQueue
+    ) {
+      axios
+        .get(
+          "http://localhost:8000/hnfey/user/find-user/?username=" +
+            userDetails.username
+        )
+        .then((res) => {
+          history.push("/flight/seat-selection", {
+            ...props.location.state,
+            userId: res.data.user._id,
+          });
+        });
+    } else {
+      const noOfKeys = Object.keys(userDetails).length;
+      let search = "?";
+      Object.entries(userDetails).map((entry, i) => {
+        let [key, value] = entry;
+        let last = i + 1 === noOfKeys ? "" : "&";
+        return (search += key + "=" + value + last);
+      });
+      try {
+        history.push("/user-profile" + search);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
   return (

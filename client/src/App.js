@@ -17,8 +17,10 @@ import Summary from "./components/Summary/Summary";
 import UserProfile from "./components/UserProfile/UserProfile";
 import Login from "./components/Login/Login";
 import EditUser from "./components/EditUser/EditUser";
-import UserReservations from "./components/UserReservations/UserReservations";
+import ReservationDetails from "./components/ReservationDetails/ReservationDetails";
+import AllReservations from "./components/AllReservations/AllReservations";
 import SeatSelection from "./components/SeatSelection/SeatSelection";
+import Checkout from "./components/Checkout/Checkout";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -53,10 +55,17 @@ const App = () => {
             exact
             component={SeatSelection}
           />
+          <Route
+            path="/flight/return-seat-selection"
+            exact
+            component={SeatSelection}
+          />
           <Route path="/flight/:id" exact component={FlightDetails} />
           <Route path="/flight-information" exact component={Summary} />
           <Route path="/user-profile" exact component={UserProfile} />
-          <Route path="/user-reservations" exact component={UserReservations} />
+          <Route path="/reservation" exact component={ReservationDetails} />
+          <Route path="/all-reservations" exact component={AllReservations} />
+          <Route path="/checkout" exact component={Checkout} />
         </Switch>
       </Router>
     </MuiThemeProvider>

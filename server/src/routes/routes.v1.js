@@ -6,7 +6,6 @@ const seatRoutes = require("../components/seat/routes");
 
 module.exports = (app, base) => {
   // app.get(`${base}/`, (req, res) => {
-  //   console.log("hi");
   //   res.send("ezzatXammar");
   // });
   app.use(`${base}/user`, userRoutes);
