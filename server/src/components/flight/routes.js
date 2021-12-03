@@ -52,6 +52,16 @@ router.post("/find-flight", controller.findPipeline, async (req, res) => {
   });
 });
 
+router.post(
+  "/cancel-flight",
+  controller.sendCancellationEmailPipeline,
+  async (req, res) => {
+    res.status(200).json({
+      message: "Cancellation email sent successfully",
+    });
+  }
+);
+
 router.delete("/:id", controller.deletePipeline, async (req, res) => {
   if (req.transaction) await req.transaction.commit();
   res.status(200).json({
