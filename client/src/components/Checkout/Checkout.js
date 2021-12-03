@@ -45,7 +45,7 @@ const Checkout = (props) => {
   const [selectedReturnSeats, setSelectedReturnSeats] = useState([]);
   const noOfPassengersArray = [...Array(Number(passengers)).keys()];
   const createReservationUrl = "http://localhost:8000/hnfey/reservation";
-  const editSetsUrl = "http://localhost:8000/hnfey/flight/edit-flight";
+  const editFlightUrl = "http://localhost:8000/hnfey/flight/edit-flight";
 
   const handleResetSeatClick = () => {
     setPassengerInfoState((passenger) =>
@@ -105,6 +105,43 @@ const Checkout = (props) => {
       delete passenger.returnSeat.reserved;
       return passenger;
     });
+    const departureFlightBody =
+      cabin === "Business"
+        ? {
+            flight: {
+              _id: departingFlight._id,
+              seats: departingFlight.seats,
+              numberOfAvailableBusinessSeats:
+                departingFlight.numberOfAvailableBusinessSeats - passengers,
+            },
+          }
+        : {
+            flight: {
+              _id: departingFlight._id,
+              seats: departingFlight.seats,
+              numberOfAvailableEconomySeats:
+                departingFlight.numberOfAvailableEconomySeats - passengers,
+            },
+          };
+
+    const returnFlightBody =
+      cabin === "Business"
+        ? {
+            flight: {
+              _id: returnFlight._id,
+              seats: returnFlight.seats,
+              numberOfAvailableBusinessSeats:
+                returnFlight.numberOfAvailableBusinessSeats - passengers,
+            },
+          }
+        : {
+            flight: {
+              _id: returnFlight._id,
+              seats: returnFlight.seats,
+              numberOfAvailableEconomySeats:
+                returnFlight.numberOfAvailableEconomySeats - passengers,
+            },
+          };
     const reservation = {
       reservation: {
         userId,
@@ -117,20 +154,13 @@ const Checkout = (props) => {
       },
     };
 
-    axios.put(editSetsUrl, {
-      flight: {
-        _id: departingFlight._id,
-        seats: departingFlight.seats,
-      },
-    });
-    axios.put(editSetsUrl, {
-      flight: {
-        _id: returnFlight._id,
-        seats: returnFlight.seats,
-      },
-    });
-    axios.post(createReservationUrl, reservation).then(() => {
-      history.push("/");
+    axios.put(editFlightUrl, departureFlightBody);
+    axios.put(editFlightUrl, returnFlightBody);
+    axios.post(createReservationUrl, reservation).then((res) => {
+      history.push("/summary", {
+        ...props.location.state,
+        reservation: res.data.reservation,
+      });
     });
   };
 
