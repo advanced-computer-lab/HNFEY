@@ -332,7 +332,10 @@ const ReservationDetails = (props) => {
                       fontWeight: 400,
                     }}
                   >
-                    {departingFlight.price} EGP
+                    {userReservations.class === "Business"
+                      ? departingFlight.businessPrice
+                      : departingFlight.economyPrice}
+                    EGP
                   </Typography>
                 </div>
               </div>
@@ -528,7 +531,10 @@ const ReservationDetails = (props) => {
                       fontWeight: 400,
                     }}
                   >
-                    {returnFlight.price} EGP
+                    {userReservations.class === "Business"
+                      ? returnFlight.businessPrice
+                      : returnFlight.economyPrice}
+                    EGP
                   </Typography>
                 </div>
               </div>
@@ -549,103 +555,127 @@ const ReservationDetails = (props) => {
                 marginBottom: "4%",
               }}
             >
-              {/* {userReservations.passengers.map((passenger) => {
+              {userReservations.passengers.map((passenger, index) => {
                 return (
-                  <> */}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  margin: "4% 4% 2%",
-                }}
-              >
-                <Typography
-                  variant="h2"
-                  style={{
-                    fontSize: "1.7rem",
-                    fontWeight: 500,
-                  }}
-                >
-                  Passenger 1
-                </Typography>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  margin: "1% 4% 1%",
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  style={{
-                    fontSize: "1.2rem",
-                    fontWeight: 500,
-                    marginBottom: "1%",
-                  }}
-                >
-                  Passenger Name
-                </Typography>
-                <Typography
-                  variant="body1"
-                  style={{ fontSize: "1rem", fontWeight: 400 }}
-                >
-                  {user.firstName} {user.lastName}
-                </Typography>
-              </div>
+                  <>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        margin: "4% 4% 2%",
+                      }}
+                    >
+                      <Typography
+                        variant="h2"
+                        style={{
+                          fontSize: "1.7rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        Passenger {index + 1}
+                      </Typography>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        margin: "1% 4% 1%",
+                      }}
+                    >
+                      <Typography
+                        variant="body1"
+                        style={{
+                          fontSize: "1.2rem",
+                          fontWeight: 500,
+                          marginBottom: "1%",
+                        }}
+                      >
+                        Passenger Name
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        style={{ fontSize: "1rem", fontWeight: 400 }}
+                      >
+                        {passenger.firstName} {passenger.lastName}
+                      </Typography>
+                    </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  margin: "1% 4% 1%",
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  style={{
-                    fontSize: "1.2rem",
-                    fontWeight: 500,
-                    marginBottom: "1%",
-                  }}
-                >
-                  Passport Number
-                </Typography>
-                <Typography
-                  variant="body1"
-                  style={{ fontSize: "1rem", fontWeight: 400 }}
-                >
-                  {user.passportNumber}
-                </Typography>
-              </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        margin: "1% 4% 1%",
+                      }}
+                    >
+                      <Typography
+                        variant="body1"
+                        style={{
+                          fontSize: "1.2rem",
+                          fontWeight: 500,
+                          marginBottom: "1%",
+                        }}
+                      >
+                        Passport Number
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        style={{ fontSize: "1rem", fontWeight: 400 }}
+                      >
+                        {passenger.passportNumber}
+                      </Typography>
+                    </div>
 
-              {/* <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  margin: "1% 4% 1%",
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  style={{
-                    fontSize: "1.2rem",
-                    fontWeight: 500,
-                    marginBottom: "1%",
-                  }}
-                >
-                  Departing Flight Seat
-                </Typography>
-                <Typography
-                  variant="body1"
-                  style={{ fontSize: "1rem", fontWeight: 400 }}
-                >
-                  {userReservations.class}
-                </Typography>
-              </div> */}
-              {/* </>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        margin: "1% 4% 1%",
+                      }}
+                    >
+                      <Typography
+                        variant="body1"
+                        style={{
+                          fontSize: "1.2rem",
+                          fontWeight: 500,
+                          marginBottom: "1%",
+                        }}
+                      >
+                        Departing Flight Seat
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        style={{ fontSize: "1rem", fontWeight: 400 }}
+                      >
+                        {passenger.departureSeat.seatNumber}
+                      </Typography>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        margin: "1% 4% 1%",
+                      }}
+                    >
+                      <Typography
+                        variant="body1"
+                        style={{
+                          fontSize: "1.2rem",
+                          fontWeight: 500,
+                          marginBottom: "1%",
+                        }}
+                      >
+                        Return Flight Seat
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        style={{ fontSize: "1rem", fontWeight: 400 }}
+                      >
+                        {passenger.returnSeat.seatNumber}
+                      </Typography>
+                    </div>
+                  </>
                 );
-              })} */}
+              })}
             </div>
           </Grid>
         </Grid>
