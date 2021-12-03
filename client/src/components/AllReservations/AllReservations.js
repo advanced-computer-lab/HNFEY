@@ -13,7 +13,6 @@ export const AllReservations = () => {
   const history = useHistory();
   const location = useLocation();
   let url = "http://localhost:8000/hnfey/user/find-user?";
-  let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
 
   let query = queryString.parse(location.search);
   const noOfKeys = Object.keys(query).length;
@@ -24,6 +23,7 @@ export const AllReservations = () => {
   });
 
   useEffect(() => {
+    let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
     const fetchData = async () => {
       await Axios.get(url).then((res) => {
         setUser(() => res.data.user);
@@ -36,7 +36,7 @@ export const AllReservations = () => {
       });
     };
     fetchData();
-  }, []);
+  }, [url]);
 
   const handleViewReservation = async (e, reservation) => {
     e.preventDefault();

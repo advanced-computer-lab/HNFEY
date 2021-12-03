@@ -12,38 +12,34 @@ import FlightIcon from "@mui/icons-material/Flight";
 import getTimeDifference from "../../utils/time";
 
 const ReservationDetails = (props) => {
-  const [userReservations, setUserReservations] = useState({});
+  const [userReservation, setUserReservation] = useState({});
   const [user, setUser] = useState({});
   const [departingFlight, setDepartingFlight] = useState({});
   const [returnFlight, setReturnFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
-  let url3 = "http://localhost:8000/hnfey/flight/list-flights?";
-  let url4 = "http://localhost:8000/hnfey/flight/list-flights?";
-  const [mounted, setMounted] = useState(false);
 
   const reservationUrl =
     "http://localhost:8000/hnfey/reservation/" +
     props.location.state.userReservation._id;
 
   useEffect(() => {
-    // setUserReservations(() => props.location.state.userReservation);
+    // setUserReservation(() => props.location.state.userReservation);
     Axios.get(reservationUrl).then((res) => {
-      setUserReservations(() => res.data.reservation);
+      setUserReservation(() => res.data.reservation);
     });
     setUser(() => props.location.state.user);
-    setMounted(() => true);
-  }, []);
+  }, [props.location.state.user, reservationUrl]);
 
   useEffect(() => {
-    if (mounted) {
-      const fetchData = async () => {
-        {
-          const flightIDQuery = "_id=" + userReservations.departingFlightId;
-          url3 += flightIDQuery;
+    let url3 = "http://localhost:8000/hnfey/flight/list-flights?";
+    let url4 = "http://localhost:8000/hnfey/flight/list-flights?";
+    const fetchData = async () => {
+      if (userReservation.departingFlightId) {
+        const flightIDQuery = "_id=" + userReservation.departingFlightId;
+        url3 += flightIDQuery;
 
-          const flightIDQuery1 = "_id=" + userReservations.returnFlightId;
-          url4 += flightIDQuery1;
-        }
+        const flightIDQuery1 = "_id=" + userReservation.returnFlightId;
+        url4 += flightIDQuery1;
 
         await Axios.get(url3).then((res) => {
           setDepartingFlight(() => res.data.flights[0]);
@@ -51,16 +47,16 @@ const ReservationDetails = (props) => {
         await Axios.get(url4).then((res) => {
           setReturnFlight(() => res.data.flights[0]);
         });
-        if (userReservations.status === "Reserved") {
+        if (userReservation.status === "Reserved") {
           setCancelPressed(false);
         } else {
           setCancelPressed(true);
         }
-      };
+      }
+    };
 
-      fetchData();
-    }
-  }, [userReservations, cancelPressed]);
+    fetchData();
+  }, [userReservation, cancelPressed]);
 
   const cancel = (e, reservationId) => {
     confirmAlert({
@@ -87,13 +83,20 @@ const ReservationDetails = (props) => {
     await Axios.put(
       "http://localhost:8000/hnfey/reservation/edit-reservation",
       reservation
-    ).then((res) => {
-      userReservations.status = "Cancelled";
+    ).then(() => {
+      userReservation.status = "Cancelled";
       setCancelPressed(true);
+    });
+
+    Axios.post("http://localhost:8000/hnfey/flight/cancel-flight", {
+      user: {
+        email: user.email,
+      },
+      totalPrice: userReservation.totalPrice,
     });
   };
 
-  return userReservations?._id &&
+  return userReservation?._id &&
     departingFlight._id &&
     returnFlight._id &&
     user._id ? (
@@ -109,7 +112,12 @@ const ReservationDetails = (props) => {
                 marginLeft: "2%",
               }}
             >
-              <h1>Reservation {userReservations._id}</h1>
+              <Typography
+                variant="h5"
+                style={{ fontSize: "1.5rem", fontWeight: 500 }}
+              >
+                Reservation {userReservation._id}
+              </Typography>
             </div>
           </Grid>
           <Grid item md={6}>
@@ -123,9 +131,9 @@ const ReservationDetails = (props) => {
                 }}
                 variant="contained"
                 color="primary"
-                onClick={(e) => cancel(e, userReservations._id)}
+                onClick={(e) => cancel(e, userReservation._id)}
                 disabled={
-                  cancelPressed || userReservations.status === "Cancelled"
+                  cancelPressed || userReservation.status === "Cancelled"
                     ? true
                     : false
                 }
@@ -153,15 +161,18 @@ const ReservationDetails = (props) => {
                 marginBottom: "4%",
               }}
             >
-              <h1
+              <Typography
+                vaiant="h6"
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   margin: "4% 4% 2%",
+                  fontSize: "1.7rem",
+                  fontWeight: 500,
                 }}
               >
                 Departure Flight
-              </h1>
+              </Typography>
               <div
                 style={{
                   display: "flex",
@@ -239,7 +250,7 @@ const ReservationDetails = (props) => {
                   variant="body1"
                   style={{ fontSize: "0.875rem", fontWeight: 500 }}
                 >
-                  Fare: {userReservations.class}
+                  Fare: {userReservation.class}
                 </Typography>
               </div>
 
@@ -332,7 +343,7 @@ const ReservationDetails = (props) => {
                       fontWeight: 400,
                     }}
                   >
-                    {userReservations.class === "Business"
+                    {userReservation.class === "Business"
                       ? departingFlight.businessPrice
                       : departingFlight.economyPrice}
                     EGP
@@ -352,15 +363,18 @@ const ReservationDetails = (props) => {
                 marginBottom: "4%",
               }}
             >
-              <h1
+              <Typography
+                variant="h5"
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   margin: "4% 4% 2%",
+                  fontSize: "1.7rem",
+                  fontWeight: 500,
                 }}
               >
                 Return Flight
-              </h1>
+              </Typography>
               <div
                 style={{
                   display: "flex",
@@ -438,7 +452,7 @@ const ReservationDetails = (props) => {
                   variant="body1"
                   style={{ fontSize: "0.875rem", fontWeight: 500 }}
                 >
-                  Fare: {userReservations.class}
+                  Fare: {userReservation.class}
                 </Typography>
               </div>
 
@@ -531,7 +545,7 @@ const ReservationDetails = (props) => {
                       fontWeight: 400,
                     }}
                   >
-                    {userReservations.class === "Business"
+                    {userReservation.class === "Business"
                       ? returnFlight.businessPrice
                       : returnFlight.economyPrice}
                     EGP
@@ -546,7 +560,7 @@ const ReservationDetails = (props) => {
         <Grid container alignItems="stretch" spacing={3}>
           <Grid item md={12}>
             <div
-              key={userReservations._id}
+              key={userReservation._id}
               style={{
                 display: "flex",
                 borderRadius: "10px",
@@ -555,9 +569,9 @@ const ReservationDetails = (props) => {
                 marginBottom: "4%",
               }}
             >
-              {userReservations.passengers.map((passenger, index) => {
+              {userReservation.passengers.map((passenger, index) => {
                 return (
-                  <>
+                  <React.Fragment key={index}>
                     <div
                       style={{
                         display: "flex",
@@ -673,7 +687,7 @@ const ReservationDetails = (props) => {
                         {passenger.returnSeat.seatNumber}
                       </Typography>
                     </div>
-                  </>
+                  </React.Fragment>
                 );
               })}
             </div>
@@ -687,98 +701,3 @@ const ReservationDetails = (props) => {
 };
 
 export default ReservationDetails;
-
-{
-  /* <TableContainer component={Paper} style={{ marginTop: "65px" }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell> Flight Number</TableCell>
-              <TableCell align="center">From</TableCell>
-              <TableCell align="center">To</TableCell>
-              <TableCell align="center">Departure Time</TableCell>
-              <TableCell align="center">Return Time</TableCell>
-              <TableCell align="center">Departure Terminal</TableCell>
-              <TableCell align="center">Return Terminal</TableCell>
-              <TableCell align="center">Number of Passengers</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <>
-              <TableRow key={departingFlight._id}>
-                <TableCell component="th" scope="row">
-                  {departingFlight.flightNumber}
-                </TableCell>
-                <TableCell align="center">{departingFlight.from}</TableCell>
-                <TableCell align="center">{departingFlight.to}</TableCell>
-                <TableCell align="center">
-                  {moment(departingFlight.departureDateTime).format(
-                    "DD-MM-YYYY hh:mm A"
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                  {moment(departingFlight.arrivalDateTime).format(
-                    "DD-MM-YYYY hh:mm A"
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                  {departingFlight.departureTerminal}
-                </TableCell>
-                <TableCell align="center">
-                  {departingFlight.arrivalTerminal}
-                </TableCell>
-                <TableCell align="center">
-                  {userReservations.numberOfPassengers}
-                </TableCell>
-                <TableCell align="center"></TableCell>
-              </TableRow>
-
-              <TableRow key={returnFlight._id}>
-                <TableCell component="th" scope="row">
-                  {returnFlight.flightNumber}
-                </TableCell>
-                <TableCell align="center">{returnFlight.from}</TableCell>
-                <TableCell align="center">{returnFlight.to}</TableCell>
-                <TableCell align="center">
-                  {moment(returnFlight.departureDateTime).format(
-                    "DD-MM-YYYY hh:mm A"
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                  {moment(returnFlight.arrivalDateTime).format(
-                    "DD-MM-YYYY hh:mm A"
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                  {returnFlight.departureTerminal}
-                </TableCell>
-                <TableCell align="center">
-                  {returnFlight.arrivalTerminal}
-                </TableCell>
-                <TableCell align="center">
-                  {userReservations.numberOfPassengers}
-                </TableCell>
-                <TableCell align="center"></TableCell>
-              </TableRow>
-            </>
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <br />
-      <br />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          align="center"
-          style={{
-            width: 500,
-            margin: "auto",
-          }}
-          variant="contained"
-          color="primary"
-          onClick={(e) => cancel(e, userReservations._id)}
-          disabled={cancelPressed ? true : false}
-        >
-          {cancelPressed ? "Cancelled" : "Cancel"}
-        </Button>
-      </div> */
-}
