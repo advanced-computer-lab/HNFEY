@@ -47,7 +47,6 @@ const Checkout = (props) => {
   const createReservationUrl = "http://localhost:8000/hnfey/reservation";
   const editSetsUrl = "http://localhost:8000/hnfey/flight/edit-flight";
 
-  console.log(passengerInfoState);
   const handleResetSeatClick = () => {
     setPassengerInfoState((passenger) =>
       passenger.map((passengerInfo) => ({
