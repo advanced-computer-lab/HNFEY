@@ -1,19 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@material-ui/core";
 import Axios from "axios";
-import {
-  TableBody,
-  TableCell,
-  TableRow,
-  TableContainer,
-  TableHead,
-  Paper,
-  Table,
-  Typography,
-  Tooltip,
-  Grid,
-  Container,
-} from "@material-ui/core";
+import { Typography, Tooltip, Grid, Container } from "@material-ui/core";
 import { useEffect } from "react";
 import { CircularProgress } from "@material-ui/core";
 import moment from "moment";
@@ -27,7 +15,7 @@ const ReservationDetails = (props) => {
   const [userReservations, setUserReservations] = useState({});
   const [user, setUser] = useState({});
   const [departingFlight, setDepartingFlight] = useState({});
-  const [arrivalFlight, setArrivalFlight] = useState({});
+  const [returnFlight, setReturnFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
   let url3 = "http://localhost:8000/hnfey/flight/list-flights?";
   let url4 = "http://localhost:8000/hnfey/flight/list-flights?";
@@ -53,17 +41,15 @@ const ReservationDetails = (props) => {
           const flightIDQuery = "_id=" + userReservations.departingFlightId;
           url3 += flightIDQuery;
 
-          const flightIDQuery1 = "_id=" + userReservations.arrvivalFlightId;
+          const flightIDQuery1 = "_id=" + userReservations.returnFlightId;
           url4 += flightIDQuery1;
         }
 
         await Axios.get(url3).then((res) => {
-          console.log(res.data);
           setDepartingFlight(() => res.data.flights[0]);
         });
         await Axios.get(url4).then((res) => {
-          console.log(res.data);
-          setArrivalFlight(() => res.data.flights[0]);
+          setReturnFlight(() => res.data.flights[0]);
         });
         if (userReservations.status === "Reserved") {
           setCancelPressed(false);
@@ -75,8 +61,6 @@ const ReservationDetails = (props) => {
       fetchData();
     }
   }, [userReservations, cancelPressed]);
-
-  console.log(userReservations);
 
   const cancel = (e, reservationId) => {
     confirmAlert({
@@ -104,19 +88,14 @@ const ReservationDetails = (props) => {
       "http://localhost:8000/hnfey/reservation/edit-reservation",
       reservation
     ).then((res) => {
-      // console.log(res.data);
       userReservations.status = "Cancelled";
       setCancelPressed(true);
     });
   };
 
-  console.log(userReservations);
-  console.log(departingFlight);
-  console.log(arrivalFlight);
-  console.log(user);
   return userReservations?._id &&
     departingFlight._id &&
-    arrivalFlight._id &&
+    returnFlight._id &&
     user._id ? (
     <div>
       <Container component="main" style={{ marginTop: "9%" }}>
@@ -361,7 +340,7 @@ const ReservationDetails = (props) => {
           </Grid>
           <Grid item md={6}>
             <div
-              key={arrivalFlight._id}
+              key={returnFlight._id}
               style={{
                 display: "flex",
                 borderRadius: "10px",
@@ -394,8 +373,8 @@ const ReservationDetails = (props) => {
                     marginBottom: "1%",
                   }}
                 >
-                  {arrivalFlight.from.split(" ")[0]} to{" "}
-                  {arrivalFlight.to.split(" ")[0]}{" "}
+                  {returnFlight.from.split(" ")[0]} to{" "}
+                  {returnFlight.to.split(" ")[0]}{" "}
                 </Typography>
               </div>
               <div
@@ -418,7 +397,7 @@ const ReservationDetails = (props) => {
                   }}
                 >
                   HNFEY •{" "}
-                  {moment(arrivalFlight.departureDay).format("ddd, MMM Do")}
+                  {moment(returnFlight.departureDay).format("ddd, MMM Do")}
                 </Typography>
               </div>
               <div
@@ -432,16 +411,16 @@ const ReservationDetails = (props) => {
                   variant="body1"
                   style={{ fontSize: "0.875rem", fontWeight: 500 }}
                 >
-                  {moment(arrivalFlight.departureDateTime).format("hh:mm A")} -{" "}
-                  {moment(arrivalFlight.arrivalDateTime).format("hh:mm A")}
+                  {moment(returnFlight.departureDateTime).format("hh:mm A")} -{" "}
+                  {moment(returnFlight.arrivalDateTime).format("hh:mm A")}
                 </Typography>
                 <Typography
                   variant="body1"
                   style={{ fontSize: "0.875rem", fontWeight: 300 }}
                 >
                   {getTimeDifference(
-                    arrivalFlight.departureDateTime,
-                    arrivalFlight.arrivalDateTime
+                    returnFlight.departureDateTime,
+                    returnFlight.arrivalDateTime
                   )}
                 </Typography>
               </div>
@@ -514,7 +493,7 @@ const ReservationDetails = (props) => {
                       fontWeight: 400,
                     }}
                   >
-                    {arrivalFlight.baggageAllowance} KG
+                    {returnFlight.baggageAllowance} KG
                   </Typography>
                 </div>
               </div>
@@ -549,7 +528,7 @@ const ReservationDetails = (props) => {
                       fontWeight: 400,
                     }}
                   >
-                    {arrivalFlight.price} EGP
+                    {returnFlight.price} EGP
                   </Typography>
                 </div>
               </div>
@@ -688,9 +667,9 @@ export default ReservationDetails;
               <TableCell align="center">From</TableCell>
               <TableCell align="center">To</TableCell>
               <TableCell align="center">Departure Time</TableCell>
-              <TableCell align="center">Arrival Time</TableCell>
+              <TableCell align="center">Return Time</TableCell>
               <TableCell align="center">Departure Terminal</TableCell>
-              <TableCell align="center">Arrival Terminal</TableCell>
+              <TableCell align="center">Return Terminal</TableCell>
               <TableCell align="center">Number of Passengers</TableCell>
             </TableRow>
           </TableHead>
@@ -724,27 +703,27 @@ export default ReservationDetails;
                 <TableCell align="center"></TableCell>
               </TableRow>
 
-              <TableRow key={arrivalFlight._id}>
+              <TableRow key={returnFlight._id}>
                 <TableCell component="th" scope="row">
-                  {arrivalFlight.flightNumber}
+                  {returnFlight.flightNumber}
                 </TableCell>
-                <TableCell align="center">{arrivalFlight.from}</TableCell>
-                <TableCell align="center">{arrivalFlight.to}</TableCell>
+                <TableCell align="center">{returnFlight.from}</TableCell>
+                <TableCell align="center">{returnFlight.to}</TableCell>
                 <TableCell align="center">
-                  {moment(arrivalFlight.departureDateTime).format(
+                  {moment(returnFlight.departureDateTime).format(
                     "DD-MM-YYYY hh:mm A"
                   )}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(arrivalFlight.arrivalDateTime).format(
+                  {moment(returnFlight.arrivalDateTime).format(
                     "DD-MM-YYYY hh:mm A"
                   )}
                 </TableCell>
                 <TableCell align="center">
-                  {arrivalFlight.departureTerminal}
+                  {returnFlight.departureTerminal}
                 </TableCell>
                 <TableCell align="center">
-                  {arrivalFlight.arrivalTerminal}
+                  {returnFlight.arrivalTerminal}
                 </TableCell>
                 <TableCell align="center">
                   {userReservations.numberOfPassengers}

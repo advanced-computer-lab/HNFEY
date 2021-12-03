@@ -33,12 +33,24 @@ const reservationSchema = new Schema({
         required: true,
       },
       departureSeat: {
-        type: String,
-        required: true,
+        class: {
+          type: String,
+          required: true,
+        },
+        seatNumber: {
+          type: String,
+          required: true,
+        },
       },
       returnSeat: {
-        type: String,
-        required: true,
+        class: {
+          type: String,
+          required: true,
+        },
+        seatNumber: {
+          type: String,
+          required: true,
+        },
       },
     },
   ],
@@ -51,6 +63,11 @@ const reservationSchema = new Schema({
     type: String,
     required: true,
     enum: ["Reserved", "Cancelled", "Pending"],
+  },
+
+  totalPrice: {
+    type: Number,
+    required: true,
   },
 });
 const Reservation = mongoose.model("reservation", reservationSchema);

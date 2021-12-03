@@ -28,7 +28,6 @@ export const AllReservations = () => {
       await Axios.get(url).then((res) => {
         setUser(() => res.data.user);
         const userIDQuery = "userId=" + res.data.user._id;
-        console.log(userIDQuery);
         url2 += userIDQuery;
       });
 
@@ -50,7 +49,7 @@ export const AllReservations = () => {
   return user._id
     ? userReservations.map((reservation) => {
         return (
-          <>
+          <React.Fragment key={reservation._id}>
             <Container component="main" style={{ marginTop: "2%" }}>
               <br />
               <Paper elevation={6} style={{ margin: "5% 0% 2%" }}>
@@ -68,7 +67,7 @@ export const AllReservations = () => {
                         margin: "5% 0% 1% 2%",
                       }}
                     >
-                      Reservation Numeber
+                      Reservation Number
                     </Typography>
                     <Typography
                       variant="h2"
@@ -133,7 +132,7 @@ export const AllReservations = () => {
                 </div>
               </Paper>
             </Container>
-          </>
+          </React.Fragment>
         );
       })
     : null;

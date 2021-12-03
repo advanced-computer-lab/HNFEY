@@ -6,12 +6,8 @@ const createUser = async (user) => {
   return await User.create(user);
 };
 
-const fetch = async (_id) => {
-  return await User.find({ _id });
-};
-
-const update = async (_id, updatedUser) => {
-  return await User.findByIdAndUpdate(_id, updatedUser);
+const fetchById = async (_id) => {
+  return await User.findById(_id);
 };
 
 const findUser = async (user) => {
@@ -24,7 +20,7 @@ const updateUser = async (_id, updatedUser) => {
 
 module.exports = {
   fetchAll,
-  fetch,
+  fetchById,
   updateUser,
   createUser,
   findUser,

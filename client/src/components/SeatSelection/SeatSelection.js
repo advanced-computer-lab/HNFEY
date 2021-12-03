@@ -64,12 +64,20 @@ const SeatSelection = (props) => {
     if (!props.location.state.departingFlightSeats) {
       const newFlight = props.location.state.flightInQueue;
 
+      const departureSeatsUpdated =
+        props.location.state.flightToSelect.seats.map((seat) =>
+          seatsSelected.includes(seat) ? { ...seat, reserved: true } : seat
+        );
+
       delete props.location.state.flightInQueue;
       state = {
         ...props.location.state,
         departingFlightSeats: seatsSelected,
         flightToSelect: newFlight,
-        departingFlight: props.location.state.flightToSelect,
+        departingFlight: {
+          ...props.location.state.flightToSelect,
+          seats: departureSeatsUpdated,
+        },
         passengers: flight.passengers,
         cabin: flight.class,
       };
@@ -77,13 +85,16 @@ const SeatSelection = (props) => {
       history.go(0);
     } else {
       const returnFlight = props.location.state.flightToSelect;
+      const returnSeatsUpdated = props.location.state.flightToSelect.seats.map(
+        (seat) =>
+          seatsSelected.includes(seat) ? { ...seat, reserved: true } : seat
+      );
+
       const passengers = props.location.state.passengers;
       const cabin = props.location.state.cabin;
       delete props.location.state.departingFlight.class;
       delete props.location.state.departingFlight.passengers;
-      delete props.location.state.departingFlight.seats;
       delete returnFlight.class;
-      delete returnFlight.seats;
       delete props.location.state.flightToSelect;
 
       let passengersInfo = [];
@@ -98,7 +109,7 @@ const SeatSelection = (props) => {
       }
       state = {
         ...props.location.state,
-        returnFlight,
+        returnFlight: { ...returnFlight, seats: returnSeatsUpdated },
         returnFlightSeats: seatsSelected,
         passengersInfo,
         cabin,

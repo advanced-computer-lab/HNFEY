@@ -30,6 +30,7 @@ const Checkout = (props) => {
     passengers,
     passengersInfo,
     cabin,
+    userId,
   } = details;
 
   const departureSeatsAvailable = departingFlightSeats;
@@ -43,7 +44,10 @@ const Checkout = (props) => {
   const [selectedDepartureSeats, setSelectedDepartureSeats] = useState([]);
   const [selectedReturnSeats, setSelectedReturnSeats] = useState([]);
   const noOfPassengersArray = [...Array(Number(passengers)).keys()];
+  const createReservationUrl = "http://localhost:8000/hnfey/reservation";
+  const editSetsUrl = "http://localhost:8000/hnfey/flight/edit-flight";
 
+  console.log(passengerInfoState);
   const handleResetSeatClick = () => {
     setPassengerInfoState((passenger) =>
       passenger.map((passengerInfo) => ({
@@ -53,6 +57,7 @@ const Checkout = (props) => {
       }))
     );
     setSelectedDepartureSeats([]);
+    setSelectedReturnSeats([]);
   };
 
   const handleChange = (e, i) => {
@@ -96,20 +101,38 @@ const Checkout = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const passengersWithoutReserved = passengerInfoState.map((passenger) => {
+      delete passenger.departureSeat.reserved;
+      delete passenger.returnSeat.reserved;
+      return passenger;
+    });
     const reservation = {
       reservation: {
+        userId,
         departingFlightId: departingFlight._id,
         returnFlightId: returnFlight._id,
-        passengers: passengerInfoState,
+        passengers: passengersWithoutReserved,
         class: cabin,
         status: "Reserved",
+        totalPrice,
       },
     };
-    axios
-      .post("http://localhost:8000/hnfey/reservation/", reservation)
-      .then(() => {
-        history.push("/");
-      });
+
+    axios.put(editSetsUrl, {
+      flight: {
+        _id: departingFlight._id,
+        seats: departingFlight.seats,
+      },
+    });
+    axios.put(editSetsUrl, {
+      flight: {
+        _id: returnFlight._id,
+        seats: returnFlight.seats,
+      },
+    });
+    axios.post(createReservationUrl, reservation).then(() => {
+      history.push("/");
+    });
   };
 
   return details && departureSeatsAvailable.length > 0 ? (

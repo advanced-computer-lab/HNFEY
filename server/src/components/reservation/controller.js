@@ -16,9 +16,7 @@ const fetchAll = async (req, res, next) => {
 };
 const findReservaton = async (req, res, next) => {
   try {
-    console.log("hi");
     const reservation = req.query;
-    console.log(reservation);
     const resevationResults = await model.findReservation(reservation);
     if (resevationResults) {
       req.reservation = resevationResults;
@@ -37,7 +35,6 @@ const fetch = async (req, res, next) => {
   try {
     const reservation = req.params.id;
     const reservationResult = await model.fetch(reservation);
-    console.log(reservationResult);
     if (reservationResult) {
       req.reservation = reservationResult;
       next();

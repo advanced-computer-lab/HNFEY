@@ -22,8 +22,6 @@ const FlightForm = () => {
       setSelected(e.target.value);
     }
     setFlightDetails({ ...flightDetails, [e.target.name]: e.target.value });
-    // console.log(e.target.name);
-    // console.log(e.target.value);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();

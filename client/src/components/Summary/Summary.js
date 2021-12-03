@@ -36,7 +36,7 @@ const Summary = (props) => {
     setReturnFlight(props.location.state.returnFlight);
   }, [props.location.state]);
 
-  const submit = (flightId) => {
+  const submit = () => {
     confirmAlert({
       title: "Are you sure you want to reserve this flight?",
       message: "Click yes if you want to reserve this flight, no otherwise.",
@@ -44,19 +44,35 @@ const Summary = (props) => {
         {
           label: "Yes",
           onClick: () => {
-            history.push("/flight/seat-selection", {
-              flightToSelect: {
-                ...departingFlight,
-                class: fare,
-                passengers: Number(passengers),
-              },
-              flightInQueue: {
-                ...returnFlight,
-                class: fare,
-                passengers: Number(passengers),
-              },
-            });
-            // handleDelete(flightId);
+            if (props.location.state.username) {
+              history.push("/flight/seat-selection", {
+                username: props.location.state.username,
+                flightToSelect: {
+                  ...departingFlight,
+                  class: fare,
+                  passengers: Number(passengers),
+                },
+                flightInQueue: {
+                  ...returnFlight,
+                  class: fare,
+                  passengers: Number(passengers),
+                },
+              });
+            } else {
+              history.push("/login", {
+                flightToSelect: {
+                  ...departingFlight,
+                  class: fare,
+                  passengers: Number(passengers),
+                },
+                flightInQueue: {
+                  ...returnFlight,
+                  class: fare,
+                  passengers: Number(passengers),
+                },
+              });
+            }
+            // handleDelete();
           },
         },
         {

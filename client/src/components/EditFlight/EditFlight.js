@@ -46,7 +46,6 @@ const EditFlight = () => {
       const flight = { flight: flightDetails };
       Axios.put("http://localhost:8000/hnfey/flight/edit-flight", flight).then(
         (res) => {
-          console.log(res.data);
           history.push("/list-all-flights");
         }
       );
