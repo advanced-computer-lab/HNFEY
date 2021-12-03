@@ -17,10 +17,7 @@ const reservationSchema = new Schema({
     ref: "Flight",
     required: true,
   },
-  numberOfPassengers: {
-    type: Number,
-    required: true,
-  },
+
   passengers: [
     {
       firstName: {

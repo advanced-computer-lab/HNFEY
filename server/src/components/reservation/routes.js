@@ -9,7 +9,7 @@ router.get("/", controller.fetchAllPipeline, async (req, res) => {
     resrvations: req.reservations,
   });
 });
-router.post("/create-reservation", controller.createPipeline, async (req, res) => {
+router.post("/", controller.createPipeline, async (req, res) => {
   res.status(201).json({
     message: "reservation created successfully",
     reservation: req.reservation,
