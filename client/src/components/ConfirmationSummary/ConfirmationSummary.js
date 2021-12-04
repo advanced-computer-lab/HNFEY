@@ -9,13 +9,26 @@ import {
 } from "@material-ui/core";
 import FlightIcon from "@mui/icons-material/Flight";
 import moment from "moment";
-//import getTimeDifference from "../../utils/time";
+import getTimeDifference from "../../utils/time";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
+import { useHistory } from "react-router";
 
-const ConfirmationSummary = () => {
+const ConfirmationSummary = (props) => {
+  const details = props?.location?.state;
+  const history = useHistory();
+  const {
+    departingFlight,
+    returnFlight,
+    departingFlightSeats,
+    returnFlightSeats,
+    passengers,
+    passengersInfo,
+    cabin,
+    userId,
+    reservation,
+  } = details;
   return (
-    <div>
       <Container component="main" style={{ marginTop: "2%" }}>
         <br />
         <Paper elevation={6} style={{ margin: "5% 0% 2%" }}>
@@ -103,7 +116,7 @@ const ConfirmationSummary = () => {
                     margin: "1% 0% 1% 3%",
                   }}
                 >
-                  1234
+                  {reservation.index}
                 </Typography>
                 <hr />
               </div>
@@ -139,7 +152,7 @@ const ConfirmationSummary = () => {
           >
             <Grid item md={6}>
               <div
-                //key={flight._id}
+                key={departingFlight._id}
                 style={{
                   display: "flex",
                   borderRadius: "10px",
@@ -164,8 +177,8 @@ const ConfirmationSummary = () => {
                       marginBottom: "1%",
                     }}
                   >
-                    {/* {flight.from.split(" ")[0]} to {flight.to.split(" ")[0]}{" "} */}
-                    Cairo to Denmark
+                    {departingFlight.from.split(" ")[0]} to {departingFlight.to.split(" ")[0]}{" "}
+            
                   </Typography>
                 </div>
                 <div
@@ -187,8 +200,8 @@ const ConfirmationSummary = () => {
                       fontWeight: 300,
                     }}
                   >
-                    {/* HNFEY • {moment(flight.departureDay).format("ddd, MMM Do")} */}
-                    12/12/2021
+                    HNFEY • {moment(departingFlight.departureDay).format("ddd, MMM Do")}
+                  
                   </Typography>
                 </div>
                 <div
@@ -202,19 +215,19 @@ const ConfirmationSummary = () => {
                     variant="body1"
                     style={{ fontSize: "0.875rem", fontWeight: 500 }}
                   >
-                    {/* {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
-                {moment(flight.arrivalDateTime).format("hh:mm A")} */}
-                    10/10/2021-15/10/2012
+                    {moment(departingFlight.departureDateTime).format("hh:mm A")} -{" "}
+                {moment(departingFlight.arrivalDateTime).format("hh:mm A")}
+                   
                   </Typography>
                   <Typography
                     variant="body1"
                     style={{ fontSize: "0.875rem", fontWeight: 300 }}
                   >
-                    {/* {getTimeDifference(
-                  flight.departureDateTime,
-                  flight.arrivalDateTime
-                )} */}
-                    5 hours
+                    {getTimeDifference(
+                  departingFlight.departureDateTime,
+                  departingFlight.arrivalDateTime
+                )} hours
+                  
                   </Typography>
                 </div>
 
@@ -272,8 +285,7 @@ const ConfirmationSummary = () => {
                         fontWeight: 400,
                       }}
                     >
-                      {/* {flight.baggageAllowance} */}
-                      46 KG
+                      {departingFlight.baggageAllowance} KG
                     </Typography>
                   </div>
                 </div>
@@ -308,8 +320,10 @@ const ConfirmationSummary = () => {
                         fontWeight: 400,
                       }}
                     >
-                      {/* {flight.price}  */}
-                      200 EGP
+                      {reservation.class === "Business"
+                      ? departingFlight.businessPrice
+                      : departingFlight.economyPrice} EGP
+                    
                     </Typography>
                   </div>
                 </div>
@@ -328,7 +342,7 @@ const ConfirmationSummary = () => {
                       fontWeight: 500,
                     }}
                   >
-                    x4 Passengers
+                    x{Number(passengers)} Passengers
                   </Typography>
                 </div>
                 <div
@@ -348,21 +362,22 @@ const ConfirmationSummary = () => {
                   >
                     Seats:
                   </Typography>
-                  <Typography
-                    variant="body1"
-                    style={{
-                      fontSize: "0.875rem",
-                      fontWeight: 400,
-                    }}
-                  >
-                    A1 - A2 - A3 - A4
-                  </Typography>
+                  {departingFlightSeats.map((depSeat) => (
+                      <Typography
+                      variant="body1"
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 400,
+                      }}>
+                       { depSeat.seatNumber}
+                       </Typography>
+                    ))}
                 </div>
               </div>
             </Grid>
             <Grid item md={6}>
               <div
-                //key={flight._id}
+                key={returnFlight._id}
                 style={{
                   display: "flex",
                   borderRadius: "10px",
@@ -387,8 +402,8 @@ const ConfirmationSummary = () => {
                       marginBottom: "1%",
                     }}
                   >
-                    {/* {flight.from.split(" ")[0]} to {flight.to.split(" ")[0]}{" "} */}
-                    Cairo to Denmark
+                    {returnFlight.from.split(" ")[0]} to {returnFlight.to.split(" ")[0]}{" "}
+      
                   </Typography>
                 </div>
                 <div
@@ -410,8 +425,8 @@ const ConfirmationSummary = () => {
                       fontWeight: 300,
                     }}
                   >
-                    {/* HNFEY • {moment(flight.departureDay).format("ddd, MMM Do")} */}
-                    12/12/2021
+                    HNFEY • {moment(returnFlight.departureDay).format("ddd, MMM Do")}
+                    
                   </Typography>
                 </div>
                 <div
@@ -425,19 +440,19 @@ const ConfirmationSummary = () => {
                     variant="body1"
                     style={{ fontSize: "0.875rem", fontWeight: 500 }}
                   >
-                    {/* {moment(flight.departureDateTime).format("hh:mm A")} -{" "}
-                {moment(flight.arrivalDateTime).format("hh:mm A")} */}
-                    10/10/2021-15/10/2012
+                    {moment(returnFlight.departureDateTime).format("hh:mm A")} -{" "}
+                {moment(returnFlight.arrivalDateTime).format("hh:mm A")}
+                    
                   </Typography>
                   <Typography
                     variant="body1"
                     style={{ fontSize: "0.875rem", fontWeight: 300 }}
                   >
-                    {/* {getTimeDifference(
-                  flight.departureDateTime,
-                  flight.arrivalDateTime
-                )} */}
-                    5 hours
+                    {getTimeDifference(
+                  returnFlight.departureDateTime,
+                  returnFlight.arrivalDateTime
+                )} hours
+                    
                   </Typography>
                 </div>
 
@@ -495,8 +510,7 @@ const ConfirmationSummary = () => {
                         fontWeight: 400,
                       }}
                     >
-                      {/* {flight.baggageAllowance} */}
-                      46 KG
+                      {returnFlight.baggageAllowance} KG
                     </Typography>
                   </div>
                 </div>
@@ -531,8 +545,10 @@ const ConfirmationSummary = () => {
                         fontWeight: 400,
                       }}
                     >
-                      {/* {flight.price}  */}
-                      200 EGP
+                      {reservation.class === "Business"
+                      ? returnFlight.businessPrice
+                      : returnFlight.economyPrice} EGP
+                      
                     </Typography>
                   </div>
                 </div>
@@ -551,7 +567,7 @@ const ConfirmationSummary = () => {
                       fontWeight: 500,
                     }}
                   >
-                    x4 Passengers
+                    x{Number(passengers)} Passengers
                   </Typography>
                 </div>
                 <div
@@ -571,15 +587,19 @@ const ConfirmationSummary = () => {
                   >
                     Seats:
                   </Typography>
-                  <Typography
-                    variant="body1"
-                    style={{
-                      fontSize: "0.875rem",
-                      fontWeight: 400,
-                    }}
-                  >
-                    A1 - A2 - A3 - A4
-                  </Typography>
+                  
+                  
+                    {returnFlightSeats.map((returnSeat) => (
+                      <Typography
+                      variant="body1"
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 400,
+                      }}>
+                       { returnSeat.seatNumber}
+                       </Typography>
+                    ))}
+                  
                 </div>
               </div>
             </Grid>
@@ -589,29 +609,28 @@ const ConfirmationSummary = () => {
             style={{
               display: "flex",
               flexDirection: "column",
-              marginBottom: "5%",
+              marginBottom: "2%",
             }}
           >
             <Typography
               variant="body1"
               display="inline"
               style={{
-                margin: "2% 3% 3%",
+                margin: "2% 3% 0%",
                 fontSize: "1.5rem",
                 fontWeight: 500,
               }}
             >
               Price summary
             </Typography>
-            {/* {[...Array(Number(passengers)).keys()].map((passenger, i) => ( */}
-            <div>
-              {/* <div key={i}> */}
+          </div>
+            {[...Array(Number(passengers)).keys()].map((passenger, i) => (
+              <div key={i}>
               <div
                 style={{
-                  margin: "0% 5% 0%",
+                  margin: "3% 5% 2%",
                   display: "flex",
                   flexDirection: "row",
-                  marginBottom: "2%",
                 }}
               >
                 <Typography
@@ -622,7 +641,7 @@ const ConfirmationSummary = () => {
                     flexGrow: 1,
                   }}
                 >
-                  Passenger 1
+                  Passenger {i+1}
                 </Typography>
                 <Typography
                   style={{
@@ -630,17 +649,20 @@ const ConfirmationSummary = () => {
                     fontWeight: 500,
                   }}
                 >
-                  EGP 1000
-                  {/* {""}
-                  {departingFlight.price + returnFlight.price} */}
+                  EGP 
+                  {" "}
+                  {reservation.class === "Business"
+                      ? departingFlight.businessPrice + returnFlight.businessPrice
+                      : departingFlight.economyPrice +  returnFlight.economyPrice}
+                     
+                  
                 </Typography>
               </div>
               <div
                 style={{
-                  margin: "1% 5% 0%",
+                  margin: "1% 5% 3%",
                   display: "flex",
                   flexDirection: "row",
-                  marginBottom: "1%",
                 }}
               >
                 <Typography
@@ -660,8 +682,11 @@ const ConfirmationSummary = () => {
                     fontWeight: 300,
                   }}
                 >
-                  EGP 2000
-                  {/* {departingFlight.price} */}
+                  EGP 
+                  {reservation.class === "Business"
+                      ? departingFlight.businessPrice
+                      : departingFlight.economyPrice}
+                  
                 </Typography>
               </div>
               <div
@@ -689,18 +714,21 @@ const ConfirmationSummary = () => {
                     fontWeight: 300,
                   }}
                 >
-                  EGP 3000
-                  {/* {returnFlight.price} */}
+                  EGP 
+                  {reservation.class === "Business"
+                      ? returnFlight.businessPrice
+                      : returnFlight.economyPrice}
+      
                 </Typography>
               </div>
+             
             </div>
-            {/* ))} */}
+            ))}
             <div
               style={{
-                margin: "1% 5% 1%",
                 display: "flex",
-                flexDirection: "row",
-                marginBottom: "5%",
+                margin: "5%",
+                paddingBottom: "4%"
               }}
             >
               <Typography
@@ -720,31 +748,16 @@ const ConfirmationSummary = () => {
                   fontWeight: 500,
                 }}
               >
-                EGP 5000
+                EGP 
+                  {" "}
+                  {reservation.class === "Business"
+                      ? (departingFlight.businessPrice + returnFlight.businessPrice)*passengers
+                      : (departingFlight.economyPrice +  returnFlight.economyPrice)*passengers}
                 {/* {(departingFlight.price + returnFlight.price) * passengers} */}
               </Typography>
             </div>
-            {/* <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                margin: "0% 10% 5%",
-              }}
-            >
-              <Button
-                type="submit"
-                onClick={submit}
-                style={{ width: 500 }}
-                variant="contained"
-                color="primary"
-              >
-                Check out
-              </Button>
-            </div> */}
-          </div>
         </Paper>
       </Container>
-    </div>
   );
 };
 

@@ -343,7 +343,9 @@ const Summary = (props) => {
                       fontWeight: 400,
                     }}
                   >
-                    {flight.price} EGP
+                    {fare === "Business"
+                      ? flight.businessPrice
+                      : flight.economyPrice} EGP
                   </Typography>
                 </div>
               </div>
@@ -401,7 +403,9 @@ const Summary = (props) => {
                       }}
                     >
                       EGP {""}
-                      {departingFlight.price + returnFlight.price}
+                      {fare === "Business"
+                      ? departingFlight.businessPrice + returnFlight.businessPrice
+                      : departingFlight.economyPrice +  returnFlight.economyPrice}
                     </Typography>
                   </div>
                   <div
@@ -429,7 +433,10 @@ const Summary = (props) => {
                         fontWeight: 300,
                       }}
                     >
-                      EGP {departingFlight.price}
+                      EGP 
+                      {fare === "Business"
+                      ? departingFlight.businessPrice
+                      : departingFlight.economyPrice}
                     </Typography>
                   </div>
                   <div
@@ -457,7 +464,10 @@ const Summary = (props) => {
                         fontWeight: 300,
                       }}
                     >
-                      EGP {returnFlight.price}
+                      EGP 
+                      {fare === "Business"
+                      ? returnFlight.businessPrice
+                      : returnFlight.economyPrice}
                     </Typography>
                   </div>
                 </div>
@@ -487,7 +497,10 @@ const Summary = (props) => {
                   }}
                 >
                   EGP{" "}
-                  {(departingFlight.price + returnFlight.price) * passengers}
+                  
+                  {fare === "Business"
+                      ? (departingFlight.businessPrice + returnFlight.businessPrice)*passengers
+                      : (departingFlight.economyPrice +  returnFlight.economyPrice)*passengers}
                 </Typography>
               </div>
               <div

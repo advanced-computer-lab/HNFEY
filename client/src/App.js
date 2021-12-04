@@ -67,6 +67,7 @@ const App = () => {
           <Route path="/reservation" exact component={ReservationDetails} />
           <Route path="/all-reservations" exact component={AllReservations} />
           <Route path="/summary" exact component={ConfirmationSummary} />
+          <Route path="/checkout" exact component={Checkout} />
         </Switch>
       </Router>
     </MuiThemeProvider>
