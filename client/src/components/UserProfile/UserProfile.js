@@ -23,7 +23,7 @@ const UserProfile = () => {
     history.push("/edit-user" + location.search);
   };
   const handleViewReservation = () => {
-    history.push("/reservations" + location.search);
+    history.push("/all-reservations" + location.search);
   };
 
   useEffect(() => {
