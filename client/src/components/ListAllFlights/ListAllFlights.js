@@ -56,7 +56,6 @@ export const ListAllFlights = () => {
   };
 
   const handleCellClick = async (flightId) => {
-    console.log(flightId);
     history.push("/flight/" + flightId);
   };
 

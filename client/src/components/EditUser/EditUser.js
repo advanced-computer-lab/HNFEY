@@ -27,32 +27,23 @@ const EditUser = () => {
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    // setNewUser({ ...user, [e.target.name]: e.target.value });
-    // console.log(newUser);
   };
 
   const handleSubmit = async (e) => {
-    
     e.preventDefault();
     try {
       const userBody = { user: user };
-      console.log(userBody);
       Axios.put("http://localhost:8000/hnfey/user/edit-user", userBody).then(
         () => history.push("/user-profile" + location.search)
       );
     } catch (err) {
       console.log(err);
     }
-    
-    console.log("farouha");
   };
-
 
   return user._id ? (
     <div>
       <Container component="main" align="center" style={{ marginTop: "px" }}>
-        {/* {user?.map((user) => { */}
-        {/* {console.log(user.telephoneNumbers)} */}
         <br />
         <br />
         <form onSubmit={handleSubmit}>

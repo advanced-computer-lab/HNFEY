@@ -23,16 +23,12 @@ router.get("/", controller.fetchAllPipeline, async (req, res) => {
   });
 });
 
-router.post(
-  "/create-reservation",
-  controller.createPipeline,
-  async (req, res) => {
-    res.status(201).json({
-      message: "reservation created successfully",
-      reservation: req.reservation,
-    });
-  }
-);
+router.post("/", controller.createPipeline, async (req, res) => {
+  res.status(201).json({
+    message: "reservation created successfully",
+    reservation: req.reservation,
+  });
+});
 
 router.delete("/:id", controller.deletePipeline, async (req, res) => {
   if (req.transaction) await req.transaction.commit();

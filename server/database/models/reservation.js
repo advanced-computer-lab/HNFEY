@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const reservationSchema = new Schema({
   userId: {
@@ -17,10 +18,7 @@ const reservationSchema = new Schema({
     ref: "Flight",
     required: true,
   },
-  numberOfPassengers: {
-    type: Number,
-    required: true,
-  },
+
   passengers: [
     {
       firstName: {
@@ -36,12 +34,24 @@ const reservationSchema = new Schema({
         required: true,
       },
       departureSeat: {
-        type: String,
-        required: true,
+        class: {
+          type: String,
+          required: true,
+        },
+        seatNumber: {
+          type: String,
+          required: true,
+        },
       },
       returnSeat: {
-        type: String,
-        required: true,
+        class: {
+          type: String,
+          required: true,
+        },
+        seatNumber: {
+          type: String,
+          required: true,
+        },
       },
     },
   ],
@@ -55,6 +65,15 @@ const reservationSchema = new Schema({
     required: true,
     enum: ["Reserved", "Cancelled", "Pending"],
   },
+  index: {
+    type: Number,
+  },
+
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
 });
+reservationSchema.plugin(AutoIncrement, {id:'index_seq', inc_field: 'index'});
 const Reservation = mongoose.model("reservation", reservationSchema);
 module.exports = Reservation;

@@ -1,4 +1,5 @@
 const model = require("./model");
+const email = require("../../utils/email");
 
 const fetchAll = async (req, res, next) => {
   try {
@@ -65,6 +66,19 @@ const updateFlight = async (req, res, next) => {
   }
 };
 
+const sendCancellationMail = (req, res, next) => {
+  const { user, totalPrice } = req.body;
+
+  var mailOptions = {
+    to: user.email,
+    subject: "Reservation cancellation",
+    text: `Your reservation with HnfeyAir has been cancelled, you will be refunded an amount of ${totalPrice}`,
+  };
+  req.mailOptions = mailOptions;
+  email.sendMail(req, res, next);
+  next();
+};
+
 const fetch = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -120,6 +134,10 @@ const fetchAllPipeline = [
   fetchAll,
 ];
 
+const sendCancellationEmailPipeline = [
+  //verify user,
+  sendCancellationMail,
+];
 const createPipeline = [
   //verify Admin,
   createFlight,
@@ -152,6 +170,7 @@ module.exports = {
   createPipeline,
   updatePipeline,
   findUserFlightsPipeline,
+  sendCancellationEmailPipeline,
   findPipeline,
   deletePipeline,
 };

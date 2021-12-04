@@ -13,7 +13,6 @@ export const AllReservations = () => {
   const history = useHistory();
   const location = useLocation();
   let url = "http://localhost:8000/hnfey/user/find-user?";
-  let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
 
   let query = queryString.parse(location.search);
   const noOfKeys = Object.keys(query).length;
@@ -24,11 +23,11 @@ export const AllReservations = () => {
   });
 
   useEffect(() => {
+    let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
     const fetchData = async () => {
       await Axios.get(url).then((res) => {
         setUser(() => res.data.user);
         const userIDQuery = "userId=" + res.data.user._id;
-        console.log(userIDQuery);
         url2 += userIDQuery;
       });
 
@@ -37,7 +36,7 @@ export const AllReservations = () => {
       });
     };
     fetchData();
-  }, []);
+  }, [url]);
 
   const handleViewReservation = async (e, reservation) => {
     e.preventDefault();
@@ -50,7 +49,7 @@ export const AllReservations = () => {
   return user._id
     ? userReservations.map((reservation) => {
         return (
-          <>
+          <React.Fragment key={reservation._id}>
             <Container component="main" style={{ marginTop: "2%" }}>
               <br />
               <Paper elevation={6} style={{ margin: "5% 0% 2%" }}>
@@ -68,7 +67,7 @@ export const AllReservations = () => {
                         margin: "5% 0% 1% 2%",
                       }}
                     >
-                      Reservation Numeber
+                      Reservation Number
                     </Typography>
                     <Typography
                       variant="h2"
@@ -133,7 +132,7 @@ export const AllReservations = () => {
                 </div>
               </Paper>
             </Container>
-          </>
+          </React.Fragment>
         );
       })
     : null;
