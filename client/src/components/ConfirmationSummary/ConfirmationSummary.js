@@ -1,17 +1,17 @@
 import React from "react";
-import { Container, Grid, Paper, Typography, Tooltip } from "@material-ui/core";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import CheckIcon from "@mui/icons-material/Check";
+import {
+  Container,
+  Grid,
+  Paper,
+  Typography,
+  Tooltip,
+  Button,
+} from "@material-ui/core";
 import FlightIcon from "@mui/icons-material/Flight";
 import moment from "moment";
-import getTimeDifference from "../../utils/time";
-import PowerIcon from "@mui/icons-material/Power";
-import WifiIcon from "@mui/icons-material/Wifi";
-import AccessibleIcon from "@mui/icons-material/Accessible";
+//import getTimeDifference from "../../utils/time";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
-import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 
 const ConfirmationSummary = () => {
   return (
@@ -125,7 +125,7 @@ const ConfirmationSummary = () => {
                     margin: "1% 0% 1% 3%",
                   }}
                 >
-                  12/12/2021
+                  {moment().format("DD-MM-YYYY")} {/* today's date* */}
                 </Typography>
               </div>
             </Grid>
@@ -216,47 +216,6 @@ const ConfirmationSummary = () => {
                 )} */}
                     5 hours
                   </Typography>
-                  <div style={{ display: "flex", flexDirection: "row" }}>
-                    <Tooltip title="Power">
-                      <PowerIcon
-                        fontSize="small"
-                        style={{ marginRight: "0.2%" }}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Wifi">
-                      <WifiIcon
-                        fontSize="small"
-                        style={{ marginInline: "0.2%" }}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Accessible">
-                      <AccessibleIcon
-                        fontSize="small"
-                        style={{ marginInline: "0.2%" }}
-                      />
-                    </Tooltip>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    margin: "0% 4% 6%",
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    style={{ fontSize: "0.875rem", fontWeight: 500 }}
-                  >
-                    Fare: Economy
-                    {/* {fare} */}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    style={{ fontSize: "0.875rem", fontWeight: 400 }}
-                  >
-                    Your selection applies to all flights
-                  </Typography>
                 </div>
 
                 <div
@@ -353,6 +312,51 @@ const ConfirmationSummary = () => {
                       200 EGP
                     </Typography>
                   </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    margin: "0% 4% 6%",
+                  }}
+                >
+                  <Typography
+                    display="inline"
+                    ariant="body1"
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    x4 Passengers
+                  </Typography>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    margin: "0% 4% 6%",
+                  }}
+                >
+                  <Typography
+                    display="inline"
+                    ariant="body1"
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Seats:
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 400,
+                    }}
+                  >
+                    A1 - A2 - A3 - A4
+                  </Typography>
                 </div>
               </div>
             </Grid>
@@ -435,47 +439,6 @@ const ConfirmationSummary = () => {
                 )} */}
                     5 hours
                   </Typography>
-                  <div style={{ display: "flex", flexDirection: "row" }}>
-                    <Tooltip title="Power">
-                      <PowerIcon
-                        fontSize="small"
-                        style={{ marginRight: "0.2%" }}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Wifi">
-                      <WifiIcon
-                        fontSize="small"
-                        style={{ marginInline: "0.2%" }}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Accessible">
-                      <AccessibleIcon
-                        fontSize="small"
-                        style={{ marginInline: "0.2%" }}
-                      />
-                    </Tooltip>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    margin: "0% 4% 6%",
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    style={{ fontSize: "0.875rem", fontWeight: 500 }}
-                  >
-                    Fare: Economy
-                    {/* {fare} */}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    style={{ fontSize: "0.875rem", fontWeight: 400 }}
-                  >
-                    Your selection applies to all flights
-                  </Typography>
                 </div>
 
                 <div
@@ -573,9 +536,212 @@ const ConfirmationSummary = () => {
                     </Typography>
                   </div>
                 </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    margin: "0% 4% 6%",
+                  }}
+                >
+                  <Typography
+                    display="inline"
+                    ariant="body1"
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    x4 Passengers
+                  </Typography>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    margin: "0% 4% 6%",
+                  }}
+                >
+                  <Typography
+                    display="inline"
+                    ariant="body1"
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Seats:
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 400,
+                    }}
+                  >
+                    A1 - A2 - A3 - A4
+                  </Typography>
+                </div>
               </div>
             </Grid>
           </Grid>
+          <hr style={{ width: "95%" }} />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: "5%",
+            }}
+          >
+            <Typography
+              variant="body1"
+              display="inline"
+              style={{
+                margin: "2% 3% 3%",
+                fontSize: "1.5rem",
+                fontWeight: 500,
+              }}
+            >
+              Price summary
+            </Typography>
+            {/* {[...Array(Number(passengers)).keys()].map((passenger, i) => ( */}
+            <div>
+              {/* <div key={i}> */}
+              <div
+                style={{
+                  margin: "0% 5% 0%",
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "2%",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 500,
+                    flexGrow: 1,
+                  }}
+                >
+                  Passenger 1
+                </Typography>
+                <Typography
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  EGP 1000
+                  {/* {""}
+                  {departingFlight.price + returnFlight.price} */}
+                </Typography>
+              </div>
+              <div
+                style={{
+                  margin: "1% 5% 0%",
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "1%",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 300,
+                    flexGrow: 1,
+                  }}
+                >
+                  Departure Flight
+                </Typography>
+                <Typography
+                  variant="h4"
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 300,
+                  }}
+                >
+                  EGP 2000
+                  {/* {departingFlight.price} */}
+                </Typography>
+              </div>
+              <div
+                style={{
+                  margin: "1% 5% 0%",
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "1%",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 300,
+                    flexGrow: 1,
+                  }}
+                >
+                  Return Flight
+                </Typography>
+                <Typography
+                  variant="h4"
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 300,
+                  }}
+                >
+                  EGP 3000
+                  {/* {returnFlight.price} */}
+                </Typography>
+              </div>
+            </div>
+            {/* ))} */}
+            <div
+              style={{
+                margin: "1% 5% 1%",
+                display: "flex",
+                flexDirection: "row",
+                marginBottom: "5%",
+              }}
+            >
+              <Typography
+                variant="h4"
+                style={{
+                  fontSize: "1.4rem",
+                  fontWeight: 500,
+                  flexGrow: 1,
+                }}
+              >
+                Trip total
+              </Typography>
+              <Typography
+                variant="h4"
+                style={{
+                  fontSize: "1.4rem",
+                  fontWeight: 500,
+                }}
+              >
+                EGP 5000
+                {/* {(departingFlight.price + returnFlight.price) * passengers} */}
+              </Typography>
+            </div>
+            {/* <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                margin: "0% 10% 5%",
+              }}
+            >
+              <Button
+                type="submit"
+                onClick={submit}
+                style={{ width: 500 }}
+                variant="contained"
+                color="primary"
+              >
+                Check out
+              </Button>
+            </div> */}
+          </div>
         </Paper>
       </Container>
     </div>
