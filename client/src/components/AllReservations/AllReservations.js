@@ -67,17 +67,7 @@ export const AllReservations = () => {
                         margin: "5% 0% 1% 2%",
                       }}
                     >
-                      Reservation Number
-                    </Typography>
-                    <Typography
-                      variant="h2"
-                      style={{
-                        fontSize: "1.2rem",
-                        fontWeight: 400,
-                        margin: "1% 0% 7% 2%",
-                      }}
-                    >
-                      {reservation._id}
+                      Reservation Number {reservation.index}
                     </Typography>
 
                     <Typography
@@ -100,7 +90,7 @@ export const AllReservations = () => {
                         margin: "12% 0% 1% 15%",
                       }}
                     >
-                      x{reservation.numberOfPassengers} passengers
+                      x{reservation.passengers.length} passengers
                     </Typography>
                     <Typography
                       variant="h6"

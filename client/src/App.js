@@ -21,6 +21,7 @@ import ReservationDetails from "./components/ReservationDetails/ReservationDetai
 import AllReservations from "./components/AllReservations/AllReservations";
 import SeatSelection from "./components/SeatSelection/SeatSelection";
 import Checkout from "./components/Checkout/Checkout";
+import ConfirmationSummary from "./components/ConfirmationSummary/ConfirmationSummary";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -65,6 +66,7 @@ const App = () => {
           <Route path="/user-profile" exact component={UserProfile} />
           <Route path="/reservation" exact component={ReservationDetails} />
           <Route path="/all-reservations" exact component={AllReservations} />
+          <Route path="/summary" exact component={ConfirmationSummary} />
           <Route path="/checkout" exact component={Checkout} />
         </Switch>
       </Router>

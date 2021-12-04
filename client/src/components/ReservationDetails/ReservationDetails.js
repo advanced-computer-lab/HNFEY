@@ -116,7 +116,7 @@ const ReservationDetails = (props) => {
                 variant="h5"
                 style={{ fontSize: "1.5rem", fontWeight: 500 }}
               >
-                Reservation {userReservation._id}
+                Reservation {userReservation.index}
               </Typography>
             </div>
           </Grid>
