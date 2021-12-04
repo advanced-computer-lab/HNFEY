@@ -24,8 +24,8 @@ export const SearchResultsUser = () => {
   const history = useHistory();
   const location = useLocation();
   const query = queryString.parse(location.search);
-  const searchClass = query.class + "";
-  const passengers = query.passengers + "";
+  const searchClass = query.class;
+  const passengers = query.passengers;
 
   const handleSelectDepartureFlight = (departureFlightID) => {
     setSelectedDepartureFlightID((prev) =>
@@ -199,7 +199,10 @@ export const SearchResultsUser = () => {
                     />
                   </Tooltip>
                   <Typography display="inline" variant="body2">
-                    {flight.price} EGP
+                    {searchClass === "Business"
+                      ? flight.businessPrice
+                      : flight.economyPrice}{" "}
+                    EGP
                   </Typography>
                 </div>
               </Grid>
@@ -351,7 +354,10 @@ export const SearchResultsUser = () => {
                     />
                   </Tooltip>
                   <Typography display="inline" variant="body2">
-                    {flight.price} EGP
+                    {searchClass === "Business"
+                      ? flight.businessPrice
+                      : flight.economyPrice}{" "}
+                    EGP
                   </Typography>
                 </div>
               </Grid>
