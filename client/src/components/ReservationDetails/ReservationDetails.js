@@ -10,6 +10,7 @@ import LuggageIcon from "@mui/icons-material/Luggage";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
 import FlightIcon from "@mui/icons-material/Flight";
 import getTimeDifference from "../../utils/time";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 const ReservationDetails = (props) => {
   const [userReservation, setUserReservation] = useState(
@@ -319,6 +320,7 @@ const ReservationDetails = (props) => {
                   display: "flex",
                   flexDirection: "column",
                   margin: "0% 4% 6%",
+                  gap: "0.4rem",
                 }}
               >
                 <Typography
@@ -329,7 +331,7 @@ const ReservationDetails = (props) => {
                     fontWeight: 500,
                   }}
                 >
-                  Price:
+                  Ticket Price:
                 </Typography>
                 <div style={{ display: "flex", marginLeft: "2%" }}>
                   <Tooltip title="Price">
@@ -345,12 +347,55 @@ const ReservationDetails = (props) => {
                       fontWeight: 400,
                     }}
                   >
+                    EGP{" "}
                     {userReservation.class === "Business"
                       ? departingFlight.businessPrice
                       : departingFlight.economyPrice}
-                    EGP
                   </Typography>
                 </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  margin: "0% 4% 6%",
+                  gap: "0.4rem",
+                }}
+              >
+                <Typography
+                  display="inline"
+                  ariant="body1"
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 500,
+                    flexGrow: 1,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  Total Price: x {userReservation.passengers.length}{" "}
+                  <PersonOutlineIcon style={{ alignSelf: "center" }} />
+                </Typography>
+
+                <Tooltip title="Price">
+                  <PaidRoundedIcon
+                    fontSize="medium"
+                    style={{ marginRight: "0.2%" }}
+                  />
+                </Tooltip>
+                <Typography
+                  variant="body1"
+                  style={{
+                    fontSize: "1rem",
+                    fontWeight: 400,
+                  }}
+                >
+                  EGP{" "}
+                  {userReservation.class === "Business"
+                    ? departingFlight.businessPrice *
+                      userReservation.passengers.length
+                    : departingFlight.economyPrice *
+                      userReservation.passengers.length}
+                </Typography>
               </div>
             </div>
           </Grid>
@@ -521,6 +566,7 @@ const ReservationDetails = (props) => {
                   display: "flex",
                   flexDirection: "column",
                   margin: "0% 4% 6%",
+                  gap: "0.4rem",
                 }}
               >
                 <Typography
@@ -531,7 +577,7 @@ const ReservationDetails = (props) => {
                     fontWeight: 500,
                   }}
                 >
-                  Price:
+                  Ticket Price:
                 </Typography>
                 <div style={{ display: "flex", marginLeft: "2%" }}>
                   <Tooltip title="Price">
@@ -547,12 +593,55 @@ const ReservationDetails = (props) => {
                       fontWeight: 400,
                     }}
                   >
+                    EGP{" "}
                     {userReservation.class === "Business"
                       ? returnFlight.businessPrice
-                      : returnFlight.economyPrice}
-                    EGP
+                      : returnFlight.economyPrice}{" "}
                   </Typography>
                 </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  margin: "0% 4% 6%",
+                  gap: "0.4rem",
+                }}
+              >
+                <Typography
+                  display="inline"
+                  ariant="body1"
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 500,
+                    flexGrow: 1,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  Total Price: x {userReservation.passengers.length}{" "}
+                  <PersonOutlineIcon style={{ alignSelf: "center" }} />
+                </Typography>
+
+                <Tooltip title="Price">
+                  <PaidRoundedIcon
+                    fontSize="medium"
+                    style={{ marginRight: "0.2%" }}
+                  />
+                </Tooltip>
+                <Typography
+                  variant="body1"
+                  style={{
+                    fontSize: "1rem",
+                    fontWeight: 400,
+                  }}
+                >
+                  EGP{" "}
+                  {userReservation.class === "Business"
+                    ? returnFlight.businessPrice *
+                      userReservation.passengers.length
+                    : returnFlight.economyPrice *
+                      userReservation.passengers.length}
+                </Typography>
               </div>
             </div>
           </Grid>

@@ -11,7 +11,6 @@ export const AllReservations = (props) => {
   const { user, setUser } = useContext(UserContext);
   const [userReservations, setUserReservations] = useState([]);
   const history = useHistory();
-  console.log(props.location.state);
 
   const url =
     "http://localhost:8000/hnfey/user/find-user?username=" +
@@ -45,8 +44,6 @@ export const AllReservations = (props) => {
       user,
     });
   };
-
-  console.log(userReservations);
 
   return user._id
     ? userReservations.map((reservation) => {
