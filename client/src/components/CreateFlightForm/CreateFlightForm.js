@@ -13,9 +13,13 @@ export const CreateFlightForm = () => {
   const [arrivalValue, setArrivalValue] = useState(null);
   const [error, setError] = useState(false);
   const [flightDetails, setFlightDetails] = useState({});
+  const [errorFromOrTo, setErrorFromOrTo] = useState(false);
   const history = useHistory();
 
   const handleChange = (e) => {
+    if (e.target.name === "from" || e.target.name === "to") {
+      setErrorFromOrTo(() => false);
+    }
     if (e.target.name === "flightNumber") {
       setError(() => false);
     }
@@ -55,6 +59,11 @@ export const CreateFlightForm = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    if (flightDetails.from === flightDetails.to) {
+      setErrorFromOrTo(() => true);
+      return;
+    }
+
     delete flightDetails.seats;
 
     let url = "http://localhost:8000/hnfey/flight/create-flight";
@@ -203,6 +212,7 @@ export const CreateFlightForm = () => {
           <TextField
             style={{ width: 500 }}
             name="from"
+            error={errorFromOrTo}
             onChange={handleChange}
             variant="outlined"
             label="From"
@@ -214,6 +224,12 @@ export const CreateFlightForm = () => {
           <TextField
             style={{ width: 500 }}
             name="to"
+            error={errorFromOrTo}
+            helperText={
+              errorFromOrTo
+                ? "The departure and arrival cannot be the same"
+                : ""
+            }
             onChange={handleChange}
             variant="outlined"
             label="To"

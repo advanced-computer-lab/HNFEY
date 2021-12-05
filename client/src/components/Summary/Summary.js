@@ -343,9 +343,10 @@ const Summary = (props) => {
                       fontWeight: 400,
                     }}
                   >
+                    EGP{" "}
                     {fare === "Business"
                       ? flight.businessPrice
-                      : flight.economyPrice} EGP
+                      : flight.economyPrice}
                   </Typography>
                 </div>
               </div>
@@ -404,8 +405,10 @@ const Summary = (props) => {
                     >
                       EGP {""}
                       {fare === "Business"
-                      ? departingFlight.businessPrice + returnFlight.businessPrice
-                      : departingFlight.economyPrice +  returnFlight.economyPrice}
+                        ? departingFlight.businessPrice +
+                          returnFlight.businessPrice
+                        : departingFlight.economyPrice +
+                          returnFlight.economyPrice}
                     </Typography>
                   </div>
                   <div
@@ -433,10 +436,10 @@ const Summary = (props) => {
                         fontWeight: 300,
                       }}
                     >
-                      EGP 
+                      EGP{" "}
                       {fare === "Business"
-                      ? departingFlight.businessPrice
-                      : departingFlight.economyPrice}
+                        ? departingFlight.businessPrice
+                        : departingFlight.economyPrice}
                     </Typography>
                   </div>
                   <div
@@ -464,10 +467,10 @@ const Summary = (props) => {
                         fontWeight: 300,
                       }}
                     >
-                      EGP 
+                      EGP{" "}
                       {fare === "Business"
-                      ? returnFlight.businessPrice
-                      : returnFlight.economyPrice}
+                        ? returnFlight.businessPrice
+                        : returnFlight.economyPrice}
                     </Typography>
                   </div>
                 </div>
@@ -497,10 +500,13 @@ const Summary = (props) => {
                   }}
                 >
                   EGP{" "}
-                  
                   {fare === "Business"
-                      ? (departingFlight.businessPrice + returnFlight.businessPrice)*passengers
-                      : (departingFlight.economyPrice +  returnFlight.economyPrice)*passengers}
+                    ? (departingFlight.businessPrice +
+                        returnFlight.businessPrice) *
+                      passengers
+                    : (departingFlight.economyPrice +
+                        returnFlight.economyPrice) *
+                      passengers}
                 </Typography>
               </div>
               <div
