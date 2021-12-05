@@ -7,7 +7,6 @@ import { UserContext } from "../../UserContext";
 
 const EditUser = (props) => {
   const { user, setUser } = useContext(UserContext);
-  console.log(user);
   const history = useHistory();
   const location = useLocation();
   let url;
@@ -143,8 +142,6 @@ const EditUser = (props) => {
           <br />
 
           {user.telephoneNumbers.map((telephone) => {
-            console.log(user.telephoneNumbers);
-
             return (
               <>
                 <TextField

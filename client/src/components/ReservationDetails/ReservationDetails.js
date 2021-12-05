@@ -19,7 +19,6 @@ const ReservationDetails = (props) => {
   const [departingFlight, setDepartingFlight] = useState({});
   const [returnFlight, setReturnFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
-  console.log(props.location.state);
 
   const reservationUrl =
     "http://localhost:8000/hnfey/reservation/" +

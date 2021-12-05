@@ -24,8 +24,6 @@ const UserProfile = (props) => {
     });
   };
 
-  console.log(user);
-
   useEffect(() => {
     if (props.location?.state?.user) {
       setUser(() => props.location.state.user);
