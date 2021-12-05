@@ -22,6 +22,7 @@ import AllReservations from "./components/AllReservations/AllReservations";
 import SeatSelection from "./components/SeatSelection/SeatSelection";
 import Checkout from "./components/Checkout/Checkout";
 import ConfirmationSummary from "./components/ConfirmationSummary/ConfirmationSummary";
+import { UserProvider } from "./UserContext";
 
 const App = () => {
   const brandTheme = createTheme({
@@ -31,46 +32,48 @@ const App = () => {
     },
   });
   return (
-    <MuiThemeProvider theme={brandTheme}>
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/sign-up" exact component={SignUpForm} />
-          <Route path="/get-users" exact component={ListUsers} />
-          <Route path="/admin" exact component={AdminHome} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/edit-user" exact component={EditUser} />
-          <Route path="/search" exact component={SearchForm} />
-          <Route
-            path="/flights-results-guest"
-            exact
-            component={SearchResultsUser}
-          />
-          <Route path="/list-flights" exact component={FlightList} />
-          <Route path="/create-flight" exact component={CreateFlightForm} />
-          <Route path="/list-all-flights" exact component={ListAllFlights} />
-          <Route path="/edit/:id" exact component={EditFlight} />
-          <Route
-            path="/flight/seat-selection"
-            exact
-            component={SeatSelection}
-          />
-          <Route
-            path="/flight/return-seat-selection"
-            exact
-            component={SeatSelection}
-          />
-          <Route path="/flight/:id" exact component={FlightDetails} />
-          <Route path="/flight-information" exact component={Summary} />
-          <Route path="/user-profile" exact component={UserProfile} />
-          <Route path="/reservation" exact component={ReservationDetails} />
-          <Route path="/all-reservations" exact component={AllReservations} />
-          <Route path="/summary" exact component={ConfirmationSummary} />
-          <Route path="/checkout" exact component={Checkout} />
-        </Switch>
-      </Router>
-    </MuiThemeProvider>
+    <UserProvider>
+      <MuiThemeProvider theme={brandTheme}>
+        <Router>
+          <Navbar />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/sign-up" exact component={SignUpForm} />
+            <Route path="/get-users" exact component={ListUsers} />
+            <Route path="/admin" exact component={AdminHome} />
+            <Route path="/login" exact component={Login} />
+            <Route path="/edit-user" exact component={EditUser} />
+            <Route path="/search" exact component={SearchForm} />
+            <Route
+              path="/flights-results-guest"
+              exact
+              component={SearchResultsUser}
+            />
+            <Route path="/list-flights" exact component={FlightList} />
+            <Route path="/create-flight" exact component={CreateFlightForm} />
+            <Route path="/list-all-flights" exact component={ListAllFlights} />
+            <Route path="/edit/:id" exact component={EditFlight} />
+            <Route
+              path="/flight/seat-selection"
+              exact
+              component={SeatSelection}
+            />
+            <Route
+              path="/flight/return-seat-selection"
+              exact
+              component={SeatSelection}
+            />
+            <Route path="/flight/:id" exact component={FlightDetails} />
+            <Route path="/flight-information" exact component={Summary} />
+            <Route path="/user-profile" exact component={UserProfile} />
+            <Route path="/reservation" exact component={ReservationDetails} />
+            <Route path="/all-reservations" exact component={AllReservations} />
+            <Route path="/summary" exact component={ConfirmationSummary} />
+            <Route path="/checkout" exact component={Checkout} />
+          </Switch>
+        </Router>
+      </MuiThemeProvider>
+    </UserProvider>
   );
 };
 

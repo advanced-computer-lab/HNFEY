@@ -1,28 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import { useLocation, useHistory } from "react-router-dom";
-import queryString from "query-string";
+import { useHistory } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { Typography, Grid, Paper } from "@material-ui/core";
+import { UserContext } from "../../UserContext";
 
-export const AllReservations = () => {
-  const [user, setUser] = useState({});
+export const AllReservations = (props) => {
+  const { user, setUser } = useContext(UserContext);
   const [userReservations, setUserReservations] = useState([]);
   const history = useHistory();
-  const location = useLocation();
-  let url = "http://localhost:8000/hnfey/user/find-user?";
+  console.log(props.location.state);
 
-  let query = queryString.parse(location.search);
-  const noOfKeys = Object.keys(query).length;
-  Object.entries(query).map((entry, i) => {
-    let [key, value] = entry;
-    let last = i + 1 === noOfKeys ? "" : "&";
-    return (url += key + "=" + value + last);
-  });
+  const url =
+    "http://localhost:8000/hnfey/user/find-user?username=" +
+    (props.location?.state?.user?.username
+      ? props.location.state.user.username
+      : user.username);
+
+  // let query = queryString.parse(location.search);
+  // const noOfKeys = Object.keys(query).length;
+  // Object.entries(query).map((entry, i) => {
+  //   let [key, value] = entry;
+  //   let last = i + 1 === noOfKeys ? "" : "&";
+  //   return (url += key + "=" + value + last);
+  // });
 
   useEffect(() => {
+    if (props.location?.state?.user) {
+      setUser(() => props.location.state.user);
+    }
     let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
     const fetchData = async () => {
       await Axios.get(url).then((res) => {
@@ -36,15 +44,17 @@ export const AllReservations = () => {
       });
     };
     fetchData();
-  }, [url]);
+  }, [props.location.state.user, setUser, url]);
 
   const handleViewReservation = async (e, reservation) => {
     e.preventDefault();
-    history.push({
-      pathname: "/reservation",
-      state: { userReservation: reservation, user: user },
+    history.push("/reservation", {
+      userReservation: reservation,
+      user,
     });
   };
+
+  console.log(userReservations);
 
   return user._id
     ? userReservations.map((reservation) => {

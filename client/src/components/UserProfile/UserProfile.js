@@ -1,68 +1,76 @@
-import React from "react";
+import React, { useContext } from "react";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { Container, Button } from "@material-ui/core";
-import { useEffect, useState } from "react";
-import Axios from "axios";
-import { useLocation, useHistory } from "react-router-dom";
-import queryString from "query-string";
+import { Container, Button, Typography } from "@material-ui/core";
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { UserContext } from "../../UserContext";
+import { CircularProgress } from "@material-ui/core";
 
-const UserProfile = () => {
-  const [user, setUser] = useState({});
-  const location = useLocation();
-  let url = "http://localhost:8000/hnfey/user/find-user?";
-  let query = queryString.parse(location.search);
-  const noOfKeys = Object.keys(query).length;
+const UserProfile = (props) => {
+  const { user, setUser } = useContext(UserContext);
+
   const history = useHistory();
-  Object.entries(query).map((entry, i) => {
-    let [key, value] = entry;
-    let last = i + 1 === noOfKeys ? "" : "&";
-    return (url += key + "=" + value + last);
-  });
 
   const handleEdit = () => {
-    history.push("/edit-user" + location.search);
+    history.push("/edit-user", {
+      ...props.location.state,
+      user,
+    });
   };
   const handleViewReservation = () => {
-    history.push("/all-reservations" + location.search);
+    history.push("/all-reservations", {
+      ...props.location.state,
+      user,
+    });
   };
 
+  console.log(user);
+
   useEffect(() => {
-    Axios.get(url).then((res) => setUser(res.data.user));
-  }, [url]);
+    if (props.location?.state?.user) {
+      setUser(() => props.location.state.user);
+    } else {
+      history.push("/login");
+    }
+  }, [history, props.location.state.user, setUser, user?._id]);
 
-  return (
-    <div>
-      <Container component="main" align="center" style={{ marginTop: "65px" }}>
-        <AccountCircleIcon
-          style={{ fontSize: "150", marginTop: "20px" }}
-          width="500px"
-        />
-        <>
-          <h1>
-            {user.firstName} {user.lastName}
-          </h1>
-          <h4> {user.email}</h4>
-
-          <Button
-            variant="outlined"
-            style={{ width: "40%" }}
-            onClick={handleEdit}
-          >
-            Edit
-          </Button>
-          <br />
-          <br />
-          <Button
-            variant="outlined"
-            style={{ width: "40%" }}
-            onClick={handleViewReservation}
-          >
-            View Reservations
-          </Button>
-        </>
-        {/* ))} */}
-      </Container>
-    </div>
+  return user?._id ? (
+    <Container component="main" align="center" style={{ marginTop: "65px" }}>
+      <AccountCircleIcon style={{ fontSize: "150", marginTop: "20px" }} />
+      <Typography variant="h4" style={{ fontSize: "2rem", fontWeight: 500 }}>
+        {user.firstName} {user.lastName}
+      </Typography>
+      <div style={{ margin: "1rem 0rem" }}>
+        <Typography variant="h4" style={{ fontSize: "1rem", fontWeight: 300 }}>
+          {user.email}
+        </Typography>
+      </div>
+      <Button variant="outlined" style={{ width: "40%" }} onClick={handleEdit}>
+        Edit
+      </Button>
+      <br />
+      <br />
+      <Button
+        variant="outlined"
+        style={{ width: "40%" }}
+        onClick={handleViewReservation}
+      >
+        View Reservations
+      </Button>
+    </Container>
+  ) : (
+    <Container component="main">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="secondary" />
+      </div>
+    </Container>
   );
 };
 

@@ -21,6 +21,7 @@ router.get("/find-user", controller.findPipeline, async (req, res) => {
   res.status(200).json({
     message: "user available:",
     user: req.user,
+    typeOfUser: req.typeOfUser,
   });
 });
 

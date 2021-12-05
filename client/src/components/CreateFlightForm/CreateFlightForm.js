@@ -11,10 +11,14 @@ import moment from "moment";
 export const CreateFlightForm = () => {
   const [departureValue, setDepartureValue] = useState(null);
   const [arrivalValue, setArrivalValue] = useState(null);
+  const [error, setError] = useState(false);
   const [flightDetails, setFlightDetails] = useState({});
   const history = useHistory();
 
   const handleChange = (e) => {
+    if (e.target.name === "flightNumber") {
+      setError(() => false);
+    }
     if (e.target.name === "numberOfEconomySeats") {
       setFlightDetails({
         ...flightDetails,
@@ -35,7 +39,7 @@ export const CreateFlightForm = () => {
     setDepartureValue(newValue);
     setFlightDetails({
       ...flightDetails,
-      departureDateTime: moment(newValue).format("YYYY-MM-DD hh:mm"),
+      departureDateTime: moment(newValue).format("YYYY-MM-DD HH:mm"),
       departureDay: moment(newValue).format("YYYY-MM-DD"),
     });
   };
@@ -44,7 +48,7 @@ export const CreateFlightForm = () => {
     setArrivalValue(newValue);
     setFlightDetails({
       ...flightDetails,
-      arrivalDateTime: moment(newValue).format("YYYY-MM-DD hh:mm"),
+      arrivalDateTime: moment(newValue).format("YYYY-MM-DD HH:mm"),
       arrivalDay: moment(newValue).format("YYYY-MM-DD"),
     });
   };
@@ -166,9 +170,9 @@ export const CreateFlightForm = () => {
       flight: { ...flightDetails, seats: seatsArray },
     };
     try {
-      await Axios.post(url, flight);
-
-      history.push("/list-all-flights");
+      Axios.post(url, flight)
+        .then(() => history.push("/list-all-flights"))
+        .catch(() => setError(() => true));
     } catch (err) {
       alert(err);
     }
@@ -186,6 +190,8 @@ export const CreateFlightForm = () => {
           <TextField
             style={{ width: 500 }}
             name="flightNumber"
+            error={error}
+            helperText={error ? "Flight Number must be unique" : ""}
             onChange={handleChange}
             variant="outlined"
             label="Flight Number"
@@ -227,10 +233,11 @@ export const CreateFlightForm = () => {
                 required
               />
             )}
+            minDateTime={new Date()}
             value={departureValue}
             onChange={handleDepartureDateChange}
             // inputFormat="YYYY-MM-DD T:hh:mm:ss"
-            inputFormat="yyyy/MM/dd HH:mm:ss"
+            inputFormat="yyyy/MM/dd HH:mm"
           />
           <br />
           <br />
@@ -249,7 +256,8 @@ export const CreateFlightForm = () => {
             onChange={handleArrivalDateChange}
             // formatDate={(date) => moment(date).format('DD-MM-YYYY')}
             // inputFormat="YYYY-MM-DD T:hh:mm:ss"
-            inputFormat="yyyy/MM/dd HH:mm:ss"
+            minDateTime={new Date(departureValue)}
+            inputFormat="yyyy/MM/dd HH:mm"
           />
           <br />
           <br />

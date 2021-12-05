@@ -6,6 +6,7 @@ const flightSchema = new Schema(
     flightNumber: {
       type: String,
       required: true,
+      unique: true,
     },
     from: {
       type: String,
@@ -92,5 +93,5 @@ const flightSchema = new Schema(
   { timestamps: true }
 );
 
-const Flight = mongoose.model("Flight", flightSchema);
+const Flight = mongoose.model("flight", flightSchema);
 module.exports = Flight;
