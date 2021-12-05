@@ -1,9 +1,9 @@
-Farah Mohamed 	46-0383  	create flights front-end and back-end, flight schema
+Farah Mohamed 	46-0383  	user search flights results, select flights, view and cancel reservations
 
-Nour Sherif 	46-1165 	search flights back-end , list all flights and delete front-end 
+Nour Sherif 	46-1165 	login form, edit user information and confirm cancelling reservation
 
-Ezzat Mohamed 	46-2018		update flights front-end and back-end
+Ezzat Mohamed 	46-2018		summary of selected flights ,reservation schema and add confirmed  reservation
 
-Youssef Ammar 	46-0583		creates user admin, delete flights backend, home page, navbar and front-end adjustments
+Youssef Ammar 	46-0583		flight details, select and display seats, checkout and confirm reservation and email cancelled reservation
 
-Hana Ehab		46-0555		search flights results, update flight schedule and delete confirmation font-end
+Hana Ehab	46-0555		sign up form, create seats, user search flights form  and create itinerary
