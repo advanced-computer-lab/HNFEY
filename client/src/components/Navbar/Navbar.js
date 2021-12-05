@@ -14,6 +14,14 @@ const Navbar = (props) => {
       user,
     });
   };
+
+  const handleClick = () => {
+    history.push("/all-reservations", {
+      ...props.location?.state,
+      user,
+    });
+  };
+
   return (
     <AppBar position="fixed" color="inherit">
       <Toolbar>
@@ -30,7 +38,7 @@ const Navbar = (props) => {
                 HNFEY
               </Typography>
             </div>
-            <Button component={Link} to={`/search`} color="secondary">
+            <Button component={Link} to={`/`} color="secondary">
               Search
             </Button>
             <Button component={Link} to={`/login`} color="secondary">
@@ -76,7 +84,7 @@ const Navbar = (props) => {
             <Button component={Link} to={`/`} color="secondary">
               Search
             </Button>
-            <Button component={Link} to={`/all-reservations`} color="secondary">
+            <Button onClick={handleClick} color="secondary">
               Your reservations
             </Button>
             <AccountCircleIcon

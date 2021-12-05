@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { TextField, Container, Button, Link } from "@material-ui/core";
+import {
+  TextField,
+  Container,
+  Button,
+  Link,
+  Typography,
+} from "@material-ui/core";
 import { useHistory } from "react-router";
 import axios from "axios";
 import { UserContext } from "../../UserContext";
@@ -118,9 +124,11 @@ const Login = (props) => {
           </Button>
           <br />
           <br />
-          <Link href="/sign-up" style={{ fontSize: "20px" }}>
-            Create Account
-          </Link>
+          <Typography variant="h6">
+            <Link href="/sign-up" style={{ fontSize: "20px" }}>
+              Create Account
+            </Link>
+          </Typography>
         </form>
       </Container>
     </div>

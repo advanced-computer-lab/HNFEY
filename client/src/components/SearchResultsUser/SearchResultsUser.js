@@ -18,6 +18,7 @@ import Tooltip from "@mui/material/Tooltip";
 export const SearchResultsUser = () => {
   const [departureFlightList, setDepartureList] = useState([]);
   const [returnFlightList, setReturnList] = useState([]);
+  const [mounted, setMounted] = useState(false);
   const [selectedDepartureFlightID, setSelectedDepartureFlightID] =
     useState("");
   const [selectedReturnFlightID, setSelectedReturnFlightID] = useState("");
@@ -97,8 +98,11 @@ export const SearchResultsUser = () => {
     Axios.get(departureUrl).then((res) => {
       setDepartureList(res.data.flights);
     });
-    Axios.get(returnUrl).then((res) => setReturnList(res.data.flights));
-  }, [departureUrl, returnUrl]); //might be flights
+    Axios.get(returnUrl).then((res) => {
+      setReturnList(res.data.flights);
+      setMounted(() => true);
+    });
+  }, [departureUrl, returnUrl]);
 
   return departureFlightList.length > 0 && returnFlightList.length > 0 ? (
     <Container component="main" style={{ marginTop: "7%" }}>
@@ -430,7 +434,7 @@ export const SearchResultsUser = () => {
         </Button>
       </div>
     </Container>
-  ) : (
+  ) : !mounted ? (
     <Container component="main">
       <div
         style={{
@@ -441,6 +445,33 @@ export const SearchResultsUser = () => {
         }}
       >
         <CircularProgress color="secondary" />
+      </div>
+    </Container>
+  ) : (
+    <Container component="main">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          textAlign: "center",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Typography
+          variant="h1"
+          style={{ fontSize: "3.5rem", fontWeight: 500 }}
+        >
+          Oops..😓
+        </Typography>
+        <Typography
+          variant="h1"
+          style={{ fontSize: "3.5rem", fontWeight: 500 }}
+        >
+          There are currently no flights available that fits your searching
+          criteria
+        </Typography>
       </div>
     </Container>
   );

@@ -19,14 +19,6 @@ export const AllReservations = (props) => {
       ? props.location.state.user.username
       : user.username);
 
-  // let query = queryString.parse(location.search);
-  // const noOfKeys = Object.keys(query).length;
-  // Object.entries(query).map((entry, i) => {
-  //   let [key, value] = entry;
-  //   let last = i + 1 === noOfKeys ? "" : "&";
-  //   return (url += key + "=" + value + last);
-  // });
-
   useEffect(() => {
     if (props.location?.state?.user) {
       setUser(() => props.location.state.user);
@@ -44,7 +36,7 @@ export const AllReservations = (props) => {
       });
     };
     fetchData();
-  }, [props.location.state.user, setUser, url]);
+  }, [props.location?.state?.user, setUser, url]);
 
   const handleViewReservation = async (e, reservation) => {
     e.preventDefault();
