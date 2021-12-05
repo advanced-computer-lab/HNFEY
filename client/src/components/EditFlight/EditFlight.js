@@ -256,7 +256,18 @@ const EditFlight = () => {
       </form>
     </Container>
   ) : (
-    <CircularProgress />
+    <Container component="main">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="secondary" />
+      </div>
+    </Container>
   );
 };
 

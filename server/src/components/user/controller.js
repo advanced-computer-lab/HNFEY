@@ -15,17 +15,24 @@ const fetchAll = async (req, res, next) => {
   }
 };
 
-const findUser = async (req, res, next) => {
+const findUserOrAdmin = async (req, res, next) => {
   try {
     const user = req.query;
-    const userResults = await model.findUser(user);
-    if (userResults) {
-      req.user = userResults;
+    const adminResults = await model.findAdmin(user);
+    if (adminResults) {
+      req.user = adminResults;
+      req.typeOfUser = "admin";
       next();
     } else {
-      const err = new Error("Cannot find User");
-
-      next(err);
+      const userResults = await model.findUser(user);
+      if (userResults) {
+        req.user = userResults;
+        req.typeOfUser = "user";
+        next();
+      } else {
+        const err = new Error("Cannot find User");
+        next(err);
+      }
     }
   } catch (err) {
     next(err);
@@ -76,7 +83,7 @@ const createPipeline = [
 
 const findPipeline = [
   //verify Admin,
-  findUser,
+  findUserOrAdmin,
 ];
 
 const updatePipeline = [

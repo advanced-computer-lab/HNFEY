@@ -37,6 +37,7 @@ const createFlight = async (req, res, next) => {
   try {
     const flight = req.body.flight;
     const flightCreated = await model.createFlight(flight);
+    console.log(flightCreated);
     if (flightCreated) {
       req.flight = flightCreated;
       next();

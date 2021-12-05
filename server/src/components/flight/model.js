@@ -18,6 +18,10 @@ const findFlight = async (flight) => {
   return await Flight.find(flight);
 };
 
+const fetchOneFlight = async (flight) => {
+  return await Flight.findOne(flight);
+};
+
 const findUserFlights = async (flight) => {
   const flightClass = flight.class;
   const passengers = flight.passengers;
@@ -57,6 +61,7 @@ const removeFlight = (_id) => Flight.deleteOne({ _id });
 module.exports = {
   fetchAll,
   createFlight,
+  fetchOneFlight,
   updateFlight,
   findFlightById,
   findFlight,

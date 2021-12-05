@@ -9,7 +9,7 @@ const SignUpForm = () => {
   const history = useHistory();
   const [telephoneList, setTelephoneList] = useState([""]);
   const [userDetails, setUserDetails] = useState({});
-
+  const [error, setError] = useState(false);
   const handleTelephoneNumberChange = (e, index) => {
     // const { name, value } = e.target;
     const list = [...telephoneList];
@@ -37,8 +37,9 @@ const SignUpForm = () => {
     let url = "http://localhost:8000/hnfey/user/";
 
     try {
-      await Axios.post(url, user);
-      history.push("/get-users");
+      await Axios.post(url, user)
+        .then(() => history.push("/login"))
+        .catch(() => setError(() => true));
     } catch (err) {
       alert(err);
     }
@@ -71,6 +72,7 @@ const SignUpForm = () => {
           <TextField
             label="User Name"
             name="username"
+            error={error}
             onChange={handleChange}
             style={{ width: 500 }}
             variant="outlined"
@@ -81,6 +83,8 @@ const SignUpForm = () => {
           <TextField
             label="Email"
             name="email"
+            error={error}
+            helperText={error ? "Username or email already exists" : ""}
             onChange={handleChange}
             style={{ width: 500 }}
             variant="outlined"

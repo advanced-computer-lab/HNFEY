@@ -12,11 +12,14 @@ import FlightIcon from "@mui/icons-material/Flight";
 import getTimeDifference from "../../utils/time";
 
 const ReservationDetails = (props) => {
-  const [userReservation, setUserReservation] = useState({});
+  const [userReservation, setUserReservation] = useState(
+    props.location.state.userReservation
+  );
   const [user, setUser] = useState({});
   const [departingFlight, setDepartingFlight] = useState({});
   const [returnFlight, setReturnFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
+  console.log(props.location.state);
 
   const reservationUrl =
     "http://localhost:8000/hnfey/reservation/" +
@@ -31,21 +34,21 @@ const ReservationDetails = (props) => {
   }, [props.location.state.user, reservationUrl]);
 
   useEffect(() => {
-    let url3 = "http://localhost:8000/hnfey/flight/list-flights?";
-    let url4 = "http://localhost:8000/hnfey/flight/list-flights?";
+    let url3 = "http://localhost:8000/hnfey/flight/";
+    let url4 = "http://localhost:8000/hnfey/flight/";
     const fetchData = async () => {
       if (userReservation.departingFlightId) {
-        const flightIDQuery = "_id=" + userReservation.departingFlightId;
-        url3 += flightIDQuery;
+        // const flightIDQuery = "_id=" + userReservation.departingFlightId;
+        url3 += userReservation.departingFlightId;
 
-        const flightIDQuery1 = "_id=" + userReservation.returnFlightId;
-        url4 += flightIDQuery1;
+        // const flightIDQuery1 = "_id=" + userReservation.returnFlightId;
+        url4 += userReservation.returnFlightId;
 
         await Axios.get(url3).then((res) => {
-          setDepartingFlight(() => res.data.flights[0]);
+          setDepartingFlight(() => res.data.flight);
         });
         await Axios.get(url4).then((res) => {
-          setReturnFlight(() => res.data.flights[0]);
+          setReturnFlight(() => res.data.flight);
         });
         if (userReservation.status === "Reserved") {
           setCancelPressed(false);
@@ -96,10 +99,10 @@ const ReservationDetails = (props) => {
     });
   };
 
-  return userReservation?._id &&
-    departingFlight._id &&
-    returnFlight._id &&
-    user._id ? (
+  return departingFlight?._id &&
+    returnFlight?._id &&
+    userReservation?._id &&
+    user?._id ? (
     <div>
       <Container component="main" style={{ marginTop: "9%" }}>
         <Grid container alignItems="stretch" spacing={3}>

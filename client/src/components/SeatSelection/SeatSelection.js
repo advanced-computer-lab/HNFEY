@@ -394,7 +394,7 @@ const SeatSelection = (props) => {
               marginTop: "18.2%",
             }}
           >
-            <div style={{ margin: "2%", display: "flex" }}>
+            <div style={{ margin: "4% 2% 2%", display: "flex" }}>
               <Typography
                 variant="h3"
                 style={{ fontSize: "1.5rem", fontWeight: 500 }}
