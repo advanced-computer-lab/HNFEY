@@ -17,6 +17,14 @@ const UserProfile = (props) => {
       user,
     });
   };
+
+  const handleChangePassword = () => {
+    history.push("/change-password", {
+      ...props.location.state,
+      user,
+    });
+  };
+
   const handleViewReservation = () => {
     history.push("/all-reservations", {
       ...props.location.state,
@@ -43,8 +51,24 @@ const UserProfile = (props) => {
           {user.email}
         </Typography>
       </div>
-      <Button variant="outlined" style={{ width: "40%" }} onClick={handleEdit}>
-        Edit
+      <Button
+        variant="outlined"
+        style={{ width: "40%" }}
+        color="primary"
+        onClick={handleEdit}
+      >
+        Edit Profile Information
+      </Button>
+      <br />
+      <br />
+
+      <Button
+        variant="outlined"
+        style={{ width: "40%" }}
+        color="primary"
+        onClick={handleChangePassword}
+      >
+        Change Password
       </Button>
       <br />
       <br />
@@ -52,6 +76,7 @@ const UserProfile = (props) => {
         variant="outlined"
         style={{ width: "40%" }}
         onClick={handleViewReservation}
+        color="primary"
       >
         View Reservations
       </Button>

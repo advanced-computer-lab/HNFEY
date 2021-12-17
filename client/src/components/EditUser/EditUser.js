@@ -1,14 +1,13 @@
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import Axios from "axios";
 import React, { useEffect, useContext } from "react";
-import { useHistory, useLocation } from "react-router";
+import { useHistory } from "react-router";
 import { CircularProgress } from "@material-ui/core";
 import { UserContext } from "../../UserContext";
 
 const EditUser = (props) => {
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
-  const location = useLocation();
   let url;
   if (!user._id) {
     url =
@@ -40,7 +39,11 @@ const EditUser = (props) => {
     try {
       const userBody = { user: user };
       Axios.put("http://localhost:8000/hnfey/user/edit-user", userBody).then(
-        () => history.push("/user-profile" + location.search)
+        () =>
+          history.push("/user-profile", {
+            ...props.location.state,
+            user,
+          })
       );
     } catch (err) {
       console.log(err);
@@ -88,6 +91,18 @@ const EditUser = (props) => {
           <br />
           <TextField
             style={{ width: 500 }}
+            name="username"
+            onChange={handleChange}
+            variant="outlined"
+            label="User Name"
+            value={user.username}
+            type="text"
+            required
+          />
+          <br />
+          <br />
+          <TextField
+            style={{ width: 500 }}
             name="email"
             onChange={handleChange}
             variant="outlined"
@@ -97,7 +112,7 @@ const EditUser = (props) => {
             required
           />
 
-          <br />
+          {/* <br />
           <br />
 
           <TextField
@@ -109,7 +124,7 @@ const EditUser = (props) => {
             value={user.password}
             type="password"
             required
-          />
+          /> */}
 
           <br />
           <br />
