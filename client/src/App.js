@@ -23,6 +23,7 @@ import SeatSelection from "./components/SeatSelection/SeatSelection";
 import Checkout from "./components/Checkout/Checkout";
 import ConfirmationSummary from "./components/ConfirmationSummary/ConfirmationSummary";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
+import ChangeSeats from "./components/ChangeSeats/ChangeSeats";
 import { UserProvider } from "./UserContext";
 
 const App = () => {
@@ -72,6 +73,7 @@ const App = () => {
             <Route path="/summary" exact component={ConfirmationSummary} />
             <Route path="/checkout" exact component={Checkout} />
             <Route path="/change-password" exact component={ChangePassword} />
+            <Route path="/change-seats" exact component={ChangeSeats} />
           </Switch>
         </Router>
       </MuiThemeProvider>
