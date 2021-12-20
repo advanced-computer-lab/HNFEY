@@ -357,17 +357,19 @@ const ReservationDetails = (props) => {
                 </Typography>
                 {userReservation.passengers.map((passenger, index) => {
                   return (
-                    <div style={{ display: "flex", marginLeft: "2%" }}>
-                      <Typography
-                        variant="body1"
-                        style={{
-                          fontSize: "0.875rem",
-                          fontWeight: 400,
-                        }}
-                      >
-                        {passenger.departureSeat.seatNumber}
-                      </Typography>
-                    </div>
+                    <React.Fragment key={index}>
+                      <div style={{ display: "flex", marginLeft: "2%" }}>
+                        <Typography
+                          variant="body1"
+                          style={{
+                            fontSize: "0.875rem",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {passenger.departureSeat.seatNumber}
+                        </Typography>
+                      </div>
+                    </React.Fragment>
                   );
                 })}
               </div>
@@ -700,17 +702,19 @@ const ReservationDetails = (props) => {
                   </Typography>
                   {userReservation.passengers.map((passenger, index) => {
                     return (
-                      <div style={{ display: "flex", marginLeft: "2%" }}>
-                        <Typography
-                          variant="body1"
-                          style={{
-                            fontSize: "0.875rem",
-                            fontWeight: 400,
-                          }}
-                        >
-                          {passenger.returnSeat.seatNumber}
-                        </Typography>
-                      </div>
+                      <React.Fragment key={index}>
+                        <div style={{ display: "flex", marginLeft: "2%" }}>
+                          <Typography
+                            variant="body1"
+                            style={{
+                              fontSize: "0.875rem",
+                              fontWeight: 400,
+                            }}
+                          >
+                            {passenger.returnSeat.seatNumber}
+                          </Typography>
+                        </div>
+                      </React.Fragment>
                     );
                   })}
                 </div>

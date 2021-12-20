@@ -41,6 +41,20 @@ const ChangeSeats = (props) => {
   const editReservationUrl =
     "http://localhost:8000/hnfey/reservation/edit-reservation";
 
+  if (businessSeats.length !== 0 && economySeats.length !== 0) {
+    if (reservation.class === "Business") {
+      businessSeats.forEach((flightSeat) => {
+        if (flightSeat.seatNumber === seatsSelected)
+          flightSeat.reserved = false;
+      });
+    } else {
+      economySeats.forEach((flightSeat) => {
+        if (flightSeat.seatNumber === seatsSelected)
+          flightSeat.reserved = false;
+      });
+    }
+  }
+
   useEffect(() => {
     flight?.seats.map((seat) =>
       seat.class === "Business"
@@ -51,87 +65,25 @@ const ChangeSeats = (props) => {
     flightType === "Departure flight"
       ? setSeatsSelected(() => currentPassenger.departureSeat.seatNumber)
       : setSeatsSelected(() => currentPassenger.returnSeat.seatNumber);
-
     setNoOfSeatsSelected(() => 1);
   }, [flight, flightType]);
 
   const onSeatClick = (seat) => {
-    if (!seat.reserved) {
-      if (seatsSelected === seat.seatNumber) {
-        setSeatsSelected("");
+    if (seatsSelected === seat.seatNumber) {
+      setSeatsSelected("");
+      setNoOfSeatsSelected(0);
+      return;
+    }
 
-        setNoOfSeatsSelected(0);
-        if (reservation.class === "Business") {
-          businessSeats.forEach((flightSeat) => {
-            if (flightSeat.seatNumber === seat.seatNumber)
-              flightSeat.reserved = false;
-          });
-        } else {
-          economySeats.forEach((flightSeat) => {
-            if (flightSeat.seatNumber === seat.seatNumber)
-              flightSeat.reserved = false;
-          });
-        }
-
-        return;
-      }
-
-      if (seat.class === reservation.class) {
-        if (noOfSeatsSelected === 0) {
-          setSeatsSelected(seat.seatNumber);
-          setNoOfSeatsSelected((prev) => prev + 1);
-          if (reservation.class === "Business") {
-            businessSeats.forEach((flightSeat) => {
-              if (flightSeat.seatNumber === seat.seatNumber)
-                flightSeat.reserved = true;
-            });
-          } else {
-            economySeats.forEach((flightSeat) => {
-              if (flightSeat.seatNumber === seat.seatNumber)
-                flightSeat.reserved = true;
-            });
-          }
-          flightType === "Departure flight"
-            ? (currentPassenger.departureSeat.seatNumber = seat.seatNumber)
-            : (currentPassenger.returnSeat.seatNumber = seat.seatNumber);
-
-          for (let i = 0; i < allPassengers.length; i++) {
-            if (allPassengers[i]._id === currentPassenger._id)
-              allPassengers[i] = currentPassenger;
-          }
-        } else {
-          setSeatsSelected("");
-          setNoOfSeatsSelected(0);
-          if (reservation.class === "Business") {
-            businessSeats.forEach((flightSeat) => {
-              if (flightSeat.seatNumber === seat.seatNumber)
-                flightSeat.reserved = false;
-            });
-          } else {
-            economySeats.forEach((flightSeat) => {
-              if (flightSeat.seatNumber === seat.seatNumber)
-                flightSeat.reserved = false;
-            });
-          }
-        }
-      }
-    } else {
-      if (seatsSelected === seat.seatNumber) {
+    if (seat.class === reservation.class) {
+      if (noOfSeatsSelected === 0) {
+        setSeatsSelected(seat.seatNumber);
+        setNoOfSeatsSelected((prev) => prev + 1);
+      } else {
         setSeatsSelected("");
         setNoOfSeatsSelected(0);
-        if (reservation.class === "Business") {
-          businessSeats.forEach((flightSeat) => {
-            if (flightSeat.seatNumber === seat.seatNumber)
-              flightSeat.reserved = false;
-          });
-        } else {
-          economySeats.forEach((flightSeat) => {
-            if (flightSeat.seatNumber === seat.seatNumber)
-              flightSeat.reserved = false;
-          });
-        }
-
-        return;
+        setSeatsSelected(seat.seatNumber);
+        setNoOfSeatsSelected((prev) => prev + 1);
       }
     }
   };
@@ -140,6 +92,23 @@ const ChangeSeats = (props) => {
     if (noOfSeatsSelected === 0) {
       alert("Select your seats");
       return;
+    }
+    if (reservation.class === "Business") {
+      businessSeats.forEach((flightSeat) => {
+        if (flightSeat.seatNumber === seatsSelected) flightSeat.reserved = true;
+      });
+    } else {
+      economySeats.forEach((flightSeat) => {
+        if (flightSeat.seatNumber === seatsSelected) flightSeat.reserved = true;
+      });
+    }
+    flightType === "Departure flight"
+      ? (currentPassenger.departureSeat.seatNumber = seatsSelected)
+      : (currentPassenger.returnSeat.seatNumber = seatsSelected);
+
+    for (let i = 0; i < allPassengers.length; i++) {
+      if (allPassengers[i]._id === currentPassenger._id)
+        allPassengers[i] = currentPassenger;
     }
     const flightBody =
       reservation.class === "Business"
