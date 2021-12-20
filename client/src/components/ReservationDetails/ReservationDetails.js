@@ -11,16 +11,17 @@ import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
 import FlightIcon from "@mui/icons-material/Flight";
 import getTimeDifference from "../../utils/time";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { useHistory } from "react-router";
 
 const ReservationDetails = (props) => {
   const [userReservation, setUserReservation] = useState(
     props.location.state.userReservation
   );
+  const history = useHistory();
   const [user, setUser] = useState({});
   const [departingFlight, setDepartingFlight] = useState({});
   const [returnFlight, setReturnFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
-
   const reservationUrl =
     "http://localhost:8000/hnfey/reservation/" +
     props.location.state.userReservation._id;
@@ -97,6 +98,27 @@ const ReservationDetails = (props) => {
       },
       totalPrice: userReservation.totalPrice,
     });
+  };
+
+  const handleEditSeat = async (e, flightId) => {
+    e.preventDefault();
+    if (flightId === departingFlight._id) {
+      history.push("/change-seats", {
+        ...props.location.state,
+        flight: departingFlight,
+        flightType: "Departure flight",
+        passengers: userReservation.passengers,
+        passengerNo: 1,
+      });
+    } else {
+      history.push("/change-seats", {
+        ...props.location.state,
+        flight: returnFlight,
+        flightType: "Return flight",
+        passengers: userReservation.passengers,
+        passengerNo: 1,
+      });
+    }
   };
 
   return departingFlight?._id &&
@@ -331,6 +353,40 @@ const ReservationDetails = (props) => {
                     fontWeight: 500,
                   }}
                 >
+                  Seats:
+                </Typography>
+                {userReservation.passengers.map((passenger, index) => {
+                  return (
+                    <div style={{ display: "flex", marginLeft: "2%" }}>
+                      <Typography
+                        variant="body1"
+                        style={{
+                          fontSize: "0.875rem",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {passenger.departureSeat.seatNumber}
+                      </Typography>
+                    </div>
+                  );
+                })}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "0% 4% 6%",
+                  gap: "0.4rem",
+                }}
+              >
+                <Typography
+                  display="inline"
+                  ariant="body1"
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                  }}
+                >
                   Ticket Price:
                 </Typography>
                 <div style={{ display: "flex", marginLeft: "2%" }}>
@@ -397,6 +453,61 @@ const ReservationDetails = (props) => {
                       userReservation.passengers.length}
                 </Typography>
               </div>
+              <Grid
+                container
+                alignItems="stretch"
+                spacing={3}
+                style={{ marginTop: "2%" }}
+              >
+                <Grid item md={6}>
+                  <div
+                    style={{
+                      display: "flex",
+                      marginBottom: "15%",
+                      marginLeft: "5%",
+                    }}
+                  >
+                    <Button
+                      align="right"
+                      style={{
+                        width: 200,
+                        margin: "auto",
+                        marginTop: "4%",
+                        fontSize: "1.1rem",
+                      }}
+                      variant="contained"
+                      color="primary"
+                      onClick={(e) => handleEditSeat(e, departingFlight._id)}
+                    >
+                      Edit Seats
+                    </Button>
+                  </div>
+                </Grid>
+                <Grid item md={6}>
+                  <div
+                    style={{
+                      display: "flex",
+                      marginBottom: "15%",
+                      marginLeft: "5%",
+                    }}
+                  >
+                    <Button
+                      align="right"
+                      style={{
+                        width: 200,
+                        margin: "auto",
+                        marginTop: "4%",
+                        fontSize: "1.1rem",
+                      }}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {}}
+                    >
+                      Edit Flight
+                    </Button>
+                  </div>
+                </Grid>
+              </Grid>
             </div>
           </Grid>
           <Grid item md={6}>
@@ -569,6 +680,40 @@ const ReservationDetails = (props) => {
                   gap: "0.4rem",
                 }}
               >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    margin: "0% 4% 6%",
+                    gap: "0.4rem",
+                  }}
+                >
+                  <Typography
+                    display="inline"
+                    ariant="body1"
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Seats:
+                  </Typography>
+                  {userReservation.passengers.map((passenger, index) => {
+                    return (
+                      <div style={{ display: "flex", marginLeft: "2%" }}>
+                        <Typography
+                          variant="body1"
+                          style={{
+                            fontSize: "0.875rem",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {passenger.returnSeat.seatNumber}
+                        </Typography>
+                      </div>
+                    );
+                  })}
+                </div>
                 <Typography
                   display="inline"
                   ariant="body1"
@@ -643,6 +788,61 @@ const ReservationDetails = (props) => {
                       userReservation.passengers.length}
                 </Typography>
               </div>
+              <Grid
+                container
+                alignItems="stretch"
+                spacing={3}
+                style={{ marginTop: "2%" }}
+              >
+                <Grid item md={6}>
+                  <div
+                    style={{
+                      display: "flex",
+                      marginBottom: "15%",
+                      marginLeft: "5%",
+                    }}
+                  >
+                    <Button
+                      align="right"
+                      style={{
+                        width: 200,
+                        margin: "auto",
+                        marginTop: "4%",
+                        fontSize: "1.1rem",
+                      }}
+                      variant="contained"
+                      color="primary"
+                      onClick={(e) => handleEditSeat(e, returnFlight._id)}
+                    >
+                      Edit Seats
+                    </Button>
+                  </div>
+                </Grid>
+                <Grid item md={6}>
+                  <div
+                    style={{
+                      display: "flex",
+                      marginBottom: "15%",
+                      marginLeft: "5%",
+                    }}
+                  >
+                    <Button
+                      align="right"
+                      style={{
+                        width: 200,
+                        margin: "auto",
+                        marginTop: "4%",
+                        fontSize: "1.1rem",
+                      }}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {}}
+                    >
+                      Edit Flight
+                    </Button>
+                  </div>
+                </Grid>
+              </Grid>
             </div>
           </Grid>
         </Grid>
