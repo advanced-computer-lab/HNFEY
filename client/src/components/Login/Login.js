@@ -7,8 +7,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useHistory } from "react-router";
-import axios from "axios";
 import { UserContext } from "../../UserContext";
+import { login } from "../../api/auth";
 
 const Login = (props) => {
   const { setTypeOfUser, setUser } = useContext(UserContext);
@@ -23,65 +23,87 @@ const Login = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      props.location?.state?.flightToSelect &&
-      props.location?.state?.flightInQueue
-    ) {
-      axios
-        .get(
-          "http://localhost:8000/hnfey/user/find-user/?username=" +
-            userDetails.username
-        )
-        .then((res) => {
-          res.data.typeOfUser === "admin"
-            ? setTypeOfUser(() => "admin")
-            : setTypeOfUser(() => "user");
-
+    let userId;
+    let typeOfUser;
+    login({ user: { ...userDetails } })
+      .then((res) => {
+        localStorage.setItem(
+          "profile",
+          JSON.stringify({
+            message: res.data.message,
+            token: res.data.token,
+            uType: res.data.typeOfUser,
+            user: res.data.user,
+          })
+        );
+        userId = res.data.user_id;
+        typeOfUser = res.data.typeOfUser;
+        setUser(() => res.data.user);
+        if (
+          props.location?.state?.flightToSelect &&
+          props.location?.state?.flightInQueue
+        ) {
           history.push("/flight/seat-selection", {
             ...props.location.state,
-            userId: res.data.user._id,
+            userId,
           });
-        });
-    } else {
-      const noOfKeys = Object.keys(userDetails).length;
-      let search = "?";
-      Object.entries(userDetails).map((entry, i) => {
-        let [key, value] = entry;
-        let last = i + 1 === noOfKeys ? "" : "&";
-        return (search += key + "=" + value + last);
-      });
-      try {
-        axios
-          .get("http://localhost:8000/hnfey/user/find-user/" + search)
-          .then((res) => {
-            switch (res.data.typeOfUser) {
-              case "admin":
-                setTypeOfUser(() => "admin");
-                setUser(() => res.data.user);
-                history.push("/admin", {
-                  ...props.location.state,
-                  user: res.data.user,
-                });
-                break;
-              case "user":
-                setTypeOfUser(() => "user");
-                setUser(() => res.data.user);
-                history.push("/user-profile", {
-                  ...props.location.state,
-                  user: res.data.user,
-                });
-                break;
-              default:
-                break;
-            }
-          })
-          .catch(() => {
-            setError(() => true);
-          });
-      } catch (err) {
-        console.log(err);
-      }
-    }
+        } else {
+          if (typeOfUser === "admin") {
+            setTypeOfUser(() => "admin");
+            history.push("/admin", {
+              ...props.location.state,
+              user: res.data.user,
+            });
+          } else if (typeOfUser === "user") {
+            setTypeOfUser(() => "user");
+            history.push("/user-profile", {
+              ...props.location.state,
+              user: res.data.user,
+            });
+          }
+        }
+      })
+      .catch(() => setError(() => true));
+
+    // const noOfKeys = Object.keys(userDetails).length;
+    // let search = "?";
+    // Object.entries(userDetails).map((entry, i) => {
+    //   let [key, value] = entry;
+    //   let last = i + 1 === noOfKeys ? "" : "&";
+    //   return (search += key + "=" + value + last);
+    // });
+    // try {
+    //   axios
+    //     .get("http://localhost:8000/hnfey/user/find-user/" + search)
+    //     .then((res) => {
+    //       switch (res.data.typeOfUser) {
+    //         case "admin":
+    //           setTypeOfUser(() => "admin");
+    //           setUser(() => res.data.user);
+    //           history.push("/admin", {
+    //             ...props.location.state,
+    //             user: res.data.user,
+    //           });
+    //           break;
+    //         case "user":
+    //           setTypeOfUser(() => "user");
+    //           setUser(() => res.data.user);
+    //           history.push("/user-profile", {
+    //             ...props.location.state,
+    //             user: res.data.user,
+    //           });
+    //           break;
+    //         default:
+    //           break;
+    //       }
+    //     })
+    //     .catch(() => {
+    //       setError(() => true);
+    //     });
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    // }
   };
   return (
     <div>

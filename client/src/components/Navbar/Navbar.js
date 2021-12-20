@@ -1,31 +1,45 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { UserContext } from "../../UserContext";
 
 const Navbar = (props) => {
-  const { typeOfUser, user } = useContext(UserContext);
+  const [userLS, setUserLS] = useState(
+    JSON.parse(localStorage.getItem("profile"))
+  );
+  const typeOfUserLS = userLS?.uType;
+  const { typeOfUser, user, setUser } = useContext(UserContext);
   const history = useHistory();
 
   const handleAccountClick = () => {
     history.push("/user-profile", {
       ...props.location?.state,
-      user,
+      user: user.user,
     });
   };
 
   const handleClick = () => {
     history.push("/all-reservations", {
       ...props.location?.state,
-      user,
+      user: user.user,
     });
+  };
+
+  const handleLogout = () => {
+    history.push("/login");
+    localStorage.clear();
+    setUserLS(null);
+    setUser(null);
   };
 
   return (
     <AppBar position="fixed" color="inherit">
       <Toolbar>
-        {typeOfUser === "guestUser" ? (
+        {typeOfUser !== "admin" &&
+        typeOfUserLS !== "admin" &&
+        typeOfUser !== "user" &&
+        typeOfUserLS !== "user" ? (
           <>
             <div style={{ flexGrow: 1 }}>
               <Typography
@@ -45,7 +59,7 @@ const Navbar = (props) => {
               Login
             </Button>
           </>
-        ) : typeOfUser === "admin" ? (
+        ) : typeOfUser === "admin" || typeOfUserLS === "admin" ? (
           <>
             <div style={{ flexGrow: 1 }}>
               <Typography
@@ -67,6 +81,9 @@ const Navbar = (props) => {
             <Button component={Link} to={`/create-flight`} color="secondary">
               Add Flight
             </Button>
+            <Button onClick={handleLogout} color="secondary">
+              Logout
+            </Button>
           </>
         ) : (
           <>
@@ -86,6 +103,9 @@ const Navbar = (props) => {
             </Button>
             <Button onClick={handleClick} color="secondary">
               Your reservations
+            </Button>
+            <Button onClick={handleLogout} color="secondary">
+              Logout
             </Button>
             <AccountCircleIcon
               color="action"

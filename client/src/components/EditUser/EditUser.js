@@ -158,7 +158,7 @@ const EditUser = (props) => {
 
           {user.telephoneNumbers.map((telephone) => {
             return (
-              <>
+              <React.Fragment key={telephone}>
                 <TextField
                   style={{ width: 500 }}
                   name="telephoneNumber"
@@ -171,7 +171,7 @@ const EditUser = (props) => {
                 />
                 <br />
                 <br />
-              </>
+              </React.Fragment>
             );
           })}
 

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { TextField, Container, Button } from "@material-ui/core";
-import Axios from "axios";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useHistory } from "react-router";
+import { createUser } from "../../api/auth";
 
 const SignUpForm = () => {
   const history = useHistory();
@@ -11,11 +11,9 @@ const SignUpForm = () => {
   const [userDetails, setUserDetails] = useState({});
   const [error, setError] = useState(false);
   const handleTelephoneNumberChange = (e, index) => {
-    // const { name, value } = e.target;
     const list = [...telephoneList];
     list[index] = e.target.value;
     setTelephoneList(list);
-    // setTelephoneList(...telephoneList, e.target.value);
     setUserDetails({ ...userDetails, telephoneNumbers: telephoneList });
   };
 
@@ -34,11 +32,9 @@ const SignUpForm = () => {
       user: userDetails,
     };
 
-    let url = "http://localhost:8000/hnfey/user/";
-
     try {
-      await Axios.post(url, user)
-        .then(() => history.push("/login"))
+      await createUser(user)
+        .then((res) => history.push("/login"))
         .catch(() => setError(() => true));
     } catch (err) {
       alert(err);
