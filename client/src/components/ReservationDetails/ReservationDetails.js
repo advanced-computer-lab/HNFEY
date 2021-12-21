@@ -78,6 +78,7 @@ const ReservationDetails = (props) => {
       ],
     });
   };
+
   const handleCancel = async (e, reservationId) => {
     e.preventDefault();
 
@@ -100,7 +101,26 @@ const ReservationDetails = (props) => {
     });
   };
 
-  const handleEditSeat = async (e, flightId) => {
+  const handleEditFlight = async (e, flightId) => {
+    e.preventDefault();
+    if (flightId === departingFlight._id) {
+      history.push("/edit-reserved-flight", {
+        ...props.location.state,
+        flight: departingFlight,
+        flightType: "Departure flight",
+        returnFlightDate: returnFlight.departureDay,
+      });
+    } else {
+      history.push("/edit-reserved-flight", {
+        ...props.location.state,
+        flight: returnFlight,
+        flightType: "Return flight",
+        departureFlightDate: departingFlight.departureDay,
+      });
+    }
+  };
+
+  const handleEditSeat = (e, flightId) => {
     e.preventDefault();
     if (flightId === departingFlight._id) {
       history.push("/change-seats", {
@@ -503,7 +523,7 @@ const ReservationDetails = (props) => {
                       }}
                       variant="contained"
                       color="primary"
-                      onClick={() => {}}
+                      onClick={(e) => handleEditFlight(e, departingFlight._id)}
                     >
                       Edit Flight
                     </Button>
@@ -840,7 +860,7 @@ const ReservationDetails = (props) => {
                       }}
                       variant="contained"
                       color="primary"
-                      onClick={() => {}}
+                      onClick={(e) => handleEditFlight(e, returnFlight._id)}
                     >
                       Edit Flight
                     </Button>
