@@ -23,8 +23,8 @@ import axios from "axios";
 
 const ChangeSeats = (props) => {
   const flight = props.location.state.flight;
-  const reservation = props.location.state.userReservation;
-  const allPassengers = reservation.passengers;
+  // const reservation = props.location.state.userReservation;
+  const allPassengers = props.location.state.userReservation.passengers;
   const passengersRemaining = props.location.state.passengers;
   const currentPassenger =
     passengersRemaining.length > 1
@@ -32,6 +32,9 @@ const ChangeSeats = (props) => {
       : passengersRemaining[0];
   const flightType = props.location.state.flightType;
   const passengerNumber = props.location.state.passengerNo;
+  const [reservation, setReservation] = useState(
+    props.location.state.userReservation
+  );
   const [seatsSelected, setSeatsSelected] = useState("");
   const [noOfSeatsSelected, setNoOfSeatsSelected] = useState(0);
   const [businessSeats, setBusinessSeats] = useState([]);
@@ -41,97 +44,55 @@ const ChangeSeats = (props) => {
   const editReservationUrl =
     "http://localhost:8000/hnfey/reservation/edit-reservation";
 
+  if (businessSeats.length !== 0 && economySeats.length !== 0) {
+    if (reservation.class === "Business") {
+      businessSeats.forEach((flightSeat) => {
+        if (flightSeat.seatNumber === seatsSelected)
+          flightSeat.reserved = false;
+      });
+    } else {
+      economySeats.forEach((flightSeat) => {
+        if (flightSeat.seatNumber === seatsSelected)
+          flightSeat.reserved = false;
+      });
+    }
+  }
+
+  // console.log(reservation);
+  console.log(props.location.state);
+
   useEffect(() => {
-    flight?.seats.map((seat) =>
-      seat.class === "Business"
-        ? setBusinessSeats((prev) => [...prev, seat])
-        : setEconomySeats((prev) => [...prev, seat])
-    );
-
-    flightType === "Departure flight"
-      ? setSeatsSelected(() => currentPassenger.departureSeat.seatNumber)
-      : setSeatsSelected(() => currentPassenger.returnSeat.seatNumber);
-
-    setNoOfSeatsSelected(() => 1);
+    const fetchData = async () => {
+      flight?.seats.map((seat) =>
+        seat.class === "Business"
+          ? setBusinessSeats((prev) => [...prev, seat])
+          : setEconomySeats((prev) => [...prev, seat])
+      );
+      if (props.location.state.newFlight === undefined) {
+        flightType === "Departure flight"
+          ? setSeatsSelected(() => currentPassenger.departureSeat.seatNumber)
+          : setSeatsSelected(() => currentPassenger.returnSeat.seatNumber);
+        setNoOfSeatsSelected(() => 1);
+      }
+    };
+    fetchData();
   }, [flight, flightType]);
 
   const onSeatClick = (seat) => {
-    if (!seat.reserved) {
-      if (seatsSelected === seat.seatNumber) {
-        setSeatsSelected("");
-
-        setNoOfSeatsSelected(0);
-        if (reservation.class === "Business") {
-          businessSeats.forEach((flightSeat) => {
-            if (flightSeat.seatNumber === seat.seatNumber)
-              flightSeat.reserved = false;
-          });
-        } else {
-          economySeats.forEach((flightSeat) => {
-            if (flightSeat.seatNumber === seat.seatNumber)
-              flightSeat.reserved = false;
-          });
-        }
-
-        return;
-      }
-
-      if (seat.class === reservation.class) {
-        if (noOfSeatsSelected === 0) {
-          setSeatsSelected(seat.seatNumber);
-          setNoOfSeatsSelected((prev) => prev + 1);
-          if (reservation.class === "Business") {
-            businessSeats.forEach((flightSeat) => {
-              if (flightSeat.seatNumber === seat.seatNumber)
-                flightSeat.reserved = true;
-            });
-          } else {
-            economySeats.forEach((flightSeat) => {
-              if (flightSeat.seatNumber === seat.seatNumber)
-                flightSeat.reserved = true;
-            });
-          }
-          flightType === "Departure flight"
-            ? (currentPassenger.departureSeat.seatNumber = seat.seatNumber)
-            : (currentPassenger.returnSeat.seatNumber = seat.seatNumber);
-
-          for (let i = 0; i < allPassengers.length; i++) {
-            if (allPassengers[i]._id === currentPassenger._id)
-              allPassengers[i] = currentPassenger;
-          }
-        } else {
-          setSeatsSelected("");
-          setNoOfSeatsSelected(0);
-          if (reservation.class === "Business") {
-            businessSeats.forEach((flightSeat) => {
-              if (flightSeat.seatNumber === seat.seatNumber)
-                flightSeat.reserved = false;
-            });
-          } else {
-            economySeats.forEach((flightSeat) => {
-              if (flightSeat.seatNumber === seat.seatNumber)
-                flightSeat.reserved = false;
-            });
-          }
-        }
-      }
-    } else {
-      if (seatsSelected === seat.seatNumber) {
+    if (seatsSelected === seat.seatNumber) {
+      setSeatsSelected("");
+      setNoOfSeatsSelected(0);
+      return;
+    }
+    if (seat.class === reservation.class) {
+      if (noOfSeatsSelected === 0) {
+        setSeatsSelected(seat.seatNumber);
+        setNoOfSeatsSelected((prev) => prev + 1);
+      } else {
         setSeatsSelected("");
         setNoOfSeatsSelected(0);
-        if (reservation.class === "Business") {
-          businessSeats.forEach((flightSeat) => {
-            if (flightSeat.seatNumber === seat.seatNumber)
-              flightSeat.reserved = false;
-          });
-        } else {
-          economySeats.forEach((flightSeat) => {
-            if (flightSeat.seatNumber === seat.seatNumber)
-              flightSeat.reserved = false;
-          });
-        }
-
-        return;
+        setSeatsSelected(seat.seatNumber);
+        setNoOfSeatsSelected((prev) => prev + 1);
       }
     }
   };
@@ -141,42 +102,70 @@ const ChangeSeats = (props) => {
       alert("Select your seats");
       return;
     }
+    if (reservation.class === "Business") {
+      businessSeats.forEach((flightSeat) => {
+        if (flightSeat.seatNumber === seatsSelected) flightSeat.reserved = true;
+      });
+    } else {
+      economySeats.forEach((flightSeat) => {
+        if (flightSeat.seatNumber === seatsSelected) flightSeat.reserved = true;
+      });
+    }
+    flightType === "Departure flight"
+      ? (currentPassenger.departureSeat.seatNumber = seatsSelected)
+      : (currentPassenger.returnSeat.seatNumber = seatsSelected);
+
+    for (let i = 0; i < allPassengers.length; i++) {
+      if (allPassengers[i]._id === currentPassenger._id)
+        allPassengers[i] = currentPassenger;
+    }
     const flightBody =
       reservation.class === "Business"
         ? {
             flight: {
               _id: flight._id,
               seats: businessSeats.concat(economySeats),
+              numberOfAvailableBusinessSeats:
+                flight.numberOfAvailableBusinessSeats - 1,
             },
           }
         : {
             flight: {
               _id: flight._id,
               seats: businessSeats.concat(economySeats),
+              numberOfAvailableEconomySeats:
+                flight.numberOfAvailableEconomySeats - 1,
             },
           };
 
     const reservationBody = {
       reservation: {
         _id: reservation._id,
-        passengers: reservation.passengers,
+        passengers: allPassengers,
       },
     };
+
     axios.put(editFlightUrl, flightBody);
-    axios.put(editReservationUrl, reservationBody);
+    axios.put(editReservationUrl, reservationBody).then((res) => {
+      setReservation(() => res.data.reservation);
+    });
     delete props.location.state.passengerNo;
     delete props.location.state.passengers;
 
     if (passengersRemaining.length === 1) {
       delete props.location.state.flightType;
       delete props.location.state.flight;
-      history.push("/reservation", props.location.state);
+      history.push("/reservation", {
+        ...props.location.state,
+        userReservation: reservation,
+      });
     } else {
       passengersRemaining.pop();
       history.push("/change-seats", {
         ...props.location.state,
         passengers: passengersRemaining,
         passengerNo: passengerNumber + 1,
+        userReservation: reservation,
       });
       history.go(0);
     }
@@ -219,7 +208,7 @@ const ChangeSeats = (props) => {
                 marginInline: "1%",
               }}
             >
-              Change Seats
+              Choose Seats
             </Typography>
           </div>
           <div
@@ -466,7 +455,7 @@ const ChangeSeats = (props) => {
                 variant="h3"
                 style={{ fontSize: "1.5rem", fontWeight: 500 }}
               >
-                Change seat for passenger {props.location.state.passengerNo}
+                Choose seat for passenger {props.location.state.passengerNo}
               </Typography>
             </div>
 

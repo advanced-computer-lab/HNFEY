@@ -36,7 +36,7 @@ const Login = (props) => {
             user: res.data.user,
           })
         );
-        userId = res.data.user_id;
+        userId = res.data.user._id;
         typeOfUser = res.data.typeOfUser;
         setUser(() => res.data.user);
         if (
