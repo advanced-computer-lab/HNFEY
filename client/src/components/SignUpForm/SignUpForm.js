@@ -41,147 +41,145 @@ const SignUpForm = () => {
     }
   };
   return (
-    <div>
-      <Container component="main" align="center" style={{ marginTop: "65px" }}>
-        <form onSubmit={handleCreate}>
-          <br />
-          <TextField
-            label="First Name"
-            name="firstName"
-            onChange={handleChange}
-            style={{ width: 500 }}
-            variant="outlined"
-            required
-          />
-          <br />
-          <br />
-          <TextField
-            label="Last Name"
-            name="lastName"
-            onChange={handleChange}
-            style={{ width: 500 }}
-            variant="outlined"
-            required
-          />
-          <br />
-          <br />
-          <TextField
-            label="User Name"
-            name="username"
-            error={error}
-            onChange={handleChange}
-            style={{ width: 500 }}
-            variant="outlined"
-            required
-          />
-          <br />
-          <br />
-          <TextField
-            label="Email"
-            name="email"
-            error={error}
-            helperText={error ? "Username or email already exists" : ""}
-            onChange={handleChange}
-            style={{ width: 500 }}
-            variant="outlined"
-            required
-          />
-          <br />
-          <br />
+    <Container component="main" align="center" style={{ marginTop: "65px" }}>
+      <form onSubmit={handleCreate}>
+        <br />
+        <TextField
+          label="First Name"
+          name="firstName"
+          onChange={handleChange}
+          style={{ width: 500 }}
+          variant="outlined"
+          required
+        />
+        <br />
+        <br />
+        <TextField
+          label="Last Name"
+          name="lastName"
+          onChange={handleChange}
+          style={{ width: 500 }}
+          variant="outlined"
+          required
+        />
+        <br />
+        <br />
+        <TextField
+          label="User Name"
+          name="username"
+          error={error}
+          onChange={handleChange}
+          style={{ width: 500 }}
+          variant="outlined"
+          required
+        />
+        <br />
+        <br />
+        <TextField
+          label="Email"
+          name="email"
+          error={error}
+          helperText={error ? "Username or email already exists" : ""}
+          onChange={handleChange}
+          style={{ width: 500 }}
+          variant="outlined"
+          required
+        />
+        <br />
+        <br />
 
-          <TextField
-            label="Password"
-            name="password"
-            type="password"
-            onChange={handleChange}
-            style={{ width: 500 }}
-            variant="outlined"
-            required
-          ></TextField>
-          <br />
-          <br />
-          <TextField
-            label="Passport Number"
-            name="passportNumber"
-            onChange={handleChange}
-            style={{ width: 500 }}
-            variant="outlined"
-            required
-          />
-          <br />
-          <br />
-          {telephoneList.map((x, i) => {
-            if (i > 0) {
-              return (
-                <>
-                  <TextField
-                    label="Telephone Number"
-                    name="telephoneNumbers"
-                    onChange={(e) => handleTelephoneNumberChange(e, i)}
-                    style={{ width: 500 }}
-                    variant="outlined"
-                  />
-                  <br />
-                  <br />
-                </>
-              );
-            } else {
-              return (
-                <>
-                  <TextField
-                    label="Telephone Number"
-                    name="telephoneNumbers"
-                    onChange={(e) => handleTelephoneNumberChange(e, i)}
-                    style={{ width: 500 }}
-                    variant="outlined"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <AddCircleIcon onClick={handleAddClick} />
-                        </InputAdornment>
-                      ),
-                    }}
-                    required
-                  />
-                  <br />
-                  <br />
-                </>
-              );
-            }
-          })}
+        <TextField
+          label="Password"
+          name="password"
+          type="password"
+          onChange={handleChange}
+          style={{ width: 500 }}
+          variant="outlined"
+          required
+        ></TextField>
+        <br />
+        <br />
+        <TextField
+          label="Passport Number"
+          name="passportNumber"
+          onChange={handleChange}
+          style={{ width: 500 }}
+          variant="outlined"
+          required
+        />
+        <br />
+        <br />
+        {telephoneList.map((x, i) => {
+          if (i > 0) {
+            return (
+              <>
+                <TextField
+                  label="Telephone Number"
+                  name="telephoneNumbers"
+                  onChange={(e) => handleTelephoneNumberChange(e, i)}
+                  style={{ width: 500 }}
+                  variant="outlined"
+                />
+                <br />
+                <br />
+              </>
+            );
+          } else {
+            return (
+              <>
+                <TextField
+                  label="Telephone Number"
+                  name="telephoneNumbers"
+                  onChange={(e) => handleTelephoneNumberChange(e, i)}
+                  style={{ width: 500 }}
+                  variant="outlined"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <AddCircleIcon onClick={handleAddClick} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  required
+                />
+                <br />
+                <br />
+              </>
+            );
+          }
+        })}
 
-          <TextField
-            label="Home Address"
-            name="homeAddress"
-            onChange={handleChange}
-            style={{ width: 500 }}
-            variant="outlined"
-            required
-          />
-          <br />
-          <br />
+        <TextField
+          label="Home Address"
+          name="homeAddress"
+          onChange={handleChange}
+          style={{ width: 500 }}
+          variant="outlined"
+          required
+        />
+        <br />
+        <br />
 
-          <TextField
-            label="Country Code"
-            name="countryCode"
-            onChange={handleChange}
-            style={{ width: 500 }}
-            variant="outlined"
-            required
-          />
-          <br />
-          <br />
-          <Button
-            type="submit"
-            style={{ width: 500 }}
-            variant="contained"
-            color="primary"
-          >
-            Sign Up
-          </Button>
-        </form>
-      </Container>
-    </div>
+        <TextField
+          label="Country Code"
+          name="countryCode"
+          onChange={handleChange}
+          style={{ width: 500 }}
+          variant="outlined"
+          required
+        />
+        <br />
+        <br />
+        <Button
+          type="submit"
+          style={{ width: 500 }}
+          variant="contained"
+          color="primary"
+        >
+          Sign Up
+        </Button>
+      </form>
+    </Container>
   );
 };
 
