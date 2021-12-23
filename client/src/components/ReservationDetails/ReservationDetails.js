@@ -127,16 +127,16 @@ const ReservationDetails = (props) => {
         ...props.location.state,
         flight: departingFlight,
         flightType: "Departure flight",
-        passengers: userReservation.passengers,
-        passengerNo: 1,
+        // passengers: userReservation.passengers,
+        passengerNo: 0,
       });
     } else {
       history.push("/change-seats", {
         ...props.location.state,
         flight: returnFlight,
         flightType: "Return flight",
-        passengers: userReservation.passengers,
-        passengerNo: 1,
+        // passengers: userReservation.passengers,
+        passengerNo: 0,
       });
     }
   };
