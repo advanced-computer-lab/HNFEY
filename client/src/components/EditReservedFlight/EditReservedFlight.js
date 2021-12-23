@@ -23,22 +23,27 @@ import Tooltip from "@mui/material/Tooltip";
 import { useHistory } from "react-router";
 import moment from "moment";
 import Axios from "axios";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import axios from "axios";
 
 const EditReservedFlight = (props) => {
   const history = useHistory();
-  const flight = props.location.state.flight;
+  const reservedflight = props.location.state.flight;
   const flightType = props.location.state.flightType;
   const reservation = props.location.state.userReservation;
   const [searched, setSearched] = useState(false);
   const [selected, setSelected] = useState("Economy");
   const [flightDetails, setFlightDetails] = useState({
-    to: flight.to,
-    from: flight.from,
+    to: reservedflight.to,
+    from: reservedflight.from,
     class: selected,
     passengers: reservation.passengers.length,
   });
   const [resultFlightList, setResultFlightList] = useState([]);
   const [selectedFlightID, setSelectedFlightID] = useState("");
+  const editReservationUrl =
+    "http://localhost:8000/hnfey/reservation/edit-reservation";
 
   const handleChange = (e) => {
     if (e.target.name === "class") {
@@ -54,7 +59,7 @@ const EditReservedFlight = (props) => {
   useEffect(() => {
     if (resultFlightList.length !== 0) {
       setSearched(() => true);
-      setSelectedFlightID(() => flight._id);
+      // setSelectedFlightID(() => flight._id);
     }
   }, [resultFlightList, searched]);
 
@@ -72,7 +77,121 @@ const EditReservedFlight = (props) => {
     });
   };
 
-  return flight._id ? (
+  const handleSubmit = () => {
+    if (selectedFlightID) {
+      let flightUrl = "http://localhost:8000/hnfey/flight/";
+
+      confirmAlert({
+        title: "Are you sure you want to reserve this flight?",
+        message: "Click yes if you want to reserve this flight, no otherwise.",
+        buttons: [
+          {
+            label: "Yes",
+            onClick: () => {
+              reservation.passengers.forEach((passenger) => {
+                reservedflight.seats.forEach((seat) => {
+                  if (passenger.departureSeat.seatNumber === seat.seatNumber)
+                    seat.reserved = false;
+                });
+              });
+              if (reservation.class === "Economy") {
+                reservedflight.numberOfAvailableEconomySeats +=
+                  reservation.passengers.length;
+              } else {
+                reservedflight.numberOfAvailableBusinessSeats +=
+                  reservation.passengers.length;
+              }
+              if (flightType === "Departure flight") {
+                const reservationBody = {
+                  reservation: {
+                    _id: reservation._id,
+                    departingFlightId: selectedFlightID,
+                  },
+                };
+                const flightBody = {
+                  flight: {
+                    _id: reservedflight._id,
+                    seats: reservedflight.seats,
+                    numberOfAvailableEconomySeats:
+                      reservedflight.numberOfAvailableEconomySeats,
+                    numberOfAvailableBusinessSeats:
+                      reservedflight.numberOfAvailableBusinessSeats,
+                  },
+                };
+                axios.put(editReservationUrl, reservationBody);
+                axios.put(
+                  "http://localhost:8000/hnfey/flight/edit-flight",
+                  flightBody
+                );
+                reservation.departingFlightId = selectedFlightID;
+                flightUrl += selectedFlightID;
+                delete props.location.state.userReservation;
+                axios.get(flightUrl).then((res) => {
+                  history.push("/change-seats", {
+                    ...props.location.state,
+                    flight: res.data.flight,
+                    flightType: flightType,
+                    passengers: reservation.passengers,
+                    passengerNo: 1,
+                    userReservation: reservation,
+                    newFlight: true,
+                  });
+                });
+              } else {
+                const reservationBody = {
+                  reservation: {
+                    _id: reservation._id,
+                    returnFlightId: selectedFlightID,
+                  },
+                };
+                const flightBody = {
+                  flight: {
+                    _id: reservedflight._id,
+                    seats: reservedflight.seats,
+                    numberOfAvailableEconomySeats:
+                      reservedflight.numberOfAvailableEconomySeats,
+                    numberOfAvailableBusinessSeats:
+                      reservedflight.numberOfAvailableBusinessSeats,
+                  },
+                };
+                axios.put(editReservationUrl, reservationBody);
+                axios.put(
+                  "http://localhost:8000/hnfey/flight/edit-flight",
+                  flightBody
+                );
+                reservation.returnFlightId = selectedFlightID;
+                flightUrl += selectedFlightID;
+                delete props.location.state.userReservation;
+                axios.get(flightUrl).then((res) => {
+                  history.push("/change-seats", {
+                    ...props.location.state,
+                    flight: res.data.flight,
+                    flightType: flightType,
+                    passengers: reservation.passengers,
+                    passengerNo: 1,
+                    userReservation: reservation,
+                    newFlight: true,
+                  });
+                });
+              }
+            },
+          },
+          {
+            label: "No",
+            onClick: () => {},
+          },
+        ],
+      });
+    } else {
+      delete props.location.state.flight;
+      delete props.location.state.flightType;
+      delete props.location.state.departureFlightDate;
+      delete props.location.state.returnFlightDate;
+      history.push("/reservation", props.location.state);
+    }
+  };
+
+  return reservedflight._id ? (
     <div>
       <Container component="main" align="center" style={{ marginTop: "7%" }}>
         <form onSubmit={handleSearch}>
@@ -92,7 +211,7 @@ const EditReservedFlight = (props) => {
             name="from"
             variant="outlined"
             label="From"
-            value={flight.from}
+            value={reservedflight.from}
             type="text"
             disabled
           />
@@ -102,7 +221,7 @@ const EditReservedFlight = (props) => {
             name="to"
             variant="outlined"
             label="To"
-            value={flight.to}
+            value={reservedflight.to}
             type="text"
             disabled
           />
@@ -365,17 +484,27 @@ const EditReservedFlight = (props) => {
                 >
                   <Button
                     variant="outlined"
+                    disabled={reservedflight._id === flight._id ? true : false}
                     style={{
                       width: "80%",
-                      borderColor: "#084C61",
+                      borderColor:
+                        reservedflight._id === flight._id
+                          ? "#808080"
+                          : "#084C61",
                       color:
-                        selectedFlightID !== flight._id ? "#084C61" : "#FFF",
+                        reservedflight._id === flight._id
+                          ? "#808080"
+                          : selectedFlightID !== flight._id
+                          ? "#084C61"
+                          : "#FFF",
                       backgroundColor:
                         selectedFlightID === flight._id ? "#084C61" : "#FFF",
                     }}
                     onClick={() => handleSelectFlight(flight._id)}
                   >
-                    {selectedFlightID === flight._id
+                    {reservedflight._id === flight._id
+                      ? "Reserved Flight"
+                      : selectedFlightID === flight._id
                       ? "Flight Selected"
                       : "Select Flight"}
                   </Button>
@@ -384,6 +513,21 @@ const EditReservedFlight = (props) => {
             </div>
           ))}
         </Paper>
+        <div style={{ marginTop: "3%", display: "flex", marginBottom: "5%" }}>
+          <Button
+            style={{
+              width: 250,
+              marginTop: "20px",
+              margin: "auto",
+            }}
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            Proceed
+          </Button>
+        </div>
       </Container>
     </div>
   ) : (
