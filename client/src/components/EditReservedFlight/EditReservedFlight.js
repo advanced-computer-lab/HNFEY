@@ -131,8 +131,7 @@ const EditReservedFlight = (props) => {
                     ...props.location.state,
                     flight: res.data.flight,
                     flightType: flightType,
-                    passengers: reservation.passengers,
-                    passengerNo: 1,
+                    passengerNo: 0,
                     userReservation: reservation,
                     newFlight: true,
                   });
@@ -167,8 +166,7 @@ const EditReservedFlight = (props) => {
                     ...props.location.state,
                     flight: res.data.flight,
                     flightType: flightType,
-                    passengers: reservation.passengers,
-                    passengerNo: 1,
+                    passengerNo: 0,
                     userReservation: reservation,
                     newFlight: true,
                   });
