@@ -1,6 +1,30 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const stripePublicKey = process.env.STRIPE_PUBLIC_KEY;
 
+const payment = async (req, res, next) => {
+  const { product, token } = req.token;
+  const idempontencyKey = uuid();
+
+  return stripe.customers
+    .create({
+      email: token.email,
+      source: token.id,
+    })
+    .then((customer) => {
+      stripe.charges.create(
+        {
+          amount: product.price * 100,
+          currency: "egp",
+          customer: customer.id,
+          receipt_email: token.email,
+        },
+        { idempontencyKey }
+      );
+    })
+    .then((result) => res.status(200).json(result))
+    .catch((err) => console.log(err));
+};
+
 const pay = async (req, res, next) => {
   try {
     const { totalPrice, email } = req.body;

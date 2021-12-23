@@ -18,6 +18,7 @@ import moment from "moment";
 import getTimeDifference from "../../utils/time";
 import axios from "axios";
 import { useHistory } from "react-router";
+import StripeCheckout from "react-stripe-checkout";
 
 const Checkout = (props) => {
   const details = props?.location?.state;
@@ -181,6 +182,24 @@ const Checkout = (props) => {
         reservation: res.data.reservation,
       });
     });
+  };
+
+  const makePayment = async (token) => {
+    const email = JSON.parse(localStorage.getItem("profile")).user.email;
+    const body = {
+      token,
+      product: {
+        price: totalPrice,
+      },
+      email,
+    };
+
+    return axios
+      .post("http://localhost:8000/hnfey/payment/pay", body)
+      .then((res) => {
+        console.log("RESPONSE", res);
+      })
+      .catch((err) => console.log(err));
   };
 
   return details && departureSeatsAvailable.length > 0 ? (
@@ -482,19 +501,27 @@ const Checkout = (props) => {
                 marginBottom: "4rem",
               }}
             >
-              <Button
-                variant="contained"
-                style={{
-                  width: "inherit",
-                  background: "linear-gradient(to top,#FFBD24 0,#FFC94C 100%)",
-                  color: "#3d3100",
-                  fontSize: "1.2rem",
-                }}
-                color="primary"
-                type="submit"
+              <StripeCheckout
+                stripeKey="pk_test_51K9Vp6DHyFDpcdiHt9NGEIZRJJMdtwrcGx1QuPZe5N0UhB9Kf3y1Y3oQfZWEXIwsv9mHLeHVqToil9P9giCviy9I00VR1fbDZ9"
+                token={makePayment}
+                name="Reserve Flight"
+                amount={totalPrice * 100}
               >
-                Complete Booking <ArrowForwardIosIcon />
-              </Button>
+                <Button
+                  variant="contained"
+                  style={{
+                    width: "inherit",
+                    background:
+                      "linear-gradient(to top,#FFBD24 0,#FFC94C 100%)",
+                    color: "#3d3100",
+                    fontSize: "1.2rem",
+                  }}
+                  color="primary"
+                  type="submit"
+                >
+                  Complete Booking <ArrowForwardIosIcon />
+                </Button>
+              </StripeCheckout>
             </div>
           </form>
         </Grid>
