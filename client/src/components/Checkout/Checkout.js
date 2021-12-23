@@ -46,6 +46,7 @@ const Checkout = (props) => {
   const noOfPassengersArray = [...Array(Number(passengers)).keys()];
   const createReservationUrl = "http://localhost:8000/hnfey/reservation";
   const editFlightUrl = "http://localhost:8000/hnfey/flight/edit-flight";
+  const payUrl = "http://localhost:8000/hnfey/payment/pay";
 
   const handleResetSeatClick = () => {
     setPassengerInfoState((passenger) =>
@@ -98,7 +99,7 @@ const Checkout = (props) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const passengersWithoutReserved = passengerInfoState.map((passenger) => {
       delete passenger.departureSeat.reserved;
@@ -156,7 +157,25 @@ const Checkout = (props) => {
 
     axios.put(editFlightUrl, departureFlightBody);
     axios.put(editFlightUrl, returnFlightBody);
+    console.log(props.location.state);
+
+    //payment
+    const userEmail = JSON.parse(localStorage.getItem("profile")).user.email;
+
+    await axios
+      .post(payUrl, {
+        totalPrice,
+        userId,
+        email: userEmail,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch(() => {
+        return;
+      });
     axios.post(createReservationUrl, reservation).then((res) => {
+      console.log(res.data.reservation);
       history.push("/summary", {
         ...props.location.state,
         reservation: res.data.reservation,

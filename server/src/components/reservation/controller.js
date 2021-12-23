@@ -75,8 +75,10 @@ const cancelReservation = async (req, res, next) => {
 const updateReservation = async (req, res, next) => {
   try {
     const reservationId = req.body.reservation._id;
-    const reservationUpdated = req.body.reservation;
-    await model.updateReservation(reservationId, req.body.reservation);
+    const reservationUpdated = await model.updateReservation(
+      reservationId,
+      req.body.reservation
+    );
     if (reservationUpdated) {
       req.updatedReservation = reservationUpdated;
       next();
