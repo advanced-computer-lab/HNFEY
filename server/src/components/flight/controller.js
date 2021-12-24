@@ -71,8 +71,12 @@ const sendCancellationMail = (req, res, next) => {
 
   var mailOptions = {
     to: user.email,
-    subject: "Reservation cancellation",
+    subject: "Reservation cancellation with HNFEYAIR",
     text: `Your reservation with HnfeyAir has been cancelled, you will be refunded an amount of ${totalPrice}`,
+    html: `
+    <div style="display:flex; font-size:3.5rem">
+      <h1 style="font-size:2.5rem">Your reservation with HnfeyAir has been cancelled, you will be refunded an amount of ${totalPrice}</h1>
+    </div>`,
   };
   req.mailOptions = mailOptions;
   email.sendMail(req, res, next);
