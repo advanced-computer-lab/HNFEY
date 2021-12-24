@@ -62,14 +62,10 @@ router.post(
   }
 );
 
-router.patch(
-  "/password",
-  controller.updatePasswordPipeline,
-  async (req, res) => {
-    res.status(200).json({
-      message: "Password updated successfuly!",
-    });
-  }
-);
+router.put("/password", controller.updatePasswordPipeline, async (req, res) => {
+  res.status(200).json({
+    message: "Password updated successfuly!",
+  });
+});
 
 module.exports = router;
