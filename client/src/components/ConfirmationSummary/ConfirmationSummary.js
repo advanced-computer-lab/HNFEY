@@ -1,10 +1,18 @@
 import React from "react";
-import { Container, Grid, Paper, Typography, Tooltip } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+  Tooltip,
+} from "@material-ui/core";
 import FlightIcon from "@mui/icons-material/Flight";
 import moment from "moment";
 import getTimeDifference from "../../utils/time";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
+import { useHistory } from "react-router";
 
 const ConfirmationSummary = (props) => {
   const details = props?.location?.state;
@@ -16,6 +24,13 @@ const ConfirmationSummary = (props) => {
     passengers,
     reservation,
   } = details;
+
+  const history = useHistory();
+
+  const handleFinish = async (e) => {
+    history.push("/all-reservations");
+  };
+
   return (
     <Container component="main" style={{ marginTop: "2%" }}>
       <br />
@@ -738,6 +753,15 @@ const ConfirmationSummary = (props) => {
           </Typography>
         </div>
       </Paper>
+      <Button
+        type="submit"
+        style={{ width: 500, marginLeft: "30%" }}
+        onClick={handleFinish}
+        variant="contained"
+        color="primary"
+      >
+        Finish
+      </Button>
     </Container>
   );
 };

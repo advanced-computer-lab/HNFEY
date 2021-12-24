@@ -159,7 +159,6 @@ const ReservationDetails = (props) => {
         ...props.location.state,
         flight: departingFlight,
         flightType: "Departure flight",
-        // passengers: userReservation.passengers,
         passengerNo: 0,
       });
     } else {
@@ -167,7 +166,6 @@ const ReservationDetails = (props) => {
         ...props.location.state,
         flight: returnFlight,
         flightType: "Return flight",
-        // passengers: userReservation.passengers,
         passengerNo: 0,
       });
     }

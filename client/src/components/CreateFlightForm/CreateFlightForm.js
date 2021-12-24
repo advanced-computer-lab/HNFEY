@@ -7,6 +7,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import moment from "moment";
+import { createFlight } from "../../api/flight";
 
 export const CreateFlightForm = () => {
   const [departureValue, setDepartureValue] = useState(null);
@@ -179,7 +180,8 @@ export const CreateFlightForm = () => {
       flight: { ...flightDetails, seats: seatsArray },
     };
     try {
-      Axios.post(url, flight)
+      //Axios.post(url, flight)
+      createFlight(flight)
         .then(() => history.push("/list-all-flights"))
         .catch(() => setError(() => true));
     } catch (err) {

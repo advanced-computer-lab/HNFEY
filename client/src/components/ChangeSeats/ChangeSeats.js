@@ -21,6 +21,7 @@ import getTimeDifference from "../../utils/time";
 import { useHistory } from "react-router";
 import axios from "axios";
 import { editFlight } from "../../api/flight";
+import { editReservation } from "../../api/reservation";
 
 const ChangeSeats = (props) => {
   const flight = props.location.state.flight;
@@ -33,10 +34,6 @@ const ChangeSeats = (props) => {
   const [businessSeats, setBusinessSeats] = useState([]);
   const [economySeats, setEconomySeats] = useState([]);
   const history = useHistory();
-  const editReservationUrl =
-    "http://localhost:8000/hnfey/reservation/edit-reservation";
-
-  console.log(reservation);
 
   if (businessSeats.length !== 0 && economySeats.length !== 0) {
     if (reservation.class === "Business") {
@@ -155,11 +152,11 @@ const ChangeSeats = (props) => {
 
     delete props.location.state.passengerNo;
 
+    editFlight(flightBody);
     if (passengerNumber === reservation.passengers.length - 1) {
       delete props.location.state.flightType;
       delete props.location.state.flight;
-      console.log(reservationBody);
-      axios.put(editReservationUrl, reservationBody).then((res) => {
+      editReservation(reservationBody).then((res) => {
         history.push("/reservation", {
           ...props.location.state,
           userReservation: reservation,
@@ -172,7 +169,6 @@ const ChangeSeats = (props) => {
         passengerNo: passengerNumber + 1,
         userReservation: reservation,
       };
-      console.log(state.userReservation);
       history.push("/change-seats", state);
       history.go(0);
     }
