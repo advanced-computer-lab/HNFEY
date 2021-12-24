@@ -12,27 +12,36 @@ import FlightIcon from "@mui/icons-material/Flight";
 import getTimeDifference from "../../utils/time";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useHistory } from "react-router";
+import { editReservation, findReservation } from "../../api/reservation";
+import { cancelFlight, findFlight } from "../../api/flight";
 
 const ReservationDetails = (props) => {
   const [userReservation, setUserReservation] = useState(
     props.location.state.userReservation
   );
   const history = useHistory();
-  const [user, setUser] = useState({});
+  //const [user, setUser] = useState({});
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("profile")).user
+  );
   const [departingFlight, setDepartingFlight] = useState({});
   const [returnFlight, setReturnFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
-  const reservationUrl =
-    "http://localhost:8000/hnfey/reservation/" +
-    props.location.state.userReservation._id;
+  // const reservationUrl =
+  //   "http://localhost:8000/hnfey/reservation/" +
+    
+  const reservationId = props.location.state.userReservation._id;
 
   useEffect(() => {
     // setUserReservation(() => props.location.state.userReservation);
-    Axios.get(reservationUrl).then((res) => {
+    // Axios.get(reservationUrl).then((res) => {
+    //   setUserReservation(() => res.data.reservation);
+    // });
+    findReservation(reservationId).then((res) => {
       setUserReservation(() => res.data.reservation);
     });
-    setUser(() => props.location.state.user);
-  }, [props.location.state.user, reservationUrl]);
+    
+  }, [props.location.state.user]);
 
   useEffect(() => {
     let url3 = "http://localhost:8000/hnfey/flight/";
@@ -45,10 +54,18 @@ const ReservationDetails = (props) => {
         // const flightIDQuery1 = "_id=" + userReservation.returnFlightId;
         url4 += userReservation.returnFlightId;
 
-        await Axios.get(url3).then((res) => {
+        // await Axios.get(url3).then((res) => {
+        //   setDepartingFlight(() => res.data.flight);
+        // });
+
+        await findFlight(url3).then((res) => {
           setDepartingFlight(() => res.data.flight);
         });
-        await Axios.get(url4).then((res) => {
+
+        // await Axios.get(url4).then((res) => {
+        //   setReturnFlight(() => res.data.flight);
+        // });
+        await findFlight(url4).then((res) => {
           setReturnFlight(() => res.data.flight);
         });
         if (userReservation.status === "Reserved") {
@@ -85,21 +102,36 @@ const ReservationDetails = (props) => {
     const reservation = {
       reservation: { _id: reservationId, status: "Cancelled" },
     };
-    await Axios.put(
-      "http://localhost:8000/hnfey/reservation/edit-reservation",
+    // await Axios.put(
+    //   "http://localhost:8000/hnfey/reservation/edit-reservation",
+    //   reservation
+    // ).then(() => {
+    //   userReservation.status = "Cancelled";
+    //   setCancelPressed(true);
+    // });
+
+    await editReservation(
       reservation
     ).then(() => {
       userReservation.status = "Cancelled";
       setCancelPressed(true);
     });
 
-    Axios.post("http://localhost:8000/hnfey/flight/cancel-flight", {
-      user: {
-        email: user.email,
-      },
-      totalPrice: userReservation.totalPrice,
-    });
-  };
+  //   Axios.post("http://localhost:8000/hnfey/flight/cancel-flight", {
+  //     user: {
+  //       email: user.email,
+  //     },
+  //     totalPrice: userReservation.totalPrice,
+  //   });
+  // };
+
+  cancelFlight({
+    user: {
+      email: user.email,
+    },
+    totalPrice: userReservation.totalPrice,
+  });
+};
 
   const handleEditFlight = async (e, flightId) => {
     e.preventDefault();

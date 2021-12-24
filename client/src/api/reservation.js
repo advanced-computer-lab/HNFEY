@@ -8,3 +8,6 @@ export const editReservation = (reservationBody) =>
 
 export const createReservation = (reservation) =>
   API.post("/reservation", reservation);
+
+export const findReservation = (reservationId) =>
+  API.get("/reservation/" + reservationId);
