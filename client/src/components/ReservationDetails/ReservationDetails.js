@@ -499,6 +499,11 @@ const ReservationDetails = (props) => {
                       }}
                       variant="contained"
                       color="primary"
+                      disabled={
+                        cancelPressed || userReservation.status === "Cancelled"
+                          ? true
+                          : false
+                      }
                       onClick={(e) => handleEditSeat(e, departingFlight._id)}
                     >
                       Edit Seats
@@ -523,6 +528,11 @@ const ReservationDetails = (props) => {
                       }}
                       variant="contained"
                       color="primary"
+                      disabled={
+                        cancelPressed || userReservation.status === "Cancelled"
+                          ? true
+                          : false
+                      }
                       onClick={(e) => handleEditFlight(e, departingFlight._id)}
                     >
                       Edit Flight
@@ -836,6 +846,11 @@ const ReservationDetails = (props) => {
                       }}
                       variant="contained"
                       color="primary"
+                      disabled={
+                        cancelPressed || userReservation.status === "Cancelled"
+                          ? true
+                          : false
+                      }
                       onClick={(e) => handleEditSeat(e, returnFlight._id)}
                     >
                       Edit Seats
@@ -860,6 +875,11 @@ const ReservationDetails = (props) => {
                       }}
                       variant="contained"
                       color="primary"
+                      disabled={
+                        cancelPressed || userReservation.status === "Cancelled"
+                          ? true
+                          : false
+                      }
                       onClick={(e) => handleEditFlight(e, returnFlight._id)}
                     >
                       Edit Flight
