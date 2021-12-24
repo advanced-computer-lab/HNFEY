@@ -19,33 +19,20 @@ import { ReactComponent as Seat } from "./images/seat.svg";
 import moment from "moment";
 import getTimeDifference from "../../utils/time";
 import { useHistory } from "react-router";
-import axios from "axios";
+import { editFlight } from "../../api/flight";
+import { editReservation } from "../../api/reservation";
 
 const ChangeSeats = (props) => {
   const flight = props.location.state.flight;
-  // const allPassengers = props.location.state.userReservation.passengers;
   const flightType = props.location.state.flightType;
   const reservation = props.location.state.userReservation;
-  // const passengersRemaining = props.location.state.passengers;
   const passengerNumber = props.location.state.passengerNo;
-  // const currentPassenger =
-  //   passengersRemaining.length > 1
-  //     ? props.location.state.passengers.pop()
-  //     : passengersRemaining[0];
   const [currentPassenger, setCurrentPassenger] = useState("");
-
-  // console.log(currentPassenger);
-
   const [seatsSelected, setSeatsSelected] = useState("");
   const [noOfSeatsSelected, setNoOfSeatsSelected] = useState(0);
   const [businessSeats, setBusinessSeats] = useState([]);
   const [economySeats, setEconomySeats] = useState([]);
   const history = useHistory();
-  const editFlightUrl = "http://localhost:8000/hnfey/flight/edit-flight";
-  const editReservationUrl =
-    "http://localhost:8000/hnfey/reservation/edit-reservation";
-
-  console.log(reservation);
 
   if (businessSeats.length !== 0 && economySeats.length !== 0) {
     if (reservation.class === "Business") {
@@ -78,9 +65,6 @@ const ChangeSeats = (props) => {
     fetchData();
 
     if (props.location.state.newFlight === undefined) {
-      // flightType === "Departure flight"
-      //   ? setSeatsSelected(() => currentPassenger.departureSeat.seatNumber)
-      //   : setSeatsSelected(() => currentPassenger.returnSeat.seatNumber);
       flightType === "Departure flight"
         ? setSeatsSelected(
             () =>
@@ -134,11 +118,6 @@ const ChangeSeats = (props) => {
     flightType === "Departure flight"
       ? (currentPassenger.departureSeat.seatNumber = seatsSelected)
       : (currentPassenger.returnSeat.seatNumber = seatsSelected);
-
-    // for (let i = 0; i < allPassengers.length; i++) {
-    //   if (allPassengers[i]._id === currentPassenger._id)
-    //     allPassengers[i] = currentPassenger;
-    // }
     reservation.passengers.forEach((passenger) => {
       passenger =
         passenger._id === currentPassenger._id ? currentPassenger : passenger;
@@ -170,30 +149,25 @@ const ChangeSeats = (props) => {
       },
     };
 
-    console.log(reservationBody.reservation.passengers);
     delete props.location.state.passengerNo;
-    // delete props.location.state.passengers;
-    axios.put(editFlightUrl, flightBody);
-    console.log(passengerNumber, reservation.passengers.length);
+
+    editFlight(flightBody);
     if (passengerNumber === reservation.passengers.length - 1) {
       delete props.location.state.flightType;
       delete props.location.state.flight;
-      console.log(reservationBody);
-      axios.put(editReservationUrl, reservationBody).then((res) => {
+      editReservation(reservationBody).then((res) => {
         history.push("/reservation", {
           ...props.location.state,
           userReservation: reservation,
         });
       });
     } else {
-      // passengersRemaining.pop();
       const state = {
         ...props.location.state,
-        // passengers: passengersRemaining,
+
         passengerNo: passengerNumber + 1,
         userReservation: reservation,
       };
-      console.log(state.userReservation);
       history.push("/change-seats", state);
       history.go(0);
     }

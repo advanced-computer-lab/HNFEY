@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import Axios from "axios";
 import {
   Button,
   TableBody,
@@ -15,6 +14,7 @@ import { useEffect } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import moment from "moment";
+import { deleteFlight, findAllFlights } from "../../api/flight";
 
 export const ListAllFlights = () => {
   const [flights, setFlights] = useState([]);
@@ -22,7 +22,7 @@ export const ListAllFlights = () => {
 
   const history = useHistory();
   useEffect(() => {
-    Axios.get("http://localhost:8000/hnfey/flight/list-flights").then((res) => {
+    findAllFlights("http://localhost:8000/hnfey/flight/list-flights").then((res) => {
       setFlights(() => res.data.flights);
 
       if (deleted) {
@@ -49,11 +49,10 @@ export const ListAllFlights = () => {
   };
 
   const handleDelete = async (flightId) => {
-    // e.preventDefault();
-    Axios.delete("http://localhost:8000/hnfey/flight/" + flightId);
-    setDeleted(true);
-    history.push("/list-all-flights");
-  };
+  deleteFlight(flightId);
+  setDeleted(true);
+  history.push("/list-all-flights");
+};
 
   const handleCellClick = async (flightId) => {
     history.push("/flight/" + flightId);

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import axios from "axios";
 import { Container, Typography } from "@material-ui/core";
 import moment from "moment";
+import { findFlight } from "../../api/flight";
 
 const FlightDetails = () => {
   const { id } = useParams();
@@ -11,7 +11,7 @@ const FlightDetails = () => {
   var counter = 0;
 
   useEffect(() => {
-    axios.get(url).then((res) => setFlight(res.data.flight));
+    findFlight(url).then((res) => setFlight(res.data.flight));
   }, [url]);
 
   return flight ? (

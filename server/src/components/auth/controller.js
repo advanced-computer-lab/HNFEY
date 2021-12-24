@@ -159,20 +159,20 @@ const verifyOldPassword = async (req, res, next) => {
 };
 
 const resetPassword = async (req, res, next) => {
-  let transaction;
+  // let transaction;
   try {
-    transaction = await sequelize.transaction();
+    // transaction = await sequelize.transaction();
     const hashedPassword = await authUtils.hashPassword(req.body.password);
     const updatedUser = { password: hashedPassword, verification_code: "" };
     await model.updateUser(
-      updatedUser,
-      (req.user && req.user.email) || req.query.email,
-      transaction
+      (req.user && req.user._id) || req.query._id,
+      updatedUser
+      // transaction
     );
-    req.transaction = transaction;
+    // req.transaction = transaction;
     next();
   } catch (err) {
-    if (transaction) await transaction.rollback();
+    // if (transaction) await transaction.rollback();
     next(err);
   }
 };

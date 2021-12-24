@@ -64,46 +64,6 @@ const Login = (props) => {
         }
       })
       .catch(() => setError(() => true));
-
-    // const noOfKeys = Object.keys(userDetails).length;
-    // let search = "?";
-    // Object.entries(userDetails).map((entry, i) => {
-    //   let [key, value] = entry;
-    //   let last = i + 1 === noOfKeys ? "" : "&";
-    //   return (search += key + "=" + value + last);
-    // });
-    // try {
-    //   axios
-    //     .get("http://localhost:8000/hnfey/user/find-user/" + search)
-    //     .then((res) => {
-    //       switch (res.data.typeOfUser) {
-    //         case "admin":
-    //           setTypeOfUser(() => "admin");
-    //           setUser(() => res.data.user);
-    //           history.push("/admin", {
-    //             ...props.location.state,
-    //             user: res.data.user,
-    //           });
-    //           break;
-    //         case "user":
-    //           setTypeOfUser(() => "user");
-    //           setUser(() => res.data.user);
-    //           history.push("/user-profile", {
-    //             ...props.location.state,
-    //             user: res.data.user,
-    //           });
-    //           break;
-    //         default:
-    //           break;
-    //       }
-    //     })
-    //     .catch(() => {
-    //       setError(() => true);
-    //     });
-    // } catch (err) {
-    //   console.log(err);
-    // }
-    // }
   };
   return (
     <div>

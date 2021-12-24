@@ -11,7 +11,7 @@ import AdminHome from "./components/AdminHome/AdminHome";
 import SearchResultsUser from "./components/SearchResultsUser/SearchResultsUser";
 import Home from "./components/Home/Home";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
-import { ListUsers } from "./components/ListUsers/ListUsers";
+// import { ListUsers } from "./components/ListUsers/ListUsers";
 import FlightDetails from "./components/FlightDetails/FlightDetails";
 import Summary from "./components/Summary/Summary";
 import UserProfile from "./components/UserProfile/UserProfile";
@@ -42,7 +42,7 @@ const App = () => {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/sign-up" exact component={SignUpForm} />
-            <Route path="/get-users" exact component={ListUsers} />
+            {/* <Route path="/get-users" exact component={ListUsers} />  */}
             <Route path="/admin" exact component={AdminHome} />
             <Route path="/login" exact component={Login} />
             <Route path="/edit-user" exact component={EditUser} />

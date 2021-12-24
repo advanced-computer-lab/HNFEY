@@ -36,8 +36,8 @@ const fetchAdminByUsername = (username) => {
   });
 };
 
-const updateUser = (updatedUser, email) => {
-  return User.updateOne(updatedUser, { email });
+const updateUser = (_id, updatedUser) => {
+  return User.findByIdAndUpdate(_id, updatedUser);
 };
 
 module.exports = {

@@ -100,13 +100,13 @@ const getFlights = async (req, res, next) => {
 
 const sendConfirmationMail = (req, res, next) => {
   const { departingFlight, returnFlight, reservation } = req;
-  const { passengers, totalPrice } = reservation;
+  const { passengers, totalPrice, email } = reservation;
   const user = req.user;
   const cabin = reservation.class;
   const text = `Dear ${user.firstName},\nYour reservation with us is confirmed!!\n\n\nDeparture Flight\n\t\t${departingFlight.from} to ${departingFlight.to}\nTotal Price: ${totalPrice}`;
 
   var mailOptions = {
-    to: user.email,
+    to: email,
     subject: "Reservation confirmation",
     text,
     html: `<div>

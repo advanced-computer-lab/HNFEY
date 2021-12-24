@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import Axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
@@ -14,6 +13,7 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import getTimeDifference from "../../utils/time";
 import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import Tooltip from "@mui/material/Tooltip";
+import {findFlight }from "../../api/flight";
 
 export const SearchResultsUser = () => {
   const [departureFlightList, setDepartureList] = useState([]);
@@ -55,16 +55,6 @@ export const SearchResultsUser = () => {
         class: searchClass,
       };
       const url = "/flight-information";
-      // +
-      // "departingFlight=" +
-      // selectedDepartureFlightID +
-      // "&returnFlight=" +
-      // selectedReturnFlightID +
-      // "&passengers=" +
-      // passengers +
-      // "&class=" +
-      // searchClass;
-
       history.push(url, reservation);
     }
   };
@@ -95,10 +85,10 @@ export const SearchResultsUser = () => {
   });
 
   useEffect(() => {
-    Axios.get(departureUrl).then((res) => {
+    findFlight(departureUrl).then((res) => {
       setDepartureList(res.data.flights);
     });
-    Axios.get(returnUrl).then((res) => {
+    findFlight(returnUrl).then((res) => {
       setReturnList(res.data.flights);
       setMounted(() => true);
     });

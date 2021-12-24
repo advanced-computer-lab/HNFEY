@@ -16,9 +16,11 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import moment from "moment";
 import getTimeDifference from "../../utils/time";
-import axios from "axios";
 import { useHistory } from "react-router";
 import StripeCheckout from "react-stripe-checkout";
+import { editFlight } from "../../api/flight";
+import { createReservation } from "../../api/reservation";
+import { pay } from "../../api/payment";
 
 const Checkout = (props) => {
   const details = props?.location?.state;
@@ -45,9 +47,6 @@ const Checkout = (props) => {
   const [selectedDepartureSeats, setSelectedDepartureSeats] = useState([]);
   const [selectedReturnSeats, setSelectedReturnSeats] = useState([]);
   const noOfPassengersArray = [...Array(Number(passengers)).keys()];
-  const createReservationUrl = "http://localhost:8000/hnfey/reservation";
-  const editFlightUrl = "http://localhost:8000/hnfey/flight/edit-flight";
-  const payUrl = "http://localhost:8000/hnfey/payment/pay";
 
   const handleResetSeatClick = () => {
     setPassengerInfoState((passenger) =>
@@ -101,7 +100,6 @@ const Checkout = (props) => {
   };
 
   const handleSubmit = async () => {
-    // e.preventDefault();
     const passengersWithoutReserved = passengerInfoState.map((passenger) => {
       delete passenger.departureSeat.reserved;
       delete passenger.returnSeat.reserved;
@@ -144,6 +142,8 @@ const Checkout = (props) => {
                 returnFlight.numberOfAvailableEconomySeats - passengers,
             },
           };
+
+    const email = JSON.parse(localStorage.getItem("profile")).user.email;
     const reservation = {
       reservation: {
         userId,
@@ -153,11 +153,9 @@ const Checkout = (props) => {
         class: cabin,
         status: "Reserved",
         totalPrice,
+        email,
       },
     };
-    const email = JSON.parse(localStorage.getItem("profile")).user.email;
-    axios.put(editFlightUrl, departureFlightBody);
-    axios.put(editFlightUrl, returnFlightBody);
     console.log(props.location.state);
 
     //payment
@@ -175,22 +173,17 @@ const Checkout = (props) => {
     // //   .catch(() => {
     // //     return;
     // //   });
-    axios
-      .post(createReservationUrl, {
-        ...reservation,
-        user: {
-          email,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.reservation);
-        history.push("/summary", {
-          ...props.location.state,
-          reservation: res.data.reservation,
-        });
-      });
-  };
 
+    editFlight(departureFlightBody);
+    editFlight(returnFlightBody);
+
+    createReservation(reservation).then((res) => {
+      history.push("/summary", {
+        ...props.location.state,
+        reservation: res.data.reservation,
+      });
+    });
+  };
   const makePayment = async (token) => {
     const email = JSON.parse(localStorage.getItem("profile")).user.email;
     const body = {
@@ -201,10 +194,8 @@ const Checkout = (props) => {
       email,
     };
 
-    return axios
-      .post(payUrl, body)
+    return pay(body)
       .then((res) => {
-        console.log("RESPONSE", res);
         handleSubmit();
       })
       .catch((err) => console.log(err));
