@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { Button, TextField, Container, Typography } from "@material-ui/core";
-import Axios from "axios";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
@@ -180,7 +179,6 @@ export const CreateFlightForm = () => {
       flight: { ...flightDetails, seats: seatsArray },
     };
     try {
-      //Axios.post(url, flight)
       createFlight(flight)
         .then(() => history.push("/list-all-flights"))
         .catch(() => setError(() => true));
@@ -272,8 +270,6 @@ export const CreateFlightForm = () => {
             value={arrivalValue}
             name="arrivalDateTime"
             onChange={handleArrivalDateChange}
-            // formatDate={(date) => moment(date).format('DD-MM-YYYY')}
-            // inputFormat="YYYY-MM-DD T:hh:mm:ss"
             minDateTime={new Date(departureValue)}
             inputFormat="yyyy/MM/dd HH:mm"
           />

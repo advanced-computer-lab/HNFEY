@@ -57,37 +57,6 @@ const FlightForm = () => {
         <br />
         <br />
 
-        {/* <FormControl style={{ width: 95, margin: "0px 5px 10px 0px" }}>
-          <InputLabel
-            id="demo-simple-select-label"
-            style={{
-              position: "absolute",
-              textIndent: 15,
-              bottom: 10,
-            }}
-            required
-          >
-            From
-          </InputLabel>
-          <Select
-            style={{ width: 95, margin: "0px 5px 10px 0px" }}
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="From"
-            name="from"
-            value={selected}
-            variant="outlined"
-            onChange={handleChange}
-            // defaultValue="Economy"
-          >
-            {airports.map((airport) => {
-              <MenuItem value={airport.code}></MenuItem>
-            })}
-            <MenuItem value={"Economy"}>Economy</MenuItem>
-            <MenuItem value={"Business"}>Business</MenuItem>
-          </Select>
-        </FormControl> */}
-
         <TextField
           style={{ maxWidth: 200, margin: "0px 5px 10px 0px" }}
           name="from"

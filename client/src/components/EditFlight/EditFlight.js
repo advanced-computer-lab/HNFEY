@@ -1,5 +1,4 @@
 import { Button, TextField, Container, Typography } from "@material-ui/core";
-import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { CircularProgress } from "@material-ui/core";
@@ -16,9 +15,6 @@ const EditFlight = () => {
   const [flightDetails, setFlightDetails] = useState({});
 
   useEffect(() => {
-    // Axios.get("http://localhost:8000/hnfey/flight/" + id).then((res) => {
-    //   setFlightDetails(res.data.flight);
-    // });
     findFlight("http://localhost:8000/hnfey/flight/" + id).then((res) => {
       setFlightDetails(res.data.flight);
     });
@@ -48,12 +44,7 @@ const EditFlight = () => {
     e.preventDefault();
     try {
       const flight = { flight: flightDetails };
-      // Axios.put("http://localhost:8000/hnfey/flight/edit-flight", flight).then(
-      //   (res) => {
-      //     history.push("/list-all-flights");
-      //   }
-      // );
-      editFlight("http://localhost:8000/hnfey/flight/edit-flight", flight).then(
+      editFlight(flight).then(
         (res) => {
           history.push("/list-all-flights");
         }
@@ -130,7 +121,6 @@ const EditFlight = () => {
             value={flightDetails.departureDateTime}
             onChange={handleDepartureDateChange}
 
-            // inputFormat='yyyy/MM/dd HH:mm:ss'
           />
           <br />
           <br />
@@ -147,9 +137,6 @@ const EditFlight = () => {
             value={flightDetails.arrivalDateTime}
             name="arrivalDateTime"
             onChange={handleArrivalDateChange}
-            // formatDate={(date) => moment(date).format('DD-MM-YYYY')}
-            // inputFormat="YYYY-MM-DD T:hh:mm:ss"
-            // inputFormat='yyyy/MM/dd HH:mm:ss'
           />
 
           <br />

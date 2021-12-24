@@ -16,7 +16,6 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import moment from "moment";
 import getTimeDifference from "../../utils/time";
-import axios from "axios";
 import { useHistory } from "react-router";
 import StripeCheckout from "react-stripe-checkout";
 import { editFlight } from "../../api/flight";
@@ -48,9 +47,6 @@ const Checkout = (props) => {
   const [selectedDepartureSeats, setSelectedDepartureSeats] = useState([]);
   const [selectedReturnSeats, setSelectedReturnSeats] = useState([]);
   const noOfPassengersArray = [...Array(Number(passengers)).keys()];
-  // const createReservationUrl = "http://localhost:8000/hnfey/reservation";
-  // const editFlightUrl = "http://localhost:8000/hnfey/flight/edit-flight";
-  // const payUrl = "http://localhost:8000/hnfey/payment/pay";
 
   const handleResetSeatClick = () => {
     setPassengerInfoState((passenger) =>
@@ -104,7 +100,6 @@ const Checkout = (props) => {
   };
 
   const handleSubmit = async () => {
-    // e.preventDefault();
     const passengersWithoutReserved = passengerInfoState.map((passenger) => {
       delete passenger.departureSeat.reserved;
       delete passenger.returnSeat.reserved;
@@ -159,28 +154,10 @@ const Checkout = (props) => {
       },
     };
 
-    // axios.put(editFlightUrl, departureFlightBody);
-    // axios.put(editFlightUrl, returnFlightBody);
-
     editFlight(departureFlightBody);
     editFlight(returnFlightBody);
 
-    //payment
-    // const userEmail = JSON.parse(localStorage.getItem("profile")).user.email;
-
-    // // await axios
-    // //   .post(payUrl, {
-    // //     totalPrice,
-    // //     userId,
-    // //     email: userEmail,
-    // //   })
-    // //   .then((res) => {
-    // //     console.log(res);
-    // //   })
-    // //   .catch(() => {
-    // //     return;
-    // //   });
-    // axios.post(createReservationUrl, reservation)
+  
     createReservation(reservation).then((res) => {
       history.push("/summary", {
         ...props.location.state,

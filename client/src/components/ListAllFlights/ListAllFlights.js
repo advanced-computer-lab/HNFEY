@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import Axios from "axios";
 import {
   Button,
   TableBody,
@@ -23,8 +22,6 @@ export const ListAllFlights = () => {
 
   const history = useHistory();
   useEffect(() => {
-    // Axios.get("http://localhost:8000/hnfey/flight/list-flights").then((res) => {
-    //   setFlights(() => res.data.flights); 
     findAllFlights("http://localhost:8000/hnfey/flight/list-flights").then((res) => {
       setFlights(() => res.data.flights);
 
@@ -52,12 +49,6 @@ export const ListAllFlights = () => {
   };
 
   const handleDelete = async (flightId) => {
-    // e.preventDefault();
-  //   Axios.delete("http://localhost:8000/hnfey/flight/" + flightId);
-  //   setDeleted(true);
-  //   history.push("/list-all-flights");
-  // };
-
   deleteFlight(flightId);
   setDeleted(true);
   history.push("/list-all-flights");

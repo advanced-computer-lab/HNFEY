@@ -5,6 +5,8 @@ export const editFlight = (flightBody) =>
 
 export const createFlight = (flight) =>
   API.post("/flight/create-flight", flight);
+
+  
 export const findFlight = (url) => API.get(url);
 
   export const cancelFlight = (details) =>

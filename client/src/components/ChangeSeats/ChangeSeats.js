@@ -19,7 +19,6 @@ import { ReactComponent as Seat } from "./images/seat.svg";
 import moment from "moment";
 import getTimeDifference from "../../utils/time";
 import { useHistory } from "react-router";
-import axios from "axios";
 import { editFlight } from "../../api/flight";
 import { editReservation } from "../../api/reservation";
 

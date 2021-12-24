@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import Axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
@@ -89,13 +88,6 @@ export const SearchResultsUser = () => {
     findFlight(departureUrl).then((res) => {
       setDepartureList(res.data.flights);
     });
-    // Axios.get(departureUrl).then((res) => {
-    //   setDepartureList(res.data.flights);
-    // });
-    // Axios.get(returnUrl).then((res) => {
-    //   setReturnList(res.data.flights);
-    //   setMounted(() => true);
-    // });
     findFlight(returnUrl).then((res) => {
       setReturnList(res.data.flights);
       setMounted(() => true);

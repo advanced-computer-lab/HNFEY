@@ -749,7 +749,6 @@ const ConfirmationSummary = (props) => {
                 passengers
               : (departingFlight.economyPrice + returnFlight.economyPrice) *
                 passengers}
-            {/* {(departingFlight.price + returnFlight.price) * passengers} */}
           </Typography>
         </div>
       </Paper>

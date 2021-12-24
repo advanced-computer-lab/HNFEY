@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useEffect, useState } from "react";
-import Axios from "axios";
 import { useHistory } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { Typography, Grid, Paper } from "@material-ui/core";
-import { UserContext } from "../../UserContext";
 import { findAllReservations } from "../../api/reservation";
 export const AllReservations = (props) => {
   const [user, setUser] = useState(
@@ -14,31 +12,12 @@ export const AllReservations = (props) => {
   const [userReservations, setUserReservations] = useState([]);
   const history = useHistory();
 
-  // const url =
-  //   "http://localhost:8000/hnfey/user/find-user?username=" +
-  //   (props.location?.state?.user?.username
-  //     ? props.location.state.user.username
-  //     : user.username);
-
   useEffect(() => {
-    // if (props.location?.state?.user) {
-    //   setUser(() => props.location.state.user);
-    // }
-    // let url2 = "http://localhost:8000/hnfey/reservation/find-reservation?";
     const fetchData = async () => {
-      // await Axios.get(url).then((res) => {
-      //   setUser(() => res.data.user);
-      //   const userIDQuery = "userId=" + res.data.user._id;
-      //   url2 += userIDQuery;
-      // });
 
       findAllReservations(user._id).then((res) => {
         setUserReservations(() => res.data.reservation);
       });
-
-      // await Axios.get(url2).then((res) => {
-      //   setUserReservations(() => res.data.reservation);
-      // });
     };
     fetchData();
   }, [props.location?.state?.user, setUser]);

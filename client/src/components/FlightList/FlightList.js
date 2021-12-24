@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import Axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import moment from "moment";
@@ -33,7 +32,6 @@ export const FlightList = () => {
 
   useEffect(() => {
 
-    // Axios.get(url).then((res) => setList(res.data.flights));
     findAllFlights(url).then((res) => setList(res.data.flights));
 
   }, [url]); //might be flights
@@ -56,7 +54,6 @@ export const FlightList = () => {
   };
 
   const handleDelete = async (flightId) => {
-    // await Axios.delete("http://localhost:8000/hnfey/flight/" + flightId);
     await deleteFlight(flightId);
     setList(flightList.filter((flight) => flight._id !== flightId));
   };
@@ -86,7 +83,7 @@ export const FlightList = () => {
             {flightList?.map((flight) => (
               <TableRow
                 key={flight._id}
-                //   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+               
               >
                 <TableCell component="th" scope="row" key={flight._id}>
                   {flight.flightNumber}
