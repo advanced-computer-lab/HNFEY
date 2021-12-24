@@ -155,7 +155,7 @@ const Checkout = (props) => {
         totalPrice,
       },
     };
-
+    const email = JSON.parse(localStorage.getItem("profile")).user.email;
     axios.put(editFlightUrl, departureFlightBody);
     axios.put(editFlightUrl, returnFlightBody);
     console.log(props.location.state);
@@ -175,13 +175,20 @@ const Checkout = (props) => {
     // //   .catch(() => {
     // //     return;
     // //   });
-    axios.post(createReservationUrl, reservation).then((res) => {
-      console.log(res.data.reservation);
-      history.push("/summary", {
-        ...props.location.state,
-        reservation: res.data.reservation,
+    axios
+      .post(createReservationUrl, {
+        ...reservation,
+        user: {
+          email,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.reservation);
+        history.push("/summary", {
+          ...props.location.state,
+          reservation: res.data.reservation,
+        });
       });
-    });
   };
 
   const makePayment = async (token) => {

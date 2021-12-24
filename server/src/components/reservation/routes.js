@@ -37,6 +37,16 @@ router.delete("/:id", controller.deletePipeline, async (req, res) => {
   });
 });
 
+router.post(
+  "/confirm-flight",
+  controller.sendConfirmationMailPipeline,
+  async (req, res) => {
+    res.status(200).json({
+      message: "Confirmation email sent successfully",
+    });
+  }
+);
+
 router.put("/edit-reservation", controller.updatePipeline, async (req, res) => {
   res.status(200).json({
     message: "Reservation updated successfully",
