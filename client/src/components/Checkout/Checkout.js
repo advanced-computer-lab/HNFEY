@@ -100,8 +100,8 @@ const Checkout = (props) => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    // e.preventDefault();
     const passengersWithoutReserved = passengerInfoState.map((passenger) => {
       delete passenger.departureSeat.reserved;
       delete passenger.returnSeat.reserved;
@@ -161,20 +161,20 @@ const Checkout = (props) => {
     console.log(props.location.state);
 
     //payment
-    const userEmail = JSON.parse(localStorage.getItem("profile")).user.email;
+    // const userEmail = JSON.parse(localStorage.getItem("profile")).user.email;
 
-    await axios
-      .post(payUrl, {
-        totalPrice,
-        userId,
-        email: userEmail,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch(() => {
-        return;
-      });
+    // // await axios
+    // //   .post(payUrl, {
+    // //     totalPrice,
+    // //     userId,
+    // //     email: userEmail,
+    // //   })
+    // //   .then((res) => {
+    // //     console.log(res);
+    // //   })
+    // //   .catch(() => {
+    // //     return;
+    // //   });
     axios.post(createReservationUrl, reservation).then((res) => {
       console.log(res.data.reservation);
       history.push("/summary", {
@@ -195,9 +195,10 @@ const Checkout = (props) => {
     };
 
     return axios
-      .post("http://localhost:8000/hnfey/payment/pay", body)
+      .post(payUrl, body)
       .then((res) => {
         console.log("RESPONSE", res);
+        handleSubmit();
       })
       .catch((err) => console.log(err));
   };
@@ -502,6 +503,7 @@ const Checkout = (props) => {
               }}
             >
               <StripeCheckout
+                currency="EGP"
                 stripeKey="pk_test_51K9Vp6DHyFDpcdiHt9NGEIZRJJMdtwrcGx1QuPZe5N0UhB9Kf3y1Y3oQfZWEXIwsv9mHLeHVqToil9P9giCviy9I00VR1fbDZ9"
                 token={makePayment}
                 name="Reserve Flight"
@@ -517,7 +519,7 @@ const Checkout = (props) => {
                     fontSize: "1.2rem",
                   }}
                   color="primary"
-                  type="submit"
+                  // type="submit"
                 >
                   Complete Booking <ArrowForwardIosIcon />
                 </Button>

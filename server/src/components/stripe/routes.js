@@ -7,24 +7,22 @@ const uuid = require("uuid");
 router.post("/pay", async (req, res) => {
   const { product, token, email } = req.body;
   console.log(token);
-  const idempontencyKey = uuid.v4();
+  console.log(email);
+  // const idempontencyKey = uuid.v4();
 
   return stripe.customers
     .create({
-      email: token.email,
+      email,
       source: token.id,
       email,
     })
     .then((customer) => {
-      stripe.charges.create(
-        {
-          amount: product.price * 100,
-          currency: "egp",
-          customer: customer.id,
-          receipt_email: email,
-        },
-        { idempontencyKey }
-      );
+      stripe.charges.create({
+        amount: product.price * 100,
+        currency: "egp",
+        customer: customer.id,
+        receipt_email: email,
+      });
     })
     .then((result) => res.status(200).json(result))
     .catch((err) => console.log(err));
