@@ -10,4 +10,4 @@ export const resetPassword = (passwordReset) =>
   API.post("/auth/password/reset", passwordReset);
 
 export const updatePassword = (passwordUpdate) =>
-  API.patch("/auth/password", passwordUpdate);
+  API.put("/auth/password", passwordUpdate);
