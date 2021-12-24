@@ -26,6 +26,8 @@ import Axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import axios from "axios";
+import { editFlight, findFlight } from "../../api/flight";
+import { editReservation } from "../../api/reservation";
 
 const EditReservedFlight = (props) => {
   const history = useHistory();
@@ -72,7 +74,10 @@ const EditReservedFlight = (props) => {
       let last = i + 1 === noOfKeys ? "" : "&";
       return (findFlightsUrl += key + "=" + value + last);
     });
-    Axios.get(findFlightsUrl).then((res) => {
+    // Axios.get(findFlightsUrl).then((res) => {
+    //   setResultFlightList(res.data.flights);
+    // });
+    findFlight(findFlightsUrl).then((res) => {
       setResultFlightList(res.data.flights);
     });
   };
@@ -118,15 +123,27 @@ const EditReservedFlight = (props) => {
                       reservedflight.numberOfAvailableBusinessSeats,
                   },
                 };
-                axios.put(editReservationUrl, reservationBody);
-                axios.put(
-                  "http://localhost:8000/hnfey/flight/edit-flight",
-                  flightBody
-                );
+               // axios.put(editReservationUrl, reservationBody);
+                editReservation(reservationBody);
+                // axios.put(
+                //   "http://localhost:8000/hnfey/flight/edit-flight",
+                //   flightBody
+                // );
+                editFlight(flightBody);
                 reservation.departingFlightId = selectedFlightID;
                 flightUrl += selectedFlightID;
                 delete props.location.state.userReservation;
-                axios.get(flightUrl).then((res) => {
+                // axios.get(flightUrl).then((res) => {
+                //   history.push("/change-seats", {
+                //     ...props.location.state,
+                //     flight: res.data.flight,
+                //     flightType: flightType,
+                //     passengerNo: 0,
+                //     userReservation: reservation,
+                //     newFlight: true,
+                //   });
+                // });
+                findFlight(flightUrl).then((res) => {
                   history.push("/change-seats", {
                     ...props.location.state,
                     flight: res.data.flight,
@@ -153,11 +170,13 @@ const EditReservedFlight = (props) => {
                       reservedflight.numberOfAvailableBusinessSeats,
                   },
                 };
-                axios.put(editReservationUrl, reservationBody);
-                axios.put(
-                  "http://localhost:8000/hnfey/flight/edit-flight",
-                  flightBody
-                );
+                // axios.put(editReservationUrl, reservationBody);
+                // axios.put(
+                //   "http://localhost:8000/hnfey/flight/edit-flight",
+                //   flightBody
+                // );
+                editReservation(reservationBody);
+                editFlight(flightBody);
                 reservation.returnFlightId = selectedFlightID;
                 flightUrl += selectedFlightID;
                 delete props.location.state.userReservation;

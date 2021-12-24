@@ -7,6 +7,7 @@ import DateTimePicker from "@mui/lab/DateTimePicker";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import moment from "moment";
+import { editFlight, findFlight } from "../../api/flight";
 
 const EditFlight = () => {
   const { id } = useParams();
@@ -15,7 +16,10 @@ const EditFlight = () => {
   const [flightDetails, setFlightDetails] = useState({});
 
   useEffect(() => {
-    Axios.get("http://localhost:8000/hnfey/flight/" + id).then((res) => {
+    // Axios.get("http://localhost:8000/hnfey/flight/" + id).then((res) => {
+    //   setFlightDetails(res.data.flight);
+    // });
+    findFlight("http://localhost:8000/hnfey/flight/" + id).then((res) => {
       setFlightDetails(res.data.flight);
     });
   }, [id]);
@@ -44,7 +48,12 @@ const EditFlight = () => {
     e.preventDefault();
     try {
       const flight = { flight: flightDetails };
-      Axios.put("http://localhost:8000/hnfey/flight/edit-flight", flight).then(
+      // Axios.put("http://localhost:8000/hnfey/flight/edit-flight", flight).then(
+      //   (res) => {
+      //     history.push("/list-all-flights");
+      //   }
+      // );
+      editFlight("http://localhost:8000/hnfey/flight/edit-flight", flight).then(
         (res) => {
           history.push("/list-all-flights");
         }

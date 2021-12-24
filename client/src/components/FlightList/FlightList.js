@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { deleteFlight, findAllFlights } from "../../api/flight";
 
 export const FlightList = () => {
   const history = useHistory();
@@ -31,7 +32,10 @@ export const FlightList = () => {
   });
 
   useEffect(() => {
-    Axios.get(url).then((res) => setList(res.data.flights));
+
+    // Axios.get(url).then((res) => setList(res.data.flights));
+    findAllFlights(url).then((res) => setList(res.data.flights));
+
   }, [url]); //might be flights
 
   const submit = (flightId) => {
@@ -52,7 +56,8 @@ export const FlightList = () => {
   };
 
   const handleDelete = async (flightId) => {
-    await Axios.delete("http://localhost:8000/hnfey/flight/" + flightId);
+    // await Axios.delete("http://localhost:8000/hnfey/flight/" + flightId);
+    await deleteFlight(flightId);
     setList(flightList.filter((flight) => flight._id !== flightId));
   };
 

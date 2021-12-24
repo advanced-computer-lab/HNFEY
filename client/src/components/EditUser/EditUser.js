@@ -6,29 +6,32 @@ import { CircularProgress } from "@material-ui/core";
 import { UserContext } from "../../UserContext";
 
 const EditUser = (props) => {
-  const { user, setUser } = useContext(UserContext);
+//  const { user, setUser } = useContext(UserContext);
+const [user, setUser] = useState(
+  JSON.parse(localStorage.getItem("profile")).user
+);
   const history = useHistory();
-  let url;
-  if (!user._id) {
-    url =
-      "http://localhost:8000/hnfey/user/find-user?username=" +
-      props.location.state.user.username;
-  } else {
-    url =
-      "http://localhost:8000/hnfey/user/find-user?username=" + user.username;
-    // const noOfKeys = Object.keys(user).length;
-    // Object.entries(user).map((entry, i) => {
-    //   let [key, value] = entry;
-    //   let last = i + 1 === noOfKeys ? "" : "&";
-    //   return (url += key + "=" + value + last);
-    // });
-  }
+  //let url;
+  // if (!user._id) {
+  //   url =
+  //     "http://localhost:8000/hnfey/user/find-user?username=" +
+  //     props.location.state.user.username;
+  // } else {
+  //   url =
+  //     "http://localhost:8000/hnfey/user/find-user?username=" + user.username;
+  //   // const noOfKeys = Object.keys(user).length;
+  //   // Object.entries(user).map((entry, i) => {
+  //   //   let [key, value] = entry;
+  //   //   let last = i + 1 === noOfKeys ? "" : "&";
+  //   //   return (url += key + "=" + value + last);
+  //   // });
+  // }
 
-  useEffect(() => {
-    Axios.get(url).then((res) => {
-      setUser(res.data.user);
-    });
-  }, [setUser, url]);
+  // useEffect(() => {
+  //   Axios.get(url).then((res) => {
+  //     setUser(res.data.user);
+  //   });
+  // }, [setUser, url]);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -38,7 +41,8 @@ const EditUser = (props) => {
     e.preventDefault();
     try {
       const userBody = { user: user };
-      Axios.put("http://localhost:8000/hnfey/user/edit-user", userBody).then(
+      // Axios.put("http://localhost:8000/hnfey/user/edit-user", userBody)
+      editUser(userBody).then(
         () =>
           history.push("/user-profile", {
             ...props.location.state,

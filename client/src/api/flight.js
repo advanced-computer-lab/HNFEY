@@ -8,3 +8,10 @@ export const findFlight = (url)=>
 
   export const cancelFlight = (details) =>
 API.post("flight/cancel-flight",details);
+
+export const findAllFlights = (url)=>
+  API.get(url);
+
+  export const deleteFlight = (flightId) =>
+  API.delete("flight/"+ flightId);
+
