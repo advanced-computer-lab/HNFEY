@@ -1,5 +1,5 @@
 import { Button, TextField, Container, Typography } from "@material-ui/core";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { updatePassword } from "../../api/auth";
 
@@ -39,12 +39,10 @@ const ChangePassword = (props) => {
         })
       );
     } else {
-
       newPasswordRetyped === newPassword
         ? setErrorRetype(() => false)
         : setErrorRetype(() => true);
     }
-  
   };
 
   const handleBack = async (e) => {

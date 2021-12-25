@@ -1,21 +1,18 @@
 import React, { useContext } from "react";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { Container, Button, Typography } from "@material-ui/core";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../UserContext";
 import { CircularProgress } from "@material-ui/core";
 
 const UserProfile = (props) => {
-  const { user, setUser } = useContext(UserContext);
-
+  // const { user, setUser } = useContext(UserContext);
+  const [user] = useState(JSON.parse(localStorage.getItem("profile")).user);
   const history = useHistory();
 
   const handleEdit = () => {
-    history.push("/edit-user", {
-      ...props.location.state,
-      user,
-    });
+    history.push("/edit-user", props.location.state);
   };
 
   const handleChangePassword = () => {
@@ -32,13 +29,14 @@ const UserProfile = (props) => {
     });
   };
 
-  useEffect(() => {
-    if (props.location?.state?.user) {
-      setUser(() => props.location.state.user);
-    } else {
-      history.push("/login");
-    }
-  }, [history, props.location.state.user, setUser, user?._id]);
+  // useEffect(() => {
+  //   // if (props.location?.state?.user) {
+  //   //   setUser(() => props.location.state.user);
+  //   // }
+  //   // else {
+  //   //   history.push("/login");
+  //   // }
+  // }, [history, props.location.state.user, setUser, user?._id]);
 
   return user?._id ? (
     <Container component="main" align="center" style={{ marginTop: "65px" }}>

@@ -1,15 +1,15 @@
 import { Button, TextField, Container, Typography } from "@material-ui/core";
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { CircularProgress } from "@material-ui/core";
-import {editUser} from "../../api/user";
+import { editUser } from "../../api/user";
 
 const EditUser = (props) => {
-const [user, setUser] = useState(
-  JSON.parse(localStorage.getItem("profile")).user
-);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("profile")).user
+  );
   const history = useHistory();
-  
+
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
@@ -19,13 +19,18 @@ const [user, setUser] = useState(
     try {
       const userBody = { user: user };
 
-      editUser(userBody).then(
-        () =>
-          history.push("/user-profile", {
-            ...props.location.state,
-            user,
+      editUser(userBody).then(() => {
+        localStorage.setItem(
+          "profile",
+          JSON.stringify({
+            message: JSON.parse(localStorage.getItem("profile")).message,
+            token: JSON.parse(localStorage.getItem("profile")).token,
+            uType: JSON.parse(localStorage.getItem("profile")).uType,
+            user: user,
           })
-      );
+        );
+        history.push("/user-profile", props.location.state);
+      });
     } catch (err) {
       console.log(err);
     }
@@ -93,7 +98,6 @@ const [user, setUser] = useState(
             required
           />
 
-         
           <br />
           <br />
 
@@ -152,7 +156,6 @@ const [user, setUser] = useState(
             Edit
           </Button>
         </form>
-
       </Container>
     </div>
   ) : (
