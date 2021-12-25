@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { Container, Button, Typography } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "../../UserContext";
+// import { UserContext } from "../../UserContext";
 import { CircularProgress } from "@material-ui/core";
 
 const UserProfile = (props) => {

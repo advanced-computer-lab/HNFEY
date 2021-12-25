@@ -35,8 +35,7 @@ const Checkout = (props) => {
     cabin,
   } = details;
 
-  const userId=JSON.parse(localStorage.getItem("profile")).user._id;
-  console.log(userId);
+  const userId = JSON.parse(localStorage.getItem("profile")).user._id;
 
   const departureSeatsAvailable = departingFlightSeats;
   const totalPrice =
@@ -468,49 +467,63 @@ const Checkout = (props) => {
                     {noOfPassengersArray.length !== i + 1 ? (
                       <Divider style={{ marginTop: "3rem" }} />
                     ) : (
-                      <div style={{ marginTop: "2rem" , marginLeft:"75%"}}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={handleResetSeatClick}
-                        >
-                          Reset all seats
-                        </Button>
-                      </div>
+                      <Grid
+                        container
+                        alignItems="stretch"
+                        spacing={3}
+                        style={{ marginTop: "5%" }}
+                      >
+                        <Grid item xs={6}>
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "2rem",
+                              marginBottom: "4rem",
+                            }}
+                          >
+                            <StripeCheckout
+                              currency="EGP"
+                              stripeKey="pk_test_51K9Vp6DHyFDpcdiHt9NGEIZRJJMdtwrcGx1QuPZe5N0UhB9Kf3y1Y3oQfZWEXIwsv9mHLeHVqToil9P9giCviy9I00VR1fbDZ9"
+                              token={makePayment}
+                              name="Reserve Flight"
+                              amount={totalPrice * 100}
+                            >
+                              <Button
+                                variant="contained"
+                                style={{
+                                  width: "inherit",
+                                  // background:
+                                  //   "linear-gradient(to top,#FFBD24 0,#FFC94C 100%)",
+                                  color: "##808080",
+
+                                  fontSize: "1.2rem",
+                                }}
+                                color="secondary"
+
+                                // type="submit"
+                              >
+                                Complete Booking <ArrowForwardIosIcon />
+                              </Button>
+                            </StripeCheckout>
+                          </div>
+                        </Grid>
+                        <Grid item xs={6} style={{ alignItems: "center" }}>
+                          <div>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={handleResetSeatClick}
+                              style={{ marginLeft: "40%", marginTop: "2.5%" }}
+                            >
+                              Reset all seats
+                            </Button>
+                          </div>
+                        </Grid>
+                      </Grid>
                     )}
                   </div>
                 );
               })}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                gap: "2rem",
-                marginBottom: "4rem",
-              }}
-            >
-              <StripeCheckout
-                currency="EGP"
-                stripeKey="pk_test_51K9Vp6DHyFDpcdiHt9NGEIZRJJMdtwrcGx1QuPZe5N0UhB9Kf3y1Y3oQfZWEXIwsv9mHLeHVqToil9P9giCviy9I00VR1fbDZ9"
-                token={makePayment}
-                name="Reserve Flight"
-                amount={totalPrice * 100}
-              >
-                <Button
-                  variant="contained"
-                  style={{
-                    width: "inherit",
-                    background:
-                      "linear-gradient(to top,#FFBD24 0,#FFC94C 100%)",
-                    color: "#3d3100",
-                    fontSize: "1.2rem",
-                  }}
-                  color="primary"
-                  // type="submit"
-                >
-                  Complete Booking <ArrowForwardIosIcon />
-                </Button>
-              </StripeCheckout>
             </div>
           </form>
         </Grid>

@@ -99,10 +99,10 @@ const getFlights = async (req, res, next) => {
 };
 
 const sendConfirmationMail = (req, res, next) => {
-  const { departingFlight, returnFlight, reservation } = req;
+  const { departingFlight, returnFlight, user } = req;
+  const { reservation } = req.body;
   const { passengers, totalPrice } = reservation;
   const { email } = req.body.reservation;
-  const user = req.user;
   const cabin = reservation.class;
   const text = `Dear ${user.firstName},\nYour reservation with us is confirmed!!\n\n\nDeparture Flight\n\t\t${departingFlight.from} to ${departingFlight.to}\nTotal Price: ${totalPrice}`;
 
@@ -111,20 +111,77 @@ const sendConfirmationMail = (req, res, next) => {
     subject: "Reservation confirmation",
     text,
     html: `<div>
-            <h1>Dear ${user.firstName}</h1>
-            <p>Your reservation with HnfeyAir is confirmed!! Get started packing your bags!!</p>
-            <div style="display:flex">
-              <div style="flex-grow:1">
-               <h2>Departure Flight Details:</h2>
-               <p>From <b>${departingFlight.from}</b> To <b>${departingFlight.to}</b></p>
-              </div>
-              <div style="flex-grow:1">
-               <h2>Return Flight Details:</h2>
-               <p>From <b>${returnFlight.from}</b> To <b>${returnFlight.to}</b></p>
-              </div>
-            </div>
-            
-          </div>`,
+    <h1 style="font-size:1.2rem">Dear ${user.firstName},</h1>
+    <p>Your reservation number <b>55 </b>with HnfeyAir is confirmed! Get started packing your bags!</p>
+    <p style="font-size:1.3rem; font-weight: 600; margin-bottom: 1%;">Your reservation summary:</p>
+    <div style="display:flex;">
+        <div style="margin-left: 0.5%; width: 100%;">
+            <h2 style="font-size:1.1rem; font-weight: 600;" >Departure Flight Details:</h2>
+            <p style="margin-left: 5%;">From <b>${
+              departingFlight.from
+            }</b> To <b>${departingFlight.to}</b></p>
+            <p style="margin:0%; margin-bottom: 1%; margin-left: 10%;"><b>Departure Day:</b> &nbsp; ${departingFlight.departureDay.toLocaleDateString()}</p>
+            <p style="margin:0%; margin-bottom: 2%; margin-left: 10%;">${departingFlight.departureDateTime.toLocaleTimeString()} - ${departingFlight.arrivalDateTime.toLocaleTimeString()}</p>
+            <p style="margin:0%; margin-bottom: 2%; margin-left: 10%;"><b>Bags Allowance:</b> ${
+              departingFlight.baggageAllowance
+            } KG</p>
+            <p style="margin:0%; margin-left: 10%; margin-bottom: 2%;"><b>Price:</b> ${
+              reservation.class === "Business"
+                ? departingFlight.businessPrice
+                : departingFlight.economyPrice
+            } EGP</p>
+            <p style="margin:0%; margin-left: 10%; margin-bottom: 2%;"><b>Class:</b> ${
+              reservation.class
+            }</p>
+        </div>
+        
+    </div>
+    <div style="display:flex;">
+        
+        <div style="margin-left: 0.5%; width: 100%;">
+            <h2 style="font-size:1.1rem; font-weight: 600;" >Return Flight Details:</h2>
+            <p style="margin-left: 5%;">From <b>${
+              returnFlight.from
+            }</b> To <b>${returnFlight.to}</b></p>
+            <p style="margin:0%; margin-bottom: 1%; margin-left: 10%;"><b>Return Day:</b> &nbsp;${returnFlight.departureDay.toLocaleDateString()}</p>
+            <p style="margin:0%; margin-bottom: 2%; margin-left: 10%;">${returnFlight.departureDateTime.toLocaleTimeString()} - ${returnFlight.arrivalDateTime.toLocaleTimeString()}</p>
+            <p style="margin:0%; margin-bottom: 2%; margin-left: 10%;"><b>Bags Allowance:</b> ${
+              returnFlight.baggageAllowance
+            } KG</p>
+            <p style="margin:0%; margin-left: 10%; margin-bottom: 2%;"><b>Price:</b> ${
+              reservation.class === "Business"
+                ? returnFlight.businessPrice
+                : returnFlight.economyPrice
+            } EGP</p>
+            <p style="margin:0%; margin-left: 10%; margin-bottom: 2%;"> <b>Class: </b>${
+              reservation.class
+            }</p>
+        </div>
+    </div>
+    <hr style="width: 100%; margin-top: 1.5%;">
+    <div style="display:flex; margin-top: 1%;">
+        <div style="margin-left: 0.5%; width: 100%;">
+            <h2 style="font-size:1.1rem; font-weight: 600;" >Price Summary:</h2>
+            <p style="margin-left: 5%;"><b>x${
+              reservation.passengers.length
+            } Passengers</b></p>
+            <p style="margin-left: 5%;">Total Departure Flight      &nbsp; &nbsp; <b>EGP ${
+              reservation.passengers.length *
+              (reservation.class === "Business"
+                ? departingFlight.businessPrice
+                : departingFlight.economyPrice)
+            }</b></p>
+            <p style="margin-left: 5%;">Total Return Flight&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <b>EGP ${
+              reservation.passengers.length *
+              (reservation.class === "Business"
+                ? returnFlight.businessPrice
+                : returnFlight.economyPrice)
+            }</b></p>
+            <p style="margin-left: 5%;"><b>Total Price&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;EGP ${totalPrice}</b></p>
+        </div>
+    </div>
+
+</div>`,
   };
   req.mailOptions = mailOptions;
   emailUtils.sendMail(req, res, next);
@@ -193,6 +250,8 @@ const updatePipeline = [
 ];
 const sendConfirmationMailPipeline = [
   //verify user,
+  getUser,
+  getFlights,
   sendConfirmationMail,
 ];
 

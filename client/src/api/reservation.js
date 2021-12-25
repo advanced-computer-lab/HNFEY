@@ -11,3 +11,6 @@ export const createReservation = (reservation) =>
 
 export const findReservation = (reservationId) =>
   API.get("/reservation/" + reservationId);
+
+export const confirmReservation = (reservation) =>
+  API.post("/reservation/confirm-flight", reservation);

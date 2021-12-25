@@ -761,16 +761,21 @@ const EditFlightSummary = (props) => {
                 reservation.passengers.length}
           </Typography>
         </div>
+        <Button
+          type="submit"
+          style={{
+            width: 500,
+            marginLeft: "30%",
+            fontSize: "1.2rem",
+            marginBottom: "3%",
+          }}
+          onClick={handleFinish}
+          variant="contained"
+          color="primary"
+        >
+          Finish
+        </Button>
       </Paper>
-      <Button
-        type="submit"
-        style={{ width: 500, marginLeft: "30%" }}
-        onClick={handleFinish}
-        variant="contained"
-        color="primary"
-      >
-        Finish
-      </Button>
     </Container>
   ) : (
     <Container component="main">

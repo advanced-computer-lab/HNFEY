@@ -364,8 +364,9 @@ const ConfirmationSummary = (props) => {
                 >
                   Seats:
                 </Typography>
-                {departingFlightSeats.map((depSeat) => (
+                {departingFlightSeats.map((depSeat, i) => (
                   <Typography
+                    key={i}
                     variant="body1"
                     style={{
                       fontSize: "0.875rem",
@@ -590,8 +591,9 @@ const ConfirmationSummary = (props) => {
                   Seats:
                 </Typography>
 
-                {returnFlightSeats.map((returnSeat) => (
+                {returnFlightSeats.map((returnSeat, i) => (
                   <Typography
+                    key={i}
                     variant="body1"
                     style={{
                       fontSize: "0.875rem",
@@ -723,7 +725,6 @@ const ConfirmationSummary = (props) => {
           style={{
             display: "flex",
             margin: "5%",
-            paddingBottom: "4%",
           }}
         >
           <Typography
@@ -751,16 +752,21 @@ const ConfirmationSummary = (props) => {
                 passengers}
           </Typography>
         </div>
+        <Button
+          type="submit"
+          style={{
+            width: 500,
+            marginLeft: "30%",
+            fontSize: "1.2rem",
+            marginBottom: "3%",
+          }}
+          onClick={handleFinish}
+          variant="contained"
+          color="primary"
+        >
+          Finish
+        </Button>
       </Paper>
-      <Button
-        type="submit"
-        style={{ width: 500, marginLeft: "30%" }}
-        onClick={handleFinish}
-        variant="contained"
-        color="primary"
-      >
-        Finish
-      </Button>
     </Container>
   );
 };

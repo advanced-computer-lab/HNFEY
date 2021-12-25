@@ -42,8 +42,6 @@ const EditReservedFlight = (props) => {
   });
   const [resultFlightList, setResultFlightList] = useState([]);
   const [selectedFlightID, setSelectedFlightID] = useState("");
-  const editReservationUrl =
-    "http://localhost:8000/hnfey/reservation/edit-reservation";
 
   const handleChange = (e) => {
     if (e.target.name === "class") {

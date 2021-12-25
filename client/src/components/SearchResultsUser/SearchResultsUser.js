@@ -13,7 +13,7 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import getTimeDifference from "../../utils/time";
 import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import Tooltip from "@mui/material/Tooltip";
-import {findFlight }from "../../api/flight";
+import { findFlight } from "../../api/flight";
 
 export const SearchResultsUser = () => {
   const [departureFlightList, setDepartureList] = useState([]);
@@ -227,10 +227,11 @@ export const SearchResultsUser = () => {
                   </Typography>
                 </div>
               </Grid>
-              <Grid item md={1}>
+              <Grid item md={2}>
                 <Button
                   variant="outlined"
                   style={{
+                    width: "60%",
                     borderColor: "#084C61",
                     color:
                       selectedDepartureFlightID !== flight._id
@@ -382,10 +383,11 @@ export const SearchResultsUser = () => {
                   </Typography>
                 </div>
               </Grid>
-              <Grid item md={1}>
+              <Grid item md={2}>
                 <Button
                   variant="outlined"
                   style={{
+                    width: "60%",
                     borderColor: "#084C61",
                     color:
                       selectedReturnFlightID !== flight._id
@@ -410,14 +412,20 @@ export const SearchResultsUser = () => {
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "flex-end",
+          // flexDirection: "row",
+          // justifyContent: "flex-end",
           marginBottom: "7%",
         }}
       >
         <Button
           variant="contained"
-          style={{ backgroundColor: "#084C61", color: "#FFF" }}
+          style={{
+            width: 350,
+            backgroundColor: "#084C61",
+            color: "#FFF",
+            margin: "auto",
+            fontSize: "1.1rem",
+          }}
           onClick={handleSubmit}
         >
           PROCEED
@@ -449,12 +457,12 @@ export const SearchResultsUser = () => {
           height: "100vh",
         }}
       >
-        <Typography
+        {/* <Typography
           variant="h1"
           style={{ fontSize: "3.5rem", fontWeight: 500 }}
         >
           Oops..😓
-        </Typography>
+        </Typography> */}
         <Typography
           variant="h1"
           style={{ fontSize: "3.5rem", fontWeight: 500 }}

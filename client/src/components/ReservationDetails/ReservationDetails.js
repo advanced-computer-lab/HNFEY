@@ -11,7 +11,11 @@ import FlightIcon from "@mui/icons-material/Flight";
 import getTimeDifference from "../../utils/time";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useHistory } from "react-router";
-import { editReservation, findReservation } from "../../api/reservation";
+import {
+  editReservation,
+  findReservation,
+  confirmReservation,
+} from "../../api/reservation";
 import { cancelFlight, findFlight } from "../../api/flight";
 import { refund } from "../../api/payment";
 
@@ -97,6 +101,42 @@ const ReservationDetails = (props) => {
     });
   };
 
+  const handleMail = async (e) => {
+    e.preventDefault();
+    const email = JSON.parse(localStorage.getItem("profile")).user.email;
+    const userId = JSON.parse(localStorage.getItem("profile")).user._id;
+    const reservation = {
+      reservation: {
+        userId,
+        departingFlightId: departingFlight._id,
+        returnFlightId: returnFlight._id,
+        passengers: userReservation.passengers,
+        class: userReservation.class,
+        status: "Reserved",
+        totalPrice: userReservation.totalPrice,
+        email,
+      },
+    };
+    confirmReservation(reservation).then((res) => {
+      confirmAlert({
+        title: "Email Sent",
+        message: "Email Sent Successfully",
+        buttons: [
+          {
+            label: "Ok",
+            onClick: () => {},
+          },
+        ],
+      });
+    });
+    // cancelFlight({
+    //   user: {
+    //     email: user.email,
+    //   },
+    //   totalPrice: userReservation.totalPrice,
+    // });
+  };
+
   const handleEditFlight = async (e, flightId) => {
     e.preventDefault();
     if (flightId === departingFlight._id) {
@@ -149,11 +189,12 @@ const ReservationDetails = (props) => {
                 flexDirection: "column",
                 marginBottom: "3%",
                 marginLeft: "2%",
+                marginTop: "6%",
               }}
             >
               <Typography
                 variant="h5"
-                style={{ fontSize: "1.5rem", fontWeight: 500 }}
+                style={{ fontSize: "2rem", fontWeight: 500 }}
               >
                 Reservation {userReservation.index}
               </Typography>
@@ -164,9 +205,31 @@ const ReservationDetails = (props) => {
               <Button
                 align="right"
                 style={{
-                  width: 300,
+                  width: 250,
                   marginTop: "4%",
-                  fontSize: "1.1rem",
+                  fontSize: "1rem",
+                  marginRight: "2%",
+                }}
+                variant="contained"
+                color="primary"
+                onClick={(e) => handleMail(e)}
+                disabled={
+                  cancelPressed || userReservation.status === "Cancelled"
+                    ? true
+                    : false
+                }
+              >
+                Email itinerary
+              </Button>
+            </div>
+            <div style={{ display: "flex", justifyContent: "right" }}>
+              <Button
+                align="right"
+                style={{
+                  width: 250,
+                  marginTop: "2%",
+                  fontSize: "1rem",
+                  marginRight: "2%",
                 }}
                 variant="contained"
                 color="primary"

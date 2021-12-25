@@ -4,9 +4,7 @@ import { useHistory } from "react-router";
 import { updatePassword } from "../../api/auth";
 
 const ChangePassword = (props) => {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("profile")).user
-  );
+  const [user] = useState(JSON.parse(localStorage.getItem("profile")).user);
   const history = useHistory();
   const [errorCurrentPassword, setErrorCurrent] = useState(false);
   const [errorPasswordRetype, setErrorRetype] = useState(false);

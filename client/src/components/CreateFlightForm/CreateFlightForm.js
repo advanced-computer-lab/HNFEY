@@ -66,7 +66,6 @@ export const CreateFlightForm = () => {
 
     delete flightDetails.seats;
 
-    let url = "http://localhost:8000/hnfey/flight/create-flight";
     const seatsArray = [];
 
     let businessSeatsInRow = 6;

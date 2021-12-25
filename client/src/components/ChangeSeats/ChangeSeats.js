@@ -23,6 +23,7 @@ import { editFlight } from "../../api/flight";
 import StripeCheckout from "react-stripe-checkout";
 import { editReservation } from "../../api/reservation";
 import { pay, refund } from "../../api/payment";
+import { confirmAlert } from "react-confirm-alert";
 
 const ChangeSeats = (props) => {
   const flight = props.location.state.flight;
@@ -163,6 +164,12 @@ const ChangeSeats = (props) => {
         refund({
           chargeId: reservation.chargeId,
           amount: Math.abs(priceDifference),
+        }).then(() => {
+          confirmAlert({
+            title: "Refund",
+            message: "Amount Refunded",
+            buttons: [{ label: "Yes", onClick: () => {} }],
+          });
         });
       }
       editReservation(reservationBody).then((res) => {
@@ -480,7 +487,8 @@ const ChangeSeats = (props) => {
                 color="primary"
                 style={{ width: "40%" }}
               >
-                {passengerNumber === reservation.passengers.length - 1
+                {passengerNumber === reservation.passengers.length - 1 &&
+                props.location.state.newFlight
                   ? priceDifference > 0
                     ? `Pay ${priceDifference} EGP`
                     : `Get ${Math.abs(priceDifference)} EGP Refund`
@@ -495,7 +503,8 @@ const ChangeSeats = (props) => {
               onClick={handleSubmit}
               style={{ width: "40%" }}
             >
-              {passengerNumber === reservation.passengers.length - 1
+              {passengerNumber === reservation.passengers.length - 1 &&
+              props.location.state.newFlight
                 ? priceDifference > 0
                   ? `Pay ${priceDifference} EGP`
                   : `Get ${Math.abs(priceDifference)} EGP Refund`
@@ -508,7 +517,8 @@ const ChangeSeats = (props) => {
               onClick={handleSubmit}
               style={{ width: "40%" }}
             >
-              {passengerNumber === reservation.passengers.length - 1
+              {passengerNumber === reservation.passengers.length - 1 &&
+              props.location.state.newFlight
                 ? priceDifference > 0
                   ? `Pay ${priceDifference} EGP`
                   : `Get ${Math.abs(priceDifference)} EGP Refund`

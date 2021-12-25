@@ -79,8 +79,6 @@ const FlightForm = () => {
           <br />
           <br />
           <br />
-          <br />
-          <br />
 
           <TextField
             style={{ maxWidth: 200, margin: "0px 5px 10px 0px" }}
@@ -197,7 +195,7 @@ const FlightForm = () => {
             style={{
               width: 450,
               marginTop: "10px",
-              marginBottom: "15px",
+              marginBottom: "40px",
               fontSize: "20px",
             }}
             type="submit"
