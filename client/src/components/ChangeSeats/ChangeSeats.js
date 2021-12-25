@@ -20,19 +20,25 @@ import moment from "moment";
 import getTimeDifference from "../../utils/time";
 import { useHistory } from "react-router";
 import { editFlight } from "../../api/flight";
+import StripeCheckout from "react-stripe-checkout";
 import { editReservation } from "../../api/reservation";
+import { pay, refund } from "../../api/payment";
 
 const ChangeSeats = (props) => {
   const flight = props.location.state.flight;
   const flightType = props.location.state.flightType;
   const reservation = props.location.state.userReservation;
   const passengerNumber = props.location.state.passengerNo;
+  const priceDifference = props.location.state.priceDifference;
   const [currentPassenger, setCurrentPassenger] = useState("");
   const [seatsSelected, setSeatsSelected] = useState("");
   const [noOfSeatsSelected, setNoOfSeatsSelected] = useState(0);
   const [businessSeats, setBusinessSeats] = useState([]);
   const [economySeats, setEconomySeats] = useState([]);
   const history = useHistory();
+  let chargeId;
+
+  console.log(props.location.state);
 
   if (businessSeats.length !== 0 && economySeats.length !== 0) {
     if (reservation.class === "Business") {
@@ -155,6 +161,12 @@ const ChangeSeats = (props) => {
     if (passengerNumber === reservation.passengers.length - 1) {
       delete props.location.state.flightType;
       delete props.location.state.flight;
+      if (priceDifference < 0) {
+        refund({
+          chargeId: reservation.chargeId,
+          amount: Math.abs(priceDifference),
+        });
+      }
       editReservation(reservationBody).then((res) => {
         history.push("/reservation", {
           ...props.location.state,
@@ -164,13 +176,31 @@ const ChangeSeats = (props) => {
     } else {
       const state = {
         ...props.location.state,
-
         passengerNo: passengerNumber + 1,
         userReservation: reservation,
       };
       history.push("/change-seats", state);
       history.go(0);
     }
+  };
+
+  const makePayment = async (token) => {
+    const email = JSON.parse(localStorage.getItem("profile")).user.email;
+    const body = {
+      token,
+      product: {
+        price: priceDifference,
+      },
+      email,
+    };
+
+    return pay(body)
+      .then((res) => {
+        console.log(res.data.charge);
+        chargeId = res.data.charge.id;
+        handleSubmit();
+      })
+      .catch((err) => console.log(err));
   };
 
   return flight ? (
@@ -431,14 +461,55 @@ const ChangeSeats = (props) => {
               </div>
             </div>
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            style={{ width: "40%" }}
-          >
-            Save and Proceed
-          </Button>
+          {priceDifference > 0 &&
+          passengerNumber === reservation.passengers.length - 1 ? (
+            <StripeCheckout
+              currency="EGP"
+              stripeKey="pk_test_51K9Vp6DHyFDpcdiHt9NGEIZRJJMdtwrcGx1QuPZe5N0UhB9Kf3y1Y3oQfZWEXIwsv9mHLeHVqToil9P9giCviy9I00VR1fbDZ9"
+              token={makePayment}
+              name="Reserve Flight"
+              amount={priceDifference * 100}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ width: "40%" }}
+              >
+                {passengerNumber === reservation.passengers.length - 1
+                  ? priceDifference > 0
+                    ? `Pay ${priceDifference} EGP`
+                    : `Get ${Math.abs(priceDifference)} EGP Refund`
+                  : "Save and Proceed"}
+              </Button>
+            </StripeCheckout>
+          ) : priceDifference < 0 &&
+            passengerNumber === reservation.passengers.length - 1 ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              style={{ width: "40%" }}
+            >
+              {passengerNumber === reservation.passengers.length - 1
+                ? priceDifference > 0
+                  ? `Pay ${priceDifference} EGP`
+                  : `Get ${Math.abs(priceDifference)} EGP Refund`
+                : "Save and Proceed"}
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              style={{ width: "40%" }}
+            >
+              {passengerNumber === reservation.passengers.length - 1
+                ? priceDifference > 0
+                  ? `Pay ${priceDifference} EGP`
+                  : `Get ${Math.abs(priceDifference)} EGP Refund`
+                : "Save and Proceed"}
+            </Button>
+          )}
           <br />
         </Grid>
         <Grid item xs={6}>

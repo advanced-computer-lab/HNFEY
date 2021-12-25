@@ -130,6 +130,12 @@ const EditReservedFlight = (props) => {
                     passengerNo: 0,
                     userReservation: reservation,
                     newFlight: true,
+                    priceDifference:
+                      reservation.class === "Business"
+                        ? res.data.flight.businessPrice -
+                          reservedflight.businessPrice
+                        : res.data.flight.economyPrice -
+                          reservedflight.economyPrice,
                   });
                 });
               } else {
@@ -162,6 +168,12 @@ const EditReservedFlight = (props) => {
                     passengerNo: 0,
                     userReservation: reservation,
                     newFlight: true,
+                    priceDifference:
+                      reservation.class === "Business"
+                        ? res.data.flight.businessPrice -
+                          reservedflight.businessPrice
+                        : res.data.flight.economyPrice -
+                          reservedflight.economyPrice,
                   });
                 });
               }
@@ -427,10 +439,10 @@ const EditReservedFlight = (props) => {
                     </Tooltip>
                     <Typography display="inline" variant="body2">
                       {reservation.class === "Business"
-                        ? props.location.state.flight.businessPrice -
-                          flight.businessPrice
-                        : props.location.state.flight.economyPrice -
-                          flight.economyPrice}{" "}
+                        ? flight.businessPrice -
+                          props.location.state.flight.businessPrice
+                        : flight.economyPrice -
+                          props.location.state.flight.economyPrice}{" "}
                       EGP
                     </Typography>
                   </div>

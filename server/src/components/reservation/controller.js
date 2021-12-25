@@ -1,5 +1,5 @@
 const model = require("./model");
-const email = require("../../utils/email");
+const emailUtils = require("../../utils/email");
 
 const fetchAll = async (req, res, next) => {
   try {
@@ -100,7 +100,8 @@ const getFlights = async (req, res, next) => {
 
 const sendConfirmationMail = (req, res, next) => {
   const { departingFlight, returnFlight, reservation } = req;
-  const { passengers, totalPrice, email } = reservation;
+  const { passengers, totalPrice } = reservation;
+  const { email } = req.body.reservation;
   const user = req.user;
   const cabin = reservation.class;
   const text = `Dear ${user.firstName},\nYour reservation with us is confirmed!!\n\n\nDeparture Flight\n\t\t${departingFlight.from} to ${departingFlight.to}\nTotal Price: ${totalPrice}`;
@@ -126,7 +127,7 @@ const sendConfirmationMail = (req, res, next) => {
           </div>`,
   };
   req.mailOptions = mailOptions;
-  email.sendMail(req, res, next);
+  emailUtils.sendMail(req, res, next);
   next();
 };
 

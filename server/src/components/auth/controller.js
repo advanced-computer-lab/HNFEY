@@ -148,10 +148,8 @@ const verifyOldPassword = async (req, res, next) => {
     );
     if (passwordIsValid) next();
     else {
-      const err = new Error("Invalid password");
-      err.code = 400;
-      err.name = "Bad request";
-      throw err;
+      const error = new Error("Invalid password");
+      next(error);
     }
   } catch (err) {
     next(err);
@@ -159,20 +157,14 @@ const verifyOldPassword = async (req, res, next) => {
 };
 
 const resetPassword = async (req, res, next) => {
-  // let transaction;
   try {
-    // transaction = await sequelize.transaction();
+    console.log("hhhh");
     const hashedPassword = await authUtils.hashPassword(req.body.password);
-    const updatedUser = { password: hashedPassword, verification_code: "" };
-    await model.updateUser(
-      (req.user && req.user._id) || req.query._id,
-      updatedUser
-      // transaction
-    );
-    // req.transaction = transaction;
+    const updatedUser = { password: hashedPassword };
+    await model.updateUser(req.user && req.user._id, updatedUser);
     next();
   } catch (err) {
-    // if (transaction) await transaction.rollback();
+    console.log("errrrrr");
     next(err);
   }
 };
