@@ -28,6 +28,7 @@ const Navbar = (props) => {
 
   const handleLogout = () => {
     history.push("/login");
+    history.go(0);
     localStorage.clear();
     setUserLS(null);
     setUser(null);
