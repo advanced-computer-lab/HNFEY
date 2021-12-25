@@ -33,8 +33,10 @@ const Checkout = (props) => {
     passengers,
     passengersInfo,
     cabin,
-    userId,
   } = details;
+
+  const userId=JSON.parse(localStorage.getItem("profile")).user._id;
+  console.log(userId);
 
   const departureSeatsAvailable = departingFlightSeats;
   const totalPrice =
@@ -466,7 +468,7 @@ const Checkout = (props) => {
                     {noOfPassengersArray.length !== i + 1 ? (
                       <Divider style={{ marginTop: "3rem" }} />
                     ) : (
-                      <div style={{ marginTop: "2rem" }}>
+                      <div style={{ marginTop: "2rem" , marginLeft:"75%"}}>
                         <Button
                           variant="contained"
                           color="primary"
