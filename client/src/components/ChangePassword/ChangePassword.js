@@ -32,12 +32,15 @@ const ChangePassword = (props) => {
     };
 
     if (newPasswordRetyped === newPassword) {
-      updatePassword(passswordBody).then(() =>
-        history.push("/user-profile", {
-          ...props.location.state,
-          user,
+      updatePassword(passswordBody)
+        .then(() => {
+          console.log("hhh");
+          history.push("/user-profile", {
+            ...props.location.state,
+            user,
+          });
         })
-      );
+        .catch(() => setErrorCurrent(() => true));
     } else {
       newPasswordRetyped === newPassword
         ? setErrorRetype(() => false)

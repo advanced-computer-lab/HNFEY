@@ -25,6 +25,7 @@ import ConfirmationSummary from "./components/ConfirmationSummary/ConfirmationSu
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import ChangeSeats from "./components/ChangeSeats/ChangeSeats";
 import EditReservedFlight from "./components/EditReservedFlight/EditReservedFlight";
+import EditFlightSummary from "./components/EditFlightSummary/EditFlightSummary";
 import { UserProvider } from "./UserContext";
 
 const App = () => {
@@ -75,6 +76,11 @@ const App = () => {
             <Route path="/checkout" exact component={Checkout} />
             <Route path="/change-password" exact component={ChangePassword} />
             <Route path="/change-seats" exact component={ChangeSeats} />
+            <Route
+              path="/edit-flight-summary"
+              exact
+              component={EditFlightSummary}
+            />
             <Route
               path="/edit-reserved-flight"
               exact
