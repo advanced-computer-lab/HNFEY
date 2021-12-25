@@ -14,7 +14,6 @@ export const AllReservations = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-
       findAllReservations(user._id).then((res) => {
         setUserReservations(() => res.data.reservation);
       });

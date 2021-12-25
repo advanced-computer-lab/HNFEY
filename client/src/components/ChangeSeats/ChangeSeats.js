@@ -38,8 +38,6 @@ const ChangeSeats = (props) => {
   const history = useHistory();
   let chargeId;
 
-  console.log(props.location.state);
-
   if (businessSeats.length !== 0 && economySeats.length !== 0) {
     if (reservation.class === "Business") {
       businessSeats.forEach((flightSeat) => {
@@ -106,7 +104,7 @@ const ChangeSeats = (props) => {
       }
     }
   };
-
+  console.log(props.location.state);
   const handleSubmit = () => {
     if (noOfSeatsSelected === 0) {
       alert("Select your seats");
@@ -168,10 +166,17 @@ const ChangeSeats = (props) => {
         });
       }
       editReservation(reservationBody).then((res) => {
-        history.push("/reservation", {
-          ...props.location.state,
-          userReservation: reservation,
-        });
+        if (props.location.state.newFlight) {
+          history.push("/edit-flight-summary", {
+            ...props.location.state,
+            userReservation: reservation,
+          });
+        } else {
+          history.push("/reservation", {
+            ...props.location.state,
+            userReservation: reservation,
+          });
+        }
       });
     } else {
       const state = {
