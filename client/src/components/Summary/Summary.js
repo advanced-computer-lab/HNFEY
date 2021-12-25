@@ -44,7 +44,11 @@ const Summary = (props) => {
         {
           label: "Yes",
           onClick: () => {
-            if (props.location.state.username) {
+            // if (props.location.state.username)
+            if (JSON.parse(localStorage.getItem("profile")) !== null) {
+              console.log(
+                JSON.parse(localStorage.getItem("profile")).user.username
+              );
               history.push("/flight/seat-selection", {
                 username: props.location.state.username,
                 flightToSelect: {
