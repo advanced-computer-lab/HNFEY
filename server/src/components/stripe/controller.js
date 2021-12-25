@@ -59,41 +59,37 @@ const pay = async (req, res, next) => {
   }
 };
 
-// const stripeCheckout = async (req, res, next) => {
-//   try {
-//     if (req.session) {
-//       stripe = await loadStripe(stripePublicKey);
-//       const checkout = await stripe.redirectToCheckout({
-//         sessionId: req.session,
-//       });
-//       if (checkout) {
-//         req.checkout = checkout;
-//         next();
-//       } else {
-//         const error = new Error();
-//         next(error);
-//       }
-//     }
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
-// const checkError = async (req, res, next) => {
-//   try {
-//     if (req.checkout.error) {
-//       alert(req.checkError.error);
-//       next(req.checkout.error);
-//     } else {
-//       next();
-//     }
-//   } catch (err) {
-//     next(err);
-//   }
-// };
+const refund = async (req, res, next) => {
+  try {
+    const { chargeId } = req.body;
+    let refund;
+    if (req.body.amount) {
+      refund = await stripe.refunds.create({
+        charge: chargeId,
+        amount: req.body.amount * 100,
+      });
+    } else {
+      refund = await stripe.refunds.create({
+        charge: chargeId,
+      });
+      if (refund) {
+        req.refund = refund;
+        next();
+      } else {
+        const error = new Error("Cannot refund");
+        next(error);
+      }
+    }
+  } catch (err) {
+    next(err);
+  }
+};
 
 const payPipeline = [pay];
 
+const refundPipeline = [refund];
+
 module.exports = {
   payPipeline,
+  refundPipeline,
 };

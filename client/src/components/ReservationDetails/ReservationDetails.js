@@ -13,26 +13,24 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useHistory } from "react-router";
 import { editReservation, findReservation } from "../../api/reservation";
 import { cancelFlight, findFlight } from "../../api/flight";
+import { refund } from "../../api/payment";
 
 const ReservationDetails = (props) => {
   const [userReservation, setUserReservation] = useState(
     props.location.state.userReservation
   );
   const history = useHistory();
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("profile")).user
-  );
+  const [user] = useState(JSON.parse(localStorage.getItem("profile")).user);
   const [departingFlight, setDepartingFlight] = useState({});
   const [returnFlight, setReturnFlight] = useState({});
   const [cancelPressed, setCancelPressed] = useState("");
-    
+
   const reservationId = props.location.state.userReservation._id;
 
   useEffect(() => {
     findReservation(reservationId).then((res) => {
       setUserReservation(() => res.data.reservation);
     });
-    
   }, [props.location.state.user]);
 
   useEffect(() => {
@@ -84,21 +82,20 @@ const ReservationDetails = (props) => {
       reservation: { _id: reservationId, status: "Cancelled" },
     };
 
+    refund({ chargeId: userReservation.chargeId });
 
-    await editReservation(
-      reservation
-    ).then(() => {
+    await editReservation(reservation).then(() => {
       userReservation.status = "Cancelled";
       setCancelPressed(true);
     });
 
-  cancelFlight({
-    user: {
-      email: user.email,
-    },
-    totalPrice: userReservation.totalPrice,
-  });
-};
+    cancelFlight({
+      user: {
+        email: user.email,
+      },
+      totalPrice: userReservation.totalPrice,
+    });
+  };
 
   const handleEditFlight = async (e, flightId) => {
     e.preventDefault();

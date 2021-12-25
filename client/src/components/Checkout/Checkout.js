@@ -47,7 +47,7 @@ const Checkout = (props) => {
   const [selectedDepartureSeats, setSelectedDepartureSeats] = useState([]);
   const [selectedReturnSeats, setSelectedReturnSeats] = useState([]);
   const noOfPassengersArray = [...Array(Number(passengers)).keys()];
-
+  let chargeId;
   const handleResetSeatClick = () => {
     setPassengerInfoState((passenger) =>
       passenger.map((passengerInfo) => ({
@@ -144,6 +144,7 @@ const Checkout = (props) => {
           };
 
     const email = JSON.parse(localStorage.getItem("profile")).user.email;
+
     const reservation = {
       reservation: {
         userId,
@@ -154,25 +155,9 @@ const Checkout = (props) => {
         status: "Reserved",
         totalPrice,
         email,
+        chargeId,
       },
     };
-    console.log(props.location.state);
-
-    //payment
-    // const userEmail = JSON.parse(localStorage.getItem("profile")).user.email;
-
-    // // await axios
-    // //   .post(payUrl, {
-    // //     totalPrice,
-    // //     userId,
-    // //     email: userEmail,
-    // //   })
-    // //   .then((res) => {
-    // //     console.log(res);
-    // //   })
-    // //   .catch(() => {
-    // //     return;
-    // //   });
 
     editFlight(departureFlightBody);
     editFlight(returnFlightBody);
@@ -196,6 +181,8 @@ const Checkout = (props) => {
 
     return pay(body)
       .then((res) => {
+        console.log(res.data.charge);
+        chargeId = res.data.charge.id;
         handleSubmit();
       })
       .catch((err) => console.log(err));
